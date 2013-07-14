@@ -12,17 +12,13 @@ using System.Composition.Hosting;
 
 namespace Crystalbyte.Asphalt {
     public partial class App {
-        private static AppContext _viewModel;
 
         /// <summary>
         /// A static ViewModel used by the views to bind against.
         /// </summary>
-        /// <returns>The MainViewModel object.</returns>
-        public static AppContext AppContext {
-            get {
-                // Delay creation of the view model until necessary
-                return _viewModel ?? (_viewModel = new AppContext());
-            }
+        /// <returns>The main viewmodel object.</returns>
+        public static AppContext Context {
+            get { return Composition.GetExport<AppContext>(); }
         }
 
         /// <summary>
@@ -34,7 +30,7 @@ namespace Crystalbyte.Asphalt {
         /// <summary>
         /// Gets the composition host container.
         /// </summary>
-        public CompositionHost Composition { get; set; }
+        public static CompositionHost Composition { get; set; }
 
         /// <summary>
         /// Constructor for the Application object.
@@ -53,7 +49,7 @@ namespace Crystalbyte.Asphalt {
             InitializeLanguage();
 
             // Show graphics profiling information while debugging.
-            if (!Debugger.IsAttached) 
+            if (!Debugger.IsAttached)
                 return;
 
             // Display the current frame rate counters.
@@ -77,9 +73,10 @@ namespace Crystalbyte.Asphalt {
         // This code will not execute when the application is reactivated
         private void OnApplicationLaunching(object sender, LaunchingEventArgs e) {
             ComposeApplication();
+            Debug.WriteLine(GetHashCode());
         }
 
-        private void ComposeApplication() {
+        private static void ComposeApplication() {
             var config = new ContainerConfiguration()
                 .WithAssembly(typeof(App).GetTypeInfo().Assembly);
 
@@ -89,9 +86,11 @@ namespace Crystalbyte.Asphalt {
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void OnApplicationActivated(object sender, ActivatedEventArgs e) {
+            ComposeApplication();
+            Debug.WriteLine(GetHashCode());
             // Ensure that application state is restored appropriately
-            if (!AppContext.IsDataLoaded) {
-                AppContext.LoadData();
+            if (!Context.IsDataLoaded) {
+                Context.LoadData();
             }
         }
 
@@ -150,9 +149,10 @@ namespace Crystalbyte.Asphalt {
         // Do not add any additional code to this method
         private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e) {
             // Set the root visual to allow the application to render
-            if (RootVisual != null && RootVisual != RootFrame)
-                RootVisual = RootFrame;
+            if (RootFrame == null || RootVisual == RootFrame)
+                return;
 
+            RootVisual = RootFrame;
             // Remove this handler since it is no longer needed
             RootFrame.Navigated -= CompleteInitializePhoneApplication;
         }
@@ -174,7 +174,7 @@ namespace Crystalbyte.Asphalt {
 
             // For UI consistency, clear the entire page stack
             while (RootFrame.RemoveBackEntry() != null) {
-                 // do nothing
+                // do nothing
             }
         }
 

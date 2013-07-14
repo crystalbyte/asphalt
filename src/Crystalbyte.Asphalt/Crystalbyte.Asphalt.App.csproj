@@ -15,8 +15,7 @@
     <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>true</SilverlightApplication>
-    <SupportedCultures>
-    </SupportedCultures>
+    <SupportedCultures>en%3bde</SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
     <XapFilename>Asphalt_$(Configuration)_$(Platform).xap</XapFilename>
@@ -93,19 +92,38 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="Commands\AddCarCommand.cs" />
     <Compile Include="Commands\CancelCommand.cs" />
     <Compile Include="Commands\CommitCarCommand.cs" />
-    <Compile Include="Contexts\ConfigureCarPageContext.cs" />
-    <Compile Include="Pages\ConfigureCarPage.xaml.cs">
-      <DependentUpon>ConfigureCarPage.xaml</DependentUpon>
+    <Compile Include="Commands\IButtonCommand.cs" />
+    <Compile Include="Contexts\BindingModelBase.cs" />
+    <Compile Include="Contexts\MemorizeAttribute.cs" />
+    <Compile Include="Contexts\PropertyValidation.cs" />
+    <Compile Include="Contexts\RevisionObject.cs" />
+    <Compile Include="Converters\NullOrEmptyToVisibilityConverter.cs" />
+    <Compile Include="Data\CarDataContext.cs" />
+    <Compile Include="Data\TourDataContext.cs" />
+    <Compile Include="Distance.cs" />
+    <Compile Include="Data\LocalStorage.cs" />
+    <Compile Include="Navigation.cs" />
+    <Compile Include="NavigationState.cs" />
+    <Compile Include="PageExtensions.cs" />
+    <Compile Include="Pages\CarCompositionPage.xaml.cs">
+      <DependentUpon>CarCompositionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Contexts\CarContext.cs" />
-    <Compile Include="Models\Car.cs" />
+    <Compile Include="Contexts\Car.cs" />
     <Compile Include="Contexts\NotificationObject.cs" />
     <Compile Include="Contexts\PropertySupport.cs" />
     <Compile Include="LocalizedStrings.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="Pages\LandingPage.xaml.cs">
+      <DependentUpon>LandingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CarPresentationPage.xaml.cs">
+      <DependentUpon>CarPresentationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Page1.xaml.cs">
+      <DependentUpon>Page1.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
@@ -114,30 +132,52 @@
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Contexts\AppContext.cs" />
+    <Compile Include="TourType.cs" />
+    <Compile Include="UI\Dock.cs" />
+    <Compile Include="UI\DockPanel.cs" />
+    <Compile Include="UnitOfLength.cs" />
+    <Compile Include="ValidationException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="Pages\ConfigureCarPage.xaml">
+    <Page Include="Pages\CarCompositionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Pages\LandingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\CarPresentationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Page1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="README_FIRST.txt" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <Resource Include="Assets\PanoramaBackground.png" />
     <Content Include="Assets\AlignmentGrid.png" />
+    <Content Include="Assets\ApplicationBar\Add.png" />
+    <Content Include="Assets\ApplicationBar\Cancel.png" />
+    <Content Include="Assets\ApplicationBar\Check.png" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -158,6 +198,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\AppResources.de.resx" />
+    <EmbeddedResource Include="Resources\AppResources.en.resx" />
     <EmbeddedResource Include="Resources\AppResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
@@ -184,6 +226,12 @@
       <Project>{B4B5E15C-E6B9-48EA-94C2-F067484D4D3E}</Project>
       <Name>System.Composition.TypedParts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit">
+      <HintPath>..\packages\WPToolkit.4.2013.06.11\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

@@ -17,7 +17,7 @@ namespace Crystalbyte.Asphalt.Commands {
         #region ICommand implementation
 
         public bool CanExecute(object parameter) {
-            
+            return true;
         }
 
         public event EventHandler CanExecuteChanged;

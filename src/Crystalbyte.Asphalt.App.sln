@@ -15,6 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Composition.Hosting"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Composition.TypedParts", "System.Composition.TypedParts\System.Composition.TypedParts.csproj", "{B4B5E15C-E6B9-48EA-94C2-F067484D4D3E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{68BDA2E0-DA24-4E4A-819E-5640825D7BFF}"
+	ProjectSection(SolutionItems) = preProject
+		links.txt = links.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

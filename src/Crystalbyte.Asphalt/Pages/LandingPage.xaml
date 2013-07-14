@@ -1,0 +1,98 @@
+﻿<phone:PhoneApplicationPage x:Class="Crystalbyte.Asphalt.Pages.LandingPage"
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:contexts="clr-namespace:Crystalbyte.Asphalt.Contexts"
+                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                            xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+                            xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                            FontFamily="{StaticResource PhoneFontFamilyNormal}"
+                            FontSize="{StaticResource PhoneFontSizeNormal}"
+                            Foreground="{StaticResource PhoneForegroundBrush}"
+                            Orientation="Portrait"
+                            SupportedOrientations="Portrait"
+                            d:DataContext="{d:DesignInstance Type=contexts:AppContext}"
+                            shell:SystemTray.IsVisible="False"
+                            mc:Ignorable="d">
+
+    <!--  LayoutRoot is the root grid where all page content is placed  -->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+
+        <!--
+            LOCALIZATION NOTE:
+            To localize the displayed strings copy their values to appropriately named
+            keys in the app's neutral language resource file (AppResources.resx) then
+            replace the hard-coded text value between the attributes' quotation marks
+            with the binding clause whose path points to that string name.
+            
+            For example:
+            
+            Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
+            
+            This binding points to the template's string resource named "ApplicationTitle".
+            
+            Adding supported languages in the Project Properties tab will create a
+            new resx file per language that can carry the translated values of your
+            UI strings. The binding in these examples will cause the value of the
+            attributes to be drawn from the .resx file that matches the
+            CurrentUICulture of the app at run time.
+        -->
+
+        <!--  Panorama control  -->
+        <phone:Panorama Title="asphalt">
+
+            <phone:Panorama.Background>
+                <ImageBrush ImageSource="/Asphalt;component/Assets/PanoramaBackground.png" />
+            </phone:Panorama.Background>
+
+            <!--  Panorama item one  -->
+            <phone:PanoramaItem Header="cars">
+                <!--  Single line list with text wrapping  -->
+                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Cars, Mode=OneTime}">
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,-6,0,12" d:DataContext="{d:DesignInstance Type=contexts:Car}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding Image}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
+                                <TextBlock FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                                           Style="{StaticResource PhoneTextExtraLargeStyle}"
+                                           Text="{Binding Label}"
+                                           TextWrapping="Wrap" />
+                            </Grid>
+                        </DataTemplate>
+                    </phone:LongListSelector.ItemTemplate>
+                </phone:LongListSelector>
+            </phone:PanoramaItem>
+
+        </phone:Panorama>
+
+        <!--
+            Uncomment to see an alignment grid to help ensure your controls are
+            aligned on common boundaries.  The image has a top margin of -32px to
+            account for the System Tray. Set this to 0 (or remove the margin altogether)
+            if the System Tray is hidden.
+            
+            Before shipping remove this XAML and the image itself.
+        -->
+        <Image Grid.Row="0"
+               Grid.RowSpan="2"
+               Width="480"
+               Height="800"
+               Margin="0"
+               VerticalAlignment="Top"
+               IsHitTestVisible="False"
+               Source="/Assets/AlignmentGrid.png" />
+
+    </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar />
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
