@@ -102,6 +102,7 @@
     <Compile Include="Contexts\PropertyValidation.cs" />
     <Compile Include="Contexts\RevisionObject.cs" />
     <Compile Include="Converters\NullOrEmptyToVisibilityConverter.cs" />
+    <Compile Include="Converters\PathToImageConverter.cs" />
     <Compile Include="Data\CarDataContext.cs" />
     <Compile Include="Data\TourDataContext.cs" />
     <Compile Include="Distance.cs" />
@@ -132,6 +133,7 @@
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Contexts\AppContext.cs" />
+    <Compile Include="SerializableDictionary.cs" />
     <Compile Include="TourType.cs" />
     <Compile Include="UI\Dock.cs" />
     <Compile Include="UI\DockPanel.cs" />

@@ -6,28 +6,29 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Crystalbyte.Asphalt.Resources;
+using System.Runtime.Serialization;
 
 namespace Crystalbyte.Asphalt.Contexts {
     /// <summary>
     /// BindingModel to support validation and handling of error messages (Implements INotifyDataError)
     /// </summary>
     /// <typeparam name="TBindingModel">Model to bind</typeparam>
+    [DataContract]
     public abstract class BindingModelBase<TBindingModel> : RevisionObject, INotifyDataErrorInfo
         where TBindingModel : BindingModelBase<TBindingModel> {
 
         private readonly List<PropertyValidation<TBindingModel>> _validations =
             new List<PropertyValidation<TBindingModel>>();
 
-        private Dictionary<string, List<string>> _errorMessages = new Dictionary<string, List<string>>();
+        private SerializableDictionary<List<string>> _errorMessages = new SerializableDictionary<List<string>>();
 
         protected BindingModelBase() {
-            PropertyChanged +=
-                (s, e) => {
+            PropertyChanged += (s, e) => {
                     if (e.PropertyName != "HasErrors" && e.PropertyName != "ErrorMessages")
                         ValidateProperty(e.PropertyName);
                 };
         }
-
+        
         #region INotifyDataErrorInfo
 
         public IEnumerable GetErrors(string propertyName) {
@@ -40,8 +41,10 @@ namespace Crystalbyte.Asphalt.Contexts {
             get { return _errorMessages.Any(); }
         }
 
-        public Dictionary<string, List<string>> ErrorMessages {
+        [DataMember]
+        public SerializableDictionary<List<string>> ErrorMessages {
             get { return _errorMessages; }
+            set { _errorMessages = value; }
         }
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
@@ -67,7 +70,7 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         public void ValidateAll() {
             var propertyNamesWithValidationErrors = _errorMessages.Keys;
-            _errorMessages = new Dictionary<string, List<string>>();
+            _errorMessages = new SerializableDictionary<List<string>>();
             _validations.ForEach(PerformValidation);
 
             var propertyNamesThatMightHaveChangedValidation =
@@ -90,14 +93,6 @@ namespace Crystalbyte.Asphalt.Contexts {
             RaisePropertyChanged(() => HasErrors);
             RaisePropertyChanged(() => ErrorMessages);
         }
-
-        protected void ValidateValue(Func<bool> function, string message) {
-            var success = function();
-            if (!success) {
-                throw new ValidationException(message);
-            }
-        }
-
         private void PerformValidation(PropertyValidation<TBindingModel> validation) {
             if (validation.IsInvalid((TBindingModel)this)) {
                 AddErrorMessageForProperty(validation.PropertyName, validation.GetErrorMessage());

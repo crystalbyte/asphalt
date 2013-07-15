@@ -13,9 +13,15 @@ using Microsoft.Phone.Tasks;
 
 namespace Crystalbyte.Asphalt.Pages {
     public partial class CarCompositionPage {
+
+        private const string CarStateKey = "car";
+        private bool _isNewPageInstance;
+
         public CarCompositionPage() {
             InitializeComponent();
             BindingValidationError += OnBindingValidationError;
+
+            _isNewPageInstance = true;
         }
 
         private void OnBindingValidationError(object sender, ValidationErrorEventArgs e) {
@@ -30,18 +36,32 @@ namespace Crystalbyte.Asphalt.Pages {
             set { DataContext = value; }
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e) {
+            base.OnNavigatedFrom(e);
+
+            if (e.NavigationMode == NavigationMode.New) {
+                State[CarStateKey] = Car;
+            }
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
-            if (e.NavigationMode == NavigationMode.Back) {
-                return;
+            if (e.NavigationMode == NavigationMode.New) {
+                InitializeCar();
             }
 
+            if (_isNewPageInstance && Car == null) {
+                Car = (Car) State[CarStateKey];
+            }
+
+            _isNewPageInstance = false;
+        }
+
+        private void InitializeCar() {
             Car = (Car)NavigationState.Pop();
             Car.Commit();
-            Car.ValidateAll();
-
-            LocalStorage = (LocalStorage)NavigationState.Pop();
+            Car.ValidateAll();    
         }
 
         private void OnCheckButtonClicked(object sender, EventArgs e) {

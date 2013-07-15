@@ -3,16 +3,28 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Crystalbyte.Asphalt.Contexts {
+    [DataContract]
     public abstract class RevisionObject : NotificationObject {
-        private readonly Stack<Dictionary<string, object>> _versions =
-        new Stack<Dictionary<string, object>>();
+        private Stack<SerializableDictionary<object>> _versions =
+        new Stack<SerializableDictionary<object>>();
+
+        [DataMember]
+        public List<SerializableDictionary<object>> Versions {
+            get {
+                return new List<SerializableDictionary<object>>(_versions);
+            }
+            set {
+                _versions = new Stack<SerializableDictionary<object>>(value);
+            }
+        }
 
         internal void Commit() {
-            var values = new Dictionary<string, object>();
+            var values = new SerializableDictionary<object>();
             var properties = GetType().GetProperties();
             properties.ForEach(x => {
                 if (x.CustomAttributes.Any(a => a.AttributeType == typeof(MemorizeAttribute))) {

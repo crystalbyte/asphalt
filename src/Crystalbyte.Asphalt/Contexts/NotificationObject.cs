@@ -4,10 +4,12 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 
 #endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
+    [DataContract]
     public abstract class NotificationObject : INotifyPropertyChanged, INotifyPropertyChanging {
         /// <summary>
         ///   Raised when a property on this object has a new value.

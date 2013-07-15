@@ -61,11 +61,8 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public void Execute(object parameter) {
-            var car = new Car();
-
-            NavigationState.Push(LocalStorage);
-            NavigationState.Push(car);
-            Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml?action=new", typeof(CarCompositionPage).Name), UriKind.Relative));
+            NavigationState.Push(new Car());
+            Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(CarCompositionPage).Name), UriKind.Relative));
         }
     }
 }

@@ -86,8 +86,10 @@ namespace Crystalbyte.Asphalt {
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void OnApplicationActivated(object sender, ActivatedEventArgs e) {
-            ComposeApplication();
-            Debug.WriteLine(GetHashCode());
+            // App has been tombstoned, we need to reactivate its state
+            if (Composition == null) {
+                ComposeApplication();
+            }
             // Ensure that application state is restored appropriately
             if (!Context.IsDataLoaded) {
                 Context.LoadData();

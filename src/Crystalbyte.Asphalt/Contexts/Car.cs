@@ -1,14 +1,14 @@
 #region Using directives
 
 using System.Data.Linq.Mapping;
-using System.Windows.Media;
 using Crystalbyte.Asphalt.Resources;
+using System.Runtime.Serialization;
 
 #endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
 
-    [Table]
+    [DataContract, Table]
     public sealed class Car : BindingModelBase<Car> {
 
         private int _id;
@@ -36,6 +36,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 .Show(AppResources.InitialMileageNotNegative);
         }
 
+        [DataMember(EmitDefaultValue = false)]
         [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity")]
         public int Id {
             get { return _id; }
@@ -50,8 +51,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [Column]
-        [Memorize]
+        [Column, Memorize, DataMember(EmitDefaultValue = false)]
         public string Label {
             get { return _label; }
             set {
@@ -64,8 +64,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [Column]
-        [Memorize]
+        [Column, Memorize, DataMember(EmitDefaultValue = false)]
         public string Image {
             get { return _image; }
             set {
@@ -79,9 +78,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-
-        [Column]
-        [Memorize]
+        [Column, Memorize, DataMember(EmitDefaultValue = false)]
         public string LicencePlate {
             get { return _licencePlate; }
             set {
@@ -94,10 +91,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-
-
-        [Column]
-        [Memorize]
+        [Column, Memorize, DataMember(EmitDefaultValue = false)]
         public int? InitialMileage {
             get { return _initialMileage; }
             set {
@@ -110,10 +104,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-
-
-        [Column]
-        [Memorize]
+        [Column, Memorize, DataMember(EmitDefaultValue = false)]
         public string Notes {
             get { return _notes; }
             set {
