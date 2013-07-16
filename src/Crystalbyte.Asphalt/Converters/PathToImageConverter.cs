@@ -9,7 +9,8 @@ using System.Windows.Data;
 namespace Crystalbyte.Asphalt.Converters {
     public sealed class PathToImageConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            return null;
+            var s = value as string;
+            return s == null ? null : ImageStore.Current.GetImage(s);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {

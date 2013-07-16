@@ -17,18 +17,29 @@ namespace Crystalbyte.Asphalt.Contexts {
     public abstract class BindingModelBase<TBindingModel> : RevisionObject, INotifyDataErrorInfo
         where TBindingModel : BindingModelBase<TBindingModel> {
 
-        private readonly List<PropertyValidation<TBindingModel>> _validations =
+        private List<PropertyValidation<TBindingModel>> _validations =
             new List<PropertyValidation<TBindingModel>>();
 
-        private SerializableDictionary<List<string>> _errorMessages = new SerializableDictionary<List<string>>();
+        private SerializableDictionary<List<string>> _errorMessages = 
+            new SerializableDictionary<List<string>>();
 
         protected BindingModelBase() {
             PropertyChanged += (s, e) => {
-                    if (e.PropertyName != "HasErrors" && e.PropertyName != "ErrorMessages")
-                        ValidateProperty(e.PropertyName);
-                };
+                if (e.PropertyName != "HasErrors" && e.PropertyName != "ErrorMessages")
+                    ValidateProperty(e.PropertyName);
+            };
         }
-        
+
+        public override void OnRevive() {
+            base.OnRevive();
+            if (_validations == null) {
+                _validations = new List<PropertyValidation<TBindingModel>>();
+            }
+            if (_errorMessages == null) {
+                _errorMessages = new SerializableDictionary<List<string>>();
+            }
+        }
+
         #region INotifyDataErrorInfo
 
         public IEnumerable GetErrors(string propertyName) {
@@ -40,8 +51,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         public bool HasErrors {
             get { return _errorMessages.Any(); }
         }
-
-        [DataMember]
+        
         public SerializableDictionary<List<string>> ErrorMessages {
             get { return _errorMessages; }
             set { _errorMessages = value; }
@@ -57,6 +67,11 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         #endregion
+
+        public List<PropertyValidation<TBindingModel>> Validations {
+            get { return _validations; }
+            set { _validations = value; }
+        }
 
         protected PropertyValidation<TBindingModel> AddValidationFor(Expression<Func<object>> expression) {
             return AddValidationFor(GetPropertyName(expression));
@@ -95,7 +110,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
         private void PerformValidation(PropertyValidation<TBindingModel> validation) {
             if (validation.IsInvalid((TBindingModel)this)) {
-                AddErrorMessageForProperty(validation.PropertyName, validation.GetErrorMessage());
+                AddErrorMessageForProperty(validation.PropertyName, validation.ErrorMessage);
             }
         }
 

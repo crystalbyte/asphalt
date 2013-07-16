@@ -101,12 +101,14 @@
     <Compile Include="Contexts\MemorizeAttribute.cs" />
     <Compile Include="Contexts\PropertyValidation.cs" />
     <Compile Include="Contexts\RevisionObject.cs" />
+    <Compile Include="Contexts\UndeadObject.cs" />
     <Compile Include="Converters\NullOrEmptyToVisibilityConverter.cs" />
     <Compile Include="Converters\PathToImageConverter.cs" />
     <Compile Include="Data\CarDataContext.cs" />
     <Compile Include="Data\TourDataContext.cs" />
     <Compile Include="Distance.cs" />
     <Compile Include="Data\LocalStorage.cs" />
+    <Compile Include="ImageStore.cs" />
     <Compile Include="Navigation.cs" />
     <Compile Include="NavigationState.cs" />
     <Compile Include="PageExtensions.cs" />

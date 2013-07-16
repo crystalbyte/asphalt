@@ -22,6 +22,11 @@ namespace Crystalbyte.Asphalt.Contexts {
             InitializeValidation();
         }
 
+        public override void OnRevive() {
+            base.OnRevive();
+            InitializeValidation();
+        }
+
         private void InitializeValidation() {
             AddValidationFor(() => Label)
                 .When(x => string.IsNullOrWhiteSpace(x.Label))

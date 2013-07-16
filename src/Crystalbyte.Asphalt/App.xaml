@@ -19,6 +19,7 @@
         </Style>
 
         <local:LocalizedStrings x:Key="LocalizedStrings" />
+        <converters:PathToImageConverter x:Key="PathToImageConverter" />
         <converters:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter" />
     </Application.Resources>
 

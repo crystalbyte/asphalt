@@ -43,7 +43,7 @@
                         <Image Width="200"
                                Height="200"
                                Source="{Binding Image,
-                                                Mode=OneWay}"
+                                                Converter={StaticResource PathToImageConverter}}"
                                Visibility="{Binding Image,
                                                     Converter={StaticResource NullOrEmptyToVisibilityConverter}}" />
                         <Grid Width="200"

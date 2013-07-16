@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Crystalbyte.Asphalt.Contexts {
     [DataContract]
-    public abstract class RevisionObject : NotificationObject {
+    public abstract class RevisionObject : UndeadObject {
         private Stack<SerializableDictionary<object>> _versions =
         new Stack<SerializableDictionary<object>>();
 
@@ -20,6 +20,13 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
             set {
                 _versions = new Stack<SerializableDictionary<object>>(value);
+            }
+        }
+
+        public override void OnRevive() {
+            base.OnRevive();
+            if (_versions == null) {
+                _versions = new Stack<SerializableDictionary<object>>();
             }
         }
 

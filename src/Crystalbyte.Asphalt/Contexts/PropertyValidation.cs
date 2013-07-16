@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,10 +14,9 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         private Func<TBindingModel, bool> _validationCriteria;
         private string _errorMessage;
-        private readonly string _propertyName;
 
         public PropertyValidation(string propertyName) {
-            _propertyName = propertyName;
+            PropertyName = propertyName;
         }
 
         public PropertyValidation<TBindingModel> When(Func<TBindingModel, bool> validationCriteria) {
@@ -39,14 +39,15 @@ namespace Crystalbyte.Asphalt.Contexts {
             return _validationCriteria(presentationModel);
         }
 
-        public string GetErrorMessage() {
-            if (_errorMessage == null)
-                throw new InvalidOperationException("No error message has been set for this validation. (Use the 'Show(..)' method.)");
-            return _errorMessage;
+        public string ErrorMessage {
+            get {
+                if (_errorMessage == null)
+                    throw new InvalidOperationException("No error message has been set for this validation. (Use the 'Show(..)' method.)");
+                return _errorMessage;
+            }
+            set { _errorMessage = value; }
         }
 
-        public string PropertyName {
-            get { return _propertyName; }
-        }
+        public string PropertyName { get; set; }
     }
 }

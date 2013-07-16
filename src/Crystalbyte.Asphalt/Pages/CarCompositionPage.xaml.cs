@@ -16,10 +16,15 @@ namespace Crystalbyte.Asphalt.Pages {
 
         private const string CarStateKey = "car";
         private bool _isNewPageInstance;
+        private readonly PhotoChooserTask _photoChooser;
+        private string _chosenPhotoPath;
 
         public CarCompositionPage() {
             InitializeComponent();
             BindingValidationError += OnBindingValidationError;
+
+            _photoChooser = new PhotoChooserTask { ShowCamera = true };
+            _photoChooser.Completed += OnPhotoChooserTaskCompleted;
 
             _isNewPageInstance = true;
         }
@@ -52,7 +57,9 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             if (_isNewPageInstance && Car == null) {
-                Car = (Car) State[CarStateKey];
+                Car = (Car)State[CarStateKey];
+                Car.OnRevive();
+                Car.Image = _chosenPhotoPath;
             }
 
             _isNewPageInstance = false;
@@ -61,7 +68,7 @@ namespace Crystalbyte.Asphalt.Pages {
         private void InitializeCar() {
             Car = (Car)NavigationState.Pop();
             Car.Commit();
-            Car.ValidateAll();    
+            Car.ValidateAll();
         }
 
         private void OnCheckButtonClicked(object sender, EventArgs e) {
@@ -92,15 +99,12 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void SelectImage() {
-            var task = new PhotoChooserTask { ShowCamera = true };
-            task.Completed += OnPhotoChooserTaskCompleted;
-            task.Show();
+            _photoChooser.Show();
         }
 
         private void OnPhotoChooserTaskCompleted(object sender, PhotoResult e) {
-            var task = (PhotoChooserTask)sender;
-            task.Completed -= OnPhotoChooserTaskCompleted;
-            Car.Image = e.OriginalFileName;
+            ImageStore.Current.StoreImage(e.OriginalFileName, e.ChosenPhoto);
+            _chosenPhotoPath = e.OriginalFileName;
         }
     }
 }
