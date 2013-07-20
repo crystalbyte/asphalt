@@ -9,8 +9,8 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
 namespace Crystalbyte.Asphalt.Pages {
-    public partial class CarPresentationPage {
-        public CarPresentationPage() {
+    public partial class CarDetailsPage {
+        public CarDetailsPage() {
             InitializeComponent();
         }
     }

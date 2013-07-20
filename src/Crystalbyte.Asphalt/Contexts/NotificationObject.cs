@@ -11,6 +11,7 @@ using System.Runtime.Serialization;
 namespace Crystalbyte.Asphalt.Contexts {
     [DataContract]
     public abstract class NotificationObject : INotifyPropertyChanged, INotifyPropertyChanging {
+
         /// <summary>
         ///   Raised when a property on this object has a new value.
         /// </summary>

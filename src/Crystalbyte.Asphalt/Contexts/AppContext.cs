@@ -9,30 +9,38 @@ using System.Composition;
 namespace Crystalbyte.Asphalt.Contexts {
 
     [Export, Shared]
-    public class AppContext : NotificationObject {
+    public sealed class AppContext : NotificationObject {
 
         [Import]
         public LocalStorage LocalStorage { get; set; }
 
+        [Import]
+        public AppSettings AppSettings { get; set; }
+
         public AppContext() {
-            Cars = new ObservableCollection<Car>();
+            Cars = new ObservableCollection<Vehicle>();
         }
 
         /// <summary>
         /// A collection for ItemViewModel objects.
         /// </summary>
-        public ObservableCollection<Car> Cars { get; private set; }
+        public ObservableCollection<Vehicle> Cars { get; private set; }
     
         public bool IsDataLoaded {
             get;
             private set;
         }
 
+        public void InvalidateData() {
+            IsDataLoaded = false;
+        }
+
         /// <summary>
         /// Creates and adds a few ItemViewModel objects into the Items collection.
         /// </summary>
         public void LoadData() {
-            Cars.AddRange(from car in LocalStorage.CarDataContext.Cars select car);
+            Cars.Clear();
+            Cars.AddRange(LocalStorage.CarDataContext.Cars.Select(x => x));
             IsDataLoaded = true;
         }
     }

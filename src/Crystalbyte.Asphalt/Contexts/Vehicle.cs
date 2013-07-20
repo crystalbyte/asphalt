@@ -1,24 +1,27 @@
 #region Using directives
 
 using System.Data.Linq.Mapping;
+using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
 using System.Runtime.Serialization;
+using System.Windows.Media;
+using System.Threading.Tasks;
 
 #endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
 
     [DataContract, Table]
-    public sealed class Car : BindingModelBase<Car> {
+    public sealed class Vehicle : BindingModelBase<Vehicle> {
 
         private int _id;
-        private string _label;
         private int? _initialMileage;
         private string _licencePlate;
         private string _notes;
-        private string _image;
+        private string _imagePath;
+        private ImageSource _image;
 
-        public Car() {
+        public Vehicle() {
             InitializeValidation();
         }
 
@@ -27,11 +30,17 @@ namespace Crystalbyte.Asphalt.Contexts {
             InitializeValidation();
         }
 
-        private void InitializeValidation() {
-            AddValidationFor(() => Label)
-                .When(x => string.IsNullOrWhiteSpace(x.Label))
-                .Show(AppResources.LabelNotNullOrEmpty);
+        private async void DeleteCurrentImageAsync() {
+            var localStorage = App.Composition.GetExport<LocalStorage>();
+            await localStorage.DeleteImageAsync(ImagePath);
+        }
 
+        private async void LoadImageFromPath() {
+            var localStorage = App.Composition.GetExport<LocalStorage>();
+            Image = await localStorage.GetImageAsync(ImagePath);
+        }
+
+        private void InitializeValidation() {
             AddValidationFor(() => LicencePlate)
                 .When(x => string.IsNullOrWhiteSpace(x.LicencePlate))
                 .Show(AppResources.LicencePlateNotNullOrEmpty);
@@ -41,7 +50,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 .Show(AppResources.InitialMileageNotNegative);
         }
 
-        [DataMember(EmitDefaultValue = false)]
+        [DataMember]
         [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity")]
         public int Id {
             get { return _id; }
@@ -56,34 +65,46 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [Column, Memorize, DataMember(EmitDefaultValue = false)]
-        public string Label {
-            get { return _label; }
-            set {
-                if (_label == value) {
-                    return;
-                }
-                RaisePropertyChanging(() => Label);
-                _label = value;
-                RaisePropertyChanged(() => Label);
+        [Memorize]
+        public ImageSource Image {
+            get {
+                return _image;
             }
-        }
-
-        [Column, Memorize, DataMember(EmitDefaultValue = false)]
-        public string Image {
-            get { return _image; }
             set {
                 if (_image == value) {
                     return;
                 }
-
                 RaisePropertyChanging(() => Image);
                 _image = value;
                 RaisePropertyChanged(() => Image);
             }
         }
 
-        [Column, Memorize, DataMember(EmitDefaultValue = false)]
+        [Column, Memorize, DataMember]
+        public string ImagePath {
+            get { return _imagePath; }
+            set {
+                if (_imagePath == value) {
+                    return;
+                }
+
+                if (!string.IsNullOrWhiteSpace(_imagePath)) {
+                    DeleteCurrentImageAsync();
+                }
+
+                RaisePropertyChanging(() => ImagePath);
+                _imagePath = value;
+                RaisePropertyChanged(() => ImagePath);
+
+                if (string.IsNullOrWhiteSpace(value)) {
+                    Image = null;
+                } else {
+                    LoadImageFromPath();
+                }
+            }
+        }
+
+        [Column, Memorize, DataMember]
         public string LicencePlate {
             get { return _licencePlate; }
             set {
@@ -96,7 +117,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [Column, Memorize, DataMember(EmitDefaultValue = false)]
+        [Column, Memorize, DataMember]
         public int? InitialMileage {
             get { return _initialMileage; }
             set {
@@ -109,7 +130,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [Column, Memorize, DataMember(EmitDefaultValue = false)]
+        [Column, Memorize, DataMember]
         public string Notes {
             get { return _notes; }
             set {

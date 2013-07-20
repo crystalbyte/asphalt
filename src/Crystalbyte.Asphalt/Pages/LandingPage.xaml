@@ -6,6 +6,7 @@
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                            xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
                             FontFamily="{StaticResource PhoneFontFamilyNormal}"
                             FontSize="{StaticResource PhoneFontSizeNormal}"
                             Foreground="{StaticResource PhoneForegroundBrush}"
@@ -42,7 +43,7 @@
         <phone:Panorama Title="asphalt">
 
             <phone:Panorama.Background>
-                <ImageBrush ImageSource="/Asphalt;component/Assets/PanoramaBackground.png" />
+                <ImageBrush ImageSource="/Asphalt;component/Assets/Background.jpg" />
             </phone:Panorama.Background>
 
             <!--  Panorama item one  -->
@@ -51,20 +52,72 @@
                 <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Cars, Mode=OneTime}">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,-6,0,12" d:DataContext="{d:DesignInstance Type=contexts:Car}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
+                            <Grid Margin="0,-6,0,12"
+                                  d:DataContext="{d:DesignInstance Type=contexts:Car}"
+                                  toolkit:TiltEffect.IsTiltEnabled="True">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Image Source="{Binding Image}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
-                                <TextBlock FontSize="{StaticResource PhoneFontSizeExtraLarge}"
-                                           Style="{StaticResource PhoneTextExtraLargeStyle}"
-                                           Text="{Binding Label}"
-                                           TextWrapping="Wrap" />
+                                <Image Grid.Column="0"
+                                       Width="150"
+                                       Height="150"
+                                       Margin="12,0,12,0"
+                                       Source="{Binding Image}"
+                                       Stretch="UniformToFill" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                                               Style="{StaticResource PhoneTextExtraLargeStyle}"
+                                               Text="{Binding LicencePlate}"
+                                               TextWrapping="Wrap" />
+                                    <TextBlock FontSize="{StaticResource PhoneFontSizeSmall}"
+                                               Style="{StaticResource PhoneTextSmallStyle}"
+                                               Text="{Binding Notes}"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
+                                <Rectangle Grid.Column="0"
+                                           Grid.ColumnSpan="2"
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch"
+                                           Fill="Transparent"
+                                           Stroke="Transparent">
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu>
+                                            <toolkit:MenuItem Click="OnDeleteMenuItemClicked" Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                </Rectangle>
+                            </Grid>
+                        </DataTemplate>
+                    </phone:LongListSelector.ItemTemplate>
+                </phone:LongListSelector>
+            </phone:PanoramaItem>
+
+            <phone:PanoramaItem Header="tours">
+                <!--  Single line list with text wrapping  -->
+                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Cars, Mode=OneTime}">
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,-6,0,12" d:DataContext="{d:DesignInstance Type=contexts:Car}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0"
+                                       Width="150"
+                                       Height="150"
+                                       Source="{Binding Image}"
+                                       Stretch="UniformToFill" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                                               Style="{StaticResource PhoneTextExtraLargeStyle}"
+                                               Text="{Binding LicencePlate}"
+                                               TextWrapping="Wrap" />
+                                    <TextBlock FontSize="{StaticResource PhoneFontSizeSmall}"
+                                               Style="{StaticResource PhoneTextSmallStyle}"
+                                               Text="{Binding Notes}"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>

@@ -1,1 +1,4 @@
 http://www.steuerberaten.de/tag/fahrtenbuch/
+
+http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj662935(v=vs.105).aspx
+http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj247548(v=vs.105).aspx

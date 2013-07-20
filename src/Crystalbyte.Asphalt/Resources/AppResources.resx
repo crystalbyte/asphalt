@@ -147,7 +147,7 @@
     <value>The licence plate must not be empty</value>
   </data>
   <data name="AddCarPageTitle" xml:space="preserve">
-    <value>add new car</value>
+    <value>add car</value>
   </data>
   <data name="AddPhotoText" xml:space="preserve">
     <value>add photo</value>
@@ -157,5 +157,24 @@
   </data>
   <data name="InitialMileageNotNegative" xml:space="preserve">
     <value>The initial mile age must not be negative</value>
+  </data>
+  <data name="DeleteMenuHeader" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="BackgroundServiceDescriptionText" xml:space="preserve">
+    <value>The background service will continue running, even if the app has been closed. While active it will automatically start a new tour whenever the movement speed exceeds 30 km/h. The tour can be halted manually or automatically when the gps location remains unchanged for 5 minutes.</value>
+  </data>
+  <data name="BackgroundServiceSettingsText" xml:space="preserve">
+    <value>Background service</value>
+  </data>
+  <data name="SettingsPageTitle" xml:space="preserve">
+    <value>settings</value>
+  </data>
+  <data name="UnitOfLengthSettingsText" xml:space="preserve">
+    <value>Unit of length</value>
+  </data>
+  <data name="SettingsMenuItemText" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Sits inside the ApplicationBar on the LandingPage</comment>
   </data>
 </root>

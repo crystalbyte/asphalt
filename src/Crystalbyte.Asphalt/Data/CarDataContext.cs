@@ -12,6 +12,6 @@ namespace Crystalbyte.Asphalt.Data {
             : base(connectionString) {
         }
 
-        public Table<Car> Cars;
+        public Table<Vehicle> Cars;
     }
 }

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Data.Linq;
+using System.IO;
 using System.Linq;
-using System.Windows;
+using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
-using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 
@@ -17,10 +16,11 @@ namespace Crystalbyte.Asphalt.Pages {
         private const string CarStateKey = "car";
         private bool _isNewPageInstance;
         private readonly PhotoChooserTask _photoChooser;
-        private string _chosenPhotoPath;
+        private string _chosenPhotoName;
 
         public CarCompositionPage() {
             InitializeComponent();
+            LocalStorage = App.Composition.GetExport<LocalStorage>();
             BindingValidationError += OnBindingValidationError;
 
             _photoChooser = new PhotoChooserTask { ShowCamera = true };
@@ -36,8 +36,8 @@ namespace Crystalbyte.Asphalt.Pages {
 
         public LocalStorage LocalStorage { get; private set; }
 
-        public Car Car {
-            get { return (Car)DataContext; }
+        public Vehicle Car {
+            get { return (Vehicle)DataContext; }
             set { DataContext = value; }
         }
 
@@ -57,16 +57,18 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             if (_isNewPageInstance && Car == null) {
-                Car = (Car)State[CarStateKey];
+                LocalStorage = App.Composition.GetExport<LocalStorage>();
+                Car = (Vehicle)State[CarStateKey];
                 Car.OnRevive();
-                Car.Image = _chosenPhotoPath;
             }
+
+            Car.ImagePath = _chosenPhotoName;
 
             _isNewPageInstance = false;
         }
 
         private void InitializeCar() {
-            Car = (Car)NavigationState.Pop();
+            Car = (Vehicle)NavigationState.Pop();
             Car.Commit();
             Car.ValidateAll();
         }
@@ -74,24 +76,14 @@ namespace Crystalbyte.Asphalt.Pages {
         private void OnCheckButtonClicked(object sender, EventArgs e) {
             LocalStorage.CarDataContext.Cars.InsertOnSubmit(Car);
             LocalStorage.CarDataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+
+            App.Context.InvalidateData();
             NavigationService.GoBack();
         }
 
         private void OnCancelButtonClicked(object sender, EventArgs e) {
             Car.Revert();
             NavigationService.GoBack();
-        }
-
-        private void OnLabelTextBoxTextChanged(object sender, TextChangedEventArgs e) {
-            Car.ValidateProperty(() => Car.Label);
-        }
-
-        private void OnLicencePlateTextChanged(object sender, TextChangedEventArgs e) {
-            Car.ValidateProperty(() => Car.LicencePlate);
-        }
-
-        private void OnInitialMileageChanged(object sender, TextChangedEventArgs e) {
-            Car.ValidateProperty(() => Car.InitialMileage);
         }
 
         private void OnStackPanelTap(object sender, System.Windows.Input.GestureEventArgs e) {
@@ -103,8 +95,26 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void OnPhotoChooserTaskCompleted(object sender, PhotoResult e) {
-            ImageStore.Current.StoreImage(e.OriginalFileName, e.ChosenPhoto);
-            _chosenPhotoPath = e.OriginalFileName;
+            // User canceled photo selection
+            if (e.ChosenPhoto == null) {
+                return;
+            }
+
+            HandleChosenPhoto(e.OriginalFileName, e.ChosenPhoto);
+        }
+
+        private void HandleChosenPhoto(string name, Stream data) {
+            if (string.IsNullOrWhiteSpace(name)) {
+                return;
+            }
+
+            _chosenPhotoName = Guid.NewGuid().ToString();
+            LocalStorage.StoreImageAsync(_chosenPhotoName, data);
+        }
+
+        private void OnTextBoxTextChanged(object sender, TextChangedEventArgs e) {
+            var textbox = (TextBox)sender;
+            Car.Notes = textbox.Text;
         }
     }
 }

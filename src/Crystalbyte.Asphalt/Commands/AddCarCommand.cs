@@ -14,8 +14,8 @@ using Microsoft.Phone.Shell;
 using System.Windows.Controls;
 
 namespace Crystalbyte.Asphalt.Commands {
-    [Export(typeof(AddCarCommand))]
-    [Export(typeof(IButtonCommand)), Shared]
+    [Export, Shared]
+    [Export(typeof(IButtonCommand))]
     public sealed class AddCarCommand : IButtonCommand {
 
         [Import]
@@ -61,7 +61,7 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public void Execute(object parameter) {
-            NavigationState.Push(new Car());
+            NavigationState.Push(new Vehicle());
             Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(CarCompositionPage).Name), UriKind.Relative));
         }
     }

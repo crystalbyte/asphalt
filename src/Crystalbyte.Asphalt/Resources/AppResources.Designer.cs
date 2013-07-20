@@ -70,7 +70,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to add new car.
+        ///   Looks up a localized string similar to add car.
         /// </summary>
         public static string AddCarPageTitle {
             get {
@@ -102,6 +102,33 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string ApplicationTitleCapital {
             get {
                 return ResourceManager.GetString("ApplicationTitleCapital", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The background service will continue running, even if the app has been closed. While active it will automatically start a new tour whenever the movement speed exceeds 30 km/h. The tour can be halted manually or automatically when the gps location remains unchanged for 5 minutes..
+        /// </summary>
+        public static string BackgroundServiceDescriptionText {
+            get {
+                return ResourceManager.GetString("BackgroundServiceDescriptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background service.
+        /// </summary>
+        public static string BackgroundServiceSettingsText {
+            get {
+                return ResourceManager.GetString("BackgroundServiceSettingsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string DeleteMenuHeader {
+            get {
+                return ResourceManager.GetString("DeleteMenuHeader", resourceCulture);
             }
         }
         
@@ -174,6 +201,33 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string ResourceLanguage {
             get {
                 return ResourceManager.GetString("ResourceLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string SettingsMenuItemText {
+            get {
+                return ResourceManager.GetString("SettingsMenuItemText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to settings.
+        /// </summary>
+        public static string SettingsPageTitle {
+            get {
+                return ResourceManager.GetString("SettingsPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit of length.
+        /// </summary>
+        public static string UnitOfLengthSettingsText {
+            get {
+                return ResourceManager.GetString("UnitOfLengthSettingsText", resourceCulture);
             }
         }
     }
