@@ -11,19 +11,19 @@ using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 
 namespace Crystalbyte.Asphalt.Pages {
-    public partial class CarCompositionPage {
+    public partial class VehicleCompositionPage {
 
-        private const string CarStateKey = "car";
+        private const string VehicleStateKey = "vehicle";
         private bool _isNewPageInstance;
         private readonly PhotoChooserTask _photoChooser;
         private string _chosenPhotoName;
 
-        public CarCompositionPage() {
+        public VehicleCompositionPage() {
             InitializeComponent();
             LocalStorage = App.Composition.GetExport<LocalStorage>();
             BindingValidationError += OnBindingValidationError;
 
-            _photoChooser = new PhotoChooserTask { ShowCamera = true };
+            _photoChooser = new PhotoChooserTask { ShowCamera = true, PixelHeight = 200, PixelWidth = 200};
             _photoChooser.Completed += OnPhotoChooserTaskCompleted;
 
             _isNewPageInstance = true;
@@ -31,12 +31,12 @@ namespace Crystalbyte.Asphalt.Pages {
 
         private void OnBindingValidationError(object sender, ValidationErrorEventArgs e) {
             var button = ApplicationBar.Buttons.OfType<ApplicationBarIconButton>().First();
-            button.IsEnabled = !Car.HasErrors;
+            button.IsEnabled = !Vehicle.HasErrors;
         }
 
         public LocalStorage LocalStorage { get; private set; }
 
-        public Vehicle Car {
+        public Vehicle Vehicle {
             get { return (Vehicle)DataContext; }
             set { DataContext = value; }
         }
@@ -45,7 +45,7 @@ namespace Crystalbyte.Asphalt.Pages {
             base.OnNavigatedFrom(e);
 
             if (e.NavigationMode == NavigationMode.New) {
-                State[CarStateKey] = Car;
+                State[VehicleStateKey] = Vehicle;
             }
         }
 
@@ -53,36 +53,33 @@ namespace Crystalbyte.Asphalt.Pages {
             base.OnNavigatedTo(e);
 
             if (e.NavigationMode == NavigationMode.New) {
-                InitializeCar();
+                InitializeVehicle();
             }
 
-            if (_isNewPageInstance && Car == null) {
-                LocalStorage = App.Composition.GetExport<LocalStorage>();
-                Car = (Vehicle)State[CarStateKey];
-                Car.OnRevive();
+            if (_isNewPageInstance && Vehicle == null) {
+                Vehicle = (Vehicle)State[VehicleStateKey];
             }
 
-            Car.ImagePath = _chosenPhotoName;
+            Vehicle.ImageName = _chosenPhotoName;
+            Vehicle.ValidateAll();
 
             _isNewPageInstance = false;
         }
 
-        private void InitializeCar() {
-            Car = (Vehicle)NavigationState.Pop();
-            Car.Commit();
-            Car.ValidateAll();
+        private void InitializeVehicle() {
+            Vehicle = (Vehicle)NavigationState.Pop();
+            Vehicle.ValidateAll();
         }
 
         private void OnCheckButtonClicked(object sender, EventArgs e) {
-            LocalStorage.CarDataContext.Cars.InsertOnSubmit(Car);
-            LocalStorage.CarDataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            LocalStorage.VehicleDataContext.Vehicles.InsertOnSubmit(Vehicle);
+            LocalStorage.VehicleDataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
 
             App.Context.InvalidateData();
             NavigationService.GoBack();
         }
 
         private void OnCancelButtonClicked(object sender, EventArgs e) {
-            Car.Revert();
             NavigationService.GoBack();
         }
 
@@ -103,18 +100,18 @@ namespace Crystalbyte.Asphalt.Pages {
             HandleChosenPhoto(e.OriginalFileName, e.ChosenPhoto);
         }
 
-        private void HandleChosenPhoto(string name, Stream data) {
+        private async void HandleChosenPhoto(string name, Stream data) {
             if (string.IsNullOrWhiteSpace(name)) {
                 return;
             }
 
             _chosenPhotoName = Guid.NewGuid().ToString();
-            LocalStorage.StoreImageAsync(_chosenPhotoName, data);
+            await LocalStorage.StoreImageAsync(_chosenPhotoName, data);
         }
 
-        private void OnTextBoxTextChanged(object sender, TextChangedEventArgs e) {
-            var textbox = (TextBox)sender;
-            Car.Notes = textbox.Text;
+        private void OnNotesTextChanged(object sender, TextChangedEventArgs e) {
+            var textbox = (TextBox) sender;
+            Vehicle.Notes = textbox.Text;
         }
     }
 }

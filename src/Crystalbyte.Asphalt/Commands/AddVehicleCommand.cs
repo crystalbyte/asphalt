@@ -16,7 +16,7 @@ using System.Windows.Controls;
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
     [Export(typeof(IButtonCommand))]
-    public sealed class AddCarCommand : IButtonCommand {
+    public sealed class AddVehicleCommand : IButtonCommand {
 
         [Import]
         public Navigation Navigation { get; set; }
@@ -27,9 +27,9 @@ namespace Crystalbyte.Asphalt.Commands {
         [Import]
         public LocalStorage LocalStorage { get; set; }
 
-        public AddCarCommand() {
+        public AddVehicleCommand() {
             Button = new ApplicationBarIconButton(new Uri(@"Assets/ApplicationBar/Add.png", UriKind.Relative)) {
-                Text = AppResources.AddCarCommandText,
+                Text = AppResources.AddVehicleCommandText,
             };
             Button.Click += OnButtonClicked;
         }
@@ -62,7 +62,7 @@ namespace Crystalbyte.Asphalt.Commands {
 
         public void Execute(object parameter) {
             NavigationState.Push(new Vehicle());
-            Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(CarCompositionPage).Name), UriKind.Relative));
+            Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(LocationTrackingPage).Name), UriKind.Relative));
         }
     }
 }

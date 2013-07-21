@@ -61,29 +61,29 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add.
-        /// </summary>
-        public static string AddCarCommandText {
-            get {
-                return ResourceManager.GetString("AddCarCommandText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to add car.
-        /// </summary>
-        public static string AddCarPageTitle {
-            get {
-                return ResourceManager.GetString("AddCarPageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to add photo.
         /// </summary>
         public static string AddPhotoText {
             get {
                 return ResourceManager.GetString("AddPhotoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string AddVehicleCommandText {
+            get {
+                return ResourceManager.GetString("AddVehicleCommandText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add vehicle.
+        /// </summary>
+        public static string AddVehiclePageTitle {
+            get {
+                return ResourceManager.GetString("AddVehiclePageTitle", resourceCulture);
             }
         }
         
@@ -169,6 +169,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to current tour.
+        /// </summary>
+        public static string LocationTrackingPageTitle {
+            get {
+                return ResourceManager.GetString("LocationTrackingPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The member access expression does not access a property.
         /// </summary>
         public static string MemberExpressionNoProperty {
@@ -223,11 +232,29 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to records.
+        /// </summary>
+        public static string ToursPanoramaPageHeaderText {
+            get {
+                return ResourceManager.GetString("ToursPanoramaPageHeaderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unit of length.
         /// </summary>
         public static string UnitOfLengthSettingsText {
             get {
                 return ResourceManager.GetString("UnitOfLengthSettingsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vehicles.
+        /// </summary>
+        public static string VehiclePanoramaPageHeaderText {
+            get {
+                return ResourceManager.GetString("VehiclePanoramaPageHeaderText", resourceCulture);
             }
         }
     }

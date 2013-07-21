@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Crystalbyte.Asphalt.Contexts;
 
 namespace Crystalbyte.Asphalt.Data {
-    public sealed class CarDataContext : DataContext {
-        public CarDataContext(string connectionString) 
+    public sealed class VehicleDataContext : DataContext {
+        public VehicleDataContext(string connectionString) 
             : base(connectionString) {
         }
 
-        public Table<Vehicle> Cars;
+        public Table<Vehicle> Vehicles;
     }
 }

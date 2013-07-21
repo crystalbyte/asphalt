@@ -19,7 +19,7 @@
         </Style>
 
         <local:LocalizedStrings x:Key="LocalizedStrings" />
-        <converters:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter" />
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
@@ -27,7 +27,8 @@
         <shell:PhoneApplicationService Activated="OnApplicationActivated"
                                        Closing="OnApplicationClosing"
                                        Deactivated="OnApplicationDeactivated"
-                                       Launching="OnApplicationLaunching" />
+                                       Launching="OnApplicationLaunching"
+                                       RunningInBackground="OnApplicationRunningInBackground" />
     </Application.ApplicationLifetimeObjects>
 
 </Application>

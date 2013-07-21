@@ -128,7 +128,7 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>asphalt</value>
   </data>
-  <data name="AddCarCommandText" xml:space="preserve">
+  <data name="AddVehicleCommandText" xml:space="preserve">
     <value>Add</value>
   </data>
   <data name="LabelNotNullOrEmpty" xml:space="preserve">
@@ -146,8 +146,8 @@
   <data name="LicencePlateNotNullOrEmpty" xml:space="preserve">
     <value>The licence plate must not be empty</value>
   </data>
-  <data name="AddCarPageTitle" xml:space="preserve">
-    <value>add car</value>
+  <data name="AddVehiclePageTitle" xml:space="preserve">
+    <value>add vehicle</value>
   </data>
   <data name="AddPhotoText" xml:space="preserve">
     <value>add photo</value>
@@ -176,5 +176,14 @@
   <data name="SettingsMenuItemText" xml:space="preserve">
     <value>Settings</value>
     <comment>Sits inside the ApplicationBar on the LandingPage</comment>
+  </data>
+  <data name="LocationTrackingPageTitle" xml:space="preserve">
+    <value>current tour</value>
+  </data>
+  <data name="ToursPanoramaPageHeaderText" xml:space="preserve">
+    <value>records</value>
+  </data>
+  <data name="VehiclePanoramaPageHeaderText" xml:space="preserve">
+    <value>vehicles</value>
   </data>
 </root>

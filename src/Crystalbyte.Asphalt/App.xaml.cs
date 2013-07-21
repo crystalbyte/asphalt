@@ -9,6 +9,7 @@ using Crystalbyte.Asphalt.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Composition.Hosting;
+using Windows.Devices.Geolocation;
 
 namespace Crystalbyte.Asphalt {
     public partial class App {
@@ -73,7 +74,34 @@ namespace Crystalbyte.Asphalt {
         // This code will not execute when the application is reactivated
         private void OnApplicationLaunching(object sender, LaunchingEventArgs e) {
             ComposeApplication();
-            Debug.WriteLine(GetHashCode());
+            InitializeApplication();
+        }
+
+        private void InitializeApplication() {
+            Context.AppSettings.BackgroundServiceChanged += OnBackgroundServiceChanged;
+            if (Context.AppSettings.IsBackgroundServiceEnabled) {
+                InitializeGeolocator();
+            }
+        }
+
+        private void OnBackgroundServiceChanged(object sender, EventArgs e) {
+            if (Context.AppSettings.IsBackgroundServiceEnabled) {
+                InitializeGeolocator();
+            } else {
+                TombstoneGeolocator();
+            }
+        }
+
+        private static void TombstoneGeolocator() {
+            if (Geolocator == null)
+                return;
+
+            Geolocator.PositionChanged -= OnGeolocatorPositionChanged;
+            Geolocator = null;
+        }
+
+        private static void OnGeolocatorPositionChanged(Geolocator sender, PositionChangedEventArgs args) {
+            Context.LocationTracker.Update(args.Position);
         }
 
         private static void ComposeApplication() {
@@ -83,9 +111,27 @@ namespace Crystalbyte.Asphalt {
             Composition = config.CreateContainer();
         }
 
+        private static void InitializeGeolocator() {
+            Geolocator = new Geolocator {
+                DesiredAccuracy = PositionAccuracy.High,
+                MovementThreshold = 100
+            };
+            Geolocator.PositionChanged += OnGeolocatorPositionChanged;
+        }
+
+        public static Geolocator Geolocator { get; private set; }
+
+        /// <summary>
+        /// Returns <code>true</code> if the application is running in the background, <code>false</code> if not.
+        /// </summary>
+        public static bool IsRunningInBackground { get; private set; }
+
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void OnApplicationActivated(object sender, ActivatedEventArgs e) {
+
+            IsRunningInBackground = false;
+
             // App has been tombstoned, we need to reactivate its state
             if (Composition == null) {
                 ComposeApplication();
@@ -231,6 +277,13 @@ namespace Crystalbyte.Asphalt {
                 }
 
                 throw;
+            }
+        }
+
+        private void OnApplicationRunningInBackground(object sender, RunningInBackgroundEventArgs e) {
+            IsRunningInBackground = true;
+            if (Context.AppSettings.IsBackgroundServiceEnabled) {
+                InitializeGeolocator();
             }
         }
     }

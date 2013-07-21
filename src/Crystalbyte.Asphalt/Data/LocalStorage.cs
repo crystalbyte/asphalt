@@ -8,6 +8,7 @@ using System.Data.Linq;
 using System.Windows;
 using Windows.Storage;
 using System.IO;
+using System.IO.IsolatedStorage;
 
 namespace Crystalbyte.Asphalt.Data {
 
@@ -15,10 +16,10 @@ namespace Crystalbyte.Asphalt.Data {
     public sealed class LocalStorage {
         private const string ImagePath = "Images";
 
-        private CarDataContext _carDataContext;
+        private VehicleDataContext _carDataContext;
         private TourDataContext _tourDataContext;
 
-        public CarDataContext CarDataContext {
+        public VehicleDataContext VehicleDataContext {
             get { return _carDataContext; }
         }
 
@@ -30,6 +31,10 @@ namespace Crystalbyte.Asphalt.Data {
             var local = ApplicationData.Current.LocalFolder;
             var imageFolder = await local.GetFolderAsync(ImagePath);
 
+            var store = IsolatedStorageFile.GetUserStoreForApplication();
+            if (!store.FileExists(Path.Combine(local.Path, ImagePath, name))) {
+                return;
+            }
             var file = await imageFolder.GetFileAsync(name);
             await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
         }
@@ -58,10 +63,18 @@ namespace Crystalbyte.Asphalt.Data {
         public async Task<ImageSource> GetImageAsync(string name) {
             var local = ApplicationData.Current.LocalFolder;
             var imageFolder = await local.GetFolderAsync(ImagePath);
-            var stream = await imageFolder.OpenStreamForReadAsync(name);
 
-            // Image has been deleted
+            var store = IsolatedStorageFile.GetUserStoreForApplication();
+            if (!store.FileExists(Path.Combine(local.Path, ImagePath, name))) {
+                // Image has been deleted
+                // TODO: replace for default image
+                return null;
+            }
+
+            var stream = await imageFolder.OpenStreamForReadAsync(name);
+            // Image is corrupt
             if (stream.Length == 0) {
+                // TODO: replace for default image
                 return null;
             }
 
@@ -71,10 +84,10 @@ namespace Crystalbyte.Asphalt.Data {
         }
 
         [OnImportsSatisfied]
-        public void OnImportsSatisfied() {
+        public async void OnImportsSatisfied() {
             var connectionString = (string)Application.Current.Resources["DefaultConnectionString"];
 
-            _carDataContext = new CarDataContext(connectionString);
+            _carDataContext = new VehicleDataContext(connectionString);
             if (!_carDataContext.DatabaseExists()) {
                 _carDataContext.CreateDatabase();
             }
@@ -85,7 +98,7 @@ namespace Crystalbyte.Asphalt.Data {
             }
 
             var local = ApplicationData.Current.LocalFolder;
-            local.CreateFolderAsync(ImagePath, CreationCollisionOption.OpenIfExists);
+            await local.CreateFolderAsync(ImagePath, CreationCollisionOption.OpenIfExists);
         }
     }
 }

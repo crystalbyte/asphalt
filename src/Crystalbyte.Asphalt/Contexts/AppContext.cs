@@ -17,15 +17,32 @@ namespace Crystalbyte.Asphalt.Contexts {
         [Import]
         public AppSettings AppSettings { get; set; }
 
+        [Import]
+        public LocationTracker LocationTracker { get; set; }
+
         public AppContext() {
-            Cars = new ObservableCollection<Vehicle>();
+            Vehicles = new ObservableCollection<Vehicle>();
+            History = new ObservableCollection<Tour>();
+            History.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedHistory);
         }
 
         /// <summary>
-        /// A collection for ItemViewModel objects.
+        /// A collection of all vehicles.
         /// </summary>
-        public ObservableCollection<Vehicle> Cars { get; private set; }
-    
+        public ObservableCollection<Vehicle> Vehicles { get; private set; }
+
+        /// <summary>
+        /// A collection of recent tours.
+        /// </summary>
+        public ObservableCollection<Tour> History { get; private set; }
+
+        /// <summary>
+        /// A collection of recent tours grouped by date.
+        /// </summary>
+        public object GroupedHistory {
+            get { return History.GroupBy(x => x.StartTime); }
+        }
+
         public bool IsDataLoaded {
             get;
             private set;
@@ -39,8 +56,8 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// Creates and adds a few ItemViewModel objects into the Items collection.
         /// </summary>
         public void LoadData() {
-            Cars.Clear();
-            Cars.AddRange(LocalStorage.CarDataContext.Cars.Select(x => x));
+            Vehicles.Clear();
+            Vehicles.AddRange(LocalStorage.VehicleDataContext.Vehicles.Select(x => x));
             IsDataLoaded = true;
         }
     }

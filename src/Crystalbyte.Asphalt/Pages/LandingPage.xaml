@@ -47,13 +47,13 @@
             </phone:Panorama.Background>
 
             <!--  Panorama item one  -->
-            <phone:PanoramaItem Header="cars">
+            <phone:PanoramaItem Header="{Binding LocalizedResources.VehiclePanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
                 <!--  Single line list with text wrapping  -->
-                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Cars, Mode=OneTime}">
+                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Vehicles, Mode=OneTime}">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,-6,0,12"
-                                  d:DataContext="{d:DesignInstance Type=contexts:Car}"
+                                  d:DataContext="{d:DesignInstance Type=contexts:Vehicle}"
                                   toolkit:TiltEffect.IsTiltEnabled="True">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -93,12 +93,39 @@
                 </phone:LongListSelector>
             </phone:PanoramaItem>
 
-            <phone:PanoramaItem Header="tours">
+            <phone:PanoramaItem Header="{Binding LocalizedResources.ToursPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
                 <!--  Single line list with text wrapping  -->
-                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Cars, Mode=OneTime}">
+                <phone:LongListSelector Margin="0,0,-22,0"
+                                        IsGroupingEnabled="True"
+                                        ItemsSource="{Binding GroupedHistory,
+                                                              Mode=OneWay}">
+                    <phone:LongListSelector.JumpListStyle>
+                        <Style TargetType="phone:LongListSelector">
+                            <Setter Property="Margin" Value="12,12,0,0" />
+                            <Setter Property="ItemTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <Border Width="470"
+                                                Height="70"
+                                                Margin="6"
+                                                Background="{StaticResource PhoneAccentBrush}">
+                                            <TextBlock VerticalAlignment="Bottom"
+                                                       FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                                       FontSize="28"
+                                                       Padding="2"
+                                                       Text="{Binding Key}" />
+                                        </Border>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+                    </phone:LongListSelector.JumpListStyle>
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,-6,0,12" d:DataContext="{d:DesignInstance Type=contexts:Car}">
+                            <Grid Margin="0,-6,0,12"
+                                  d:DataContext="{d:DesignInstance Type=contexts:Tour}"
+                                  toolkit:TiltEffect.IsTiltEnabled="True">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
@@ -106,18 +133,36 @@
                                 <Image Grid.Column="0"
                                        Width="150"
                                        Height="150"
-                                       Source="{Binding Image}"
+                                       Margin="12,0,12,0"
                                        Stretch="UniformToFill" />
                                 <StackPanel Grid.Column="1">
                                     <TextBlock FontSize="{StaticResource PhoneFontSizeExtraLarge}"
                                                Style="{StaticResource PhoneTextExtraLargeStyle}"
-                                               Text="{Binding LicencePlate}"
+                                               Text="{Binding Destination}"
                                                TextWrapping="Wrap" />
                                     <TextBlock FontSize="{StaticResource PhoneFontSizeSmall}"
                                                Style="{StaticResource PhoneTextSmallStyle}"
-                                               Text="{Binding Notes}"
+                                               Text="{Binding Reason}"
+                                               TextWrapping="Wrap" />
+                                    <TextBlock FontSize="{StaticResource PhoneFontSizeSmall}"
+                                               Style="{StaticResource PhoneTextSmallStyle}"
+                                               Text="{Binding StartTime,
+                                                              StringFormat=s}"
                                                TextWrapping="Wrap" />
                                 </StackPanel>
+                                <Rectangle Grid.Column="0"
+                                           Grid.ColumnSpan="2"
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch"
+                                           Fill="Transparent"
+                                           Stroke="Transparent">
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu>
+                                            <toolkit:MenuItem Click="OnDeleteMenuItemClicked" Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                </Rectangle>
+
                             </Grid>
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>

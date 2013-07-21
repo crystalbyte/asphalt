@@ -13,9 +13,15 @@
       <Capability Name="ID_CAP_MEDIALIB_PLAYBACK" />
       <Capability Name="ID_CAP_SENSORS" />
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
+      <Capability Name="ID_CAP_LOCATION" />
+      <Capability Name="ID_CAP_MAP" />
     </Capabilities>
     <Tasks>
-      <DefaultTask Name="_default" NavigationPage="Pages/LandingPage.xaml" />
+      <DefaultTask Name="_default" NavigationPage="Pages/LandingPage.xaml">
+        <BackgroundExecution>
+          <ExecutionType Name="LocationTracking" />
+        </BackgroundExecution>
+      </DefaultTask>
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="AsphaltToken" TaskName="_default">

@@ -18,6 +18,14 @@ namespace Crystalbyte.Asphalt.Contexts {
             _isolatedStorage = IsolatedStorageSettings.ApplicationSettings;
         }
 
+        public event EventHandler BackgroundServiceChanged;
+
+        public void OnBackgroundServiceChanged(EventArgs e) {
+            var handler = BackgroundServiceChanged;
+            if (handler != null)
+                handler(this, e);
+        }
+
         /// <summary>
         /// Returns true if background services are enabled, false otherwise.
         /// </summary>
@@ -41,6 +49,10 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => IsBackgroundServiceEnabled);
                 _isolatedStorage[name] = value;
                 RaisePropertyChanged(() => IsBackgroundServiceEnabled);
+
+                OnBackgroundServiceChanged(EventArgs.Empty);
+
+                Save();
             }
         }
 
@@ -64,9 +76,12 @@ namespace Crystalbyte.Asphalt.Contexts {
                 if (!_isolatedStorage.Contains(name)) {
                     _isolatedStorage.Add(name, false);
                 }
+
                 RaisePropertyChanging(() => UnitOfLength);
                 _isolatedStorage[name] = value;
                 RaisePropertyChanged(() => UnitOfLength);
+
+                Save();
             }
         }
 

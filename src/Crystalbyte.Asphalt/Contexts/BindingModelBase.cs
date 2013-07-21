@@ -14,30 +14,32 @@ namespace Crystalbyte.Asphalt.Contexts {
     /// </summary>
     /// <typeparam name="TBindingModel">Model to bind</typeparam>
     [DataContract]
-    public abstract class BindingModelBase<TBindingModel> : RevisionObject, INotifyDataErrorInfo
+    public abstract class BindingModelBase<TBindingModel> : NotificationObject, INotifyDataErrorInfo
         where TBindingModel : BindingModelBase<TBindingModel> {
 
-        private List<PropertyValidation<TBindingModel>> _validations =
-            new List<PropertyValidation<TBindingModel>>();
-
-        private SerializableDictionary<List<string>> _errorMessages = 
-            new SerializableDictionary<List<string>>();
+        private List<PropertyValidation<TBindingModel>> _validations;
+        private SerializableDictionary<List<string>> _errorMessages;
 
         protected BindingModelBase() {
+            InitializeValidation();
+        }
+
+        private void ListenForChanges() {
             PropertyChanged += (s, e) => {
                 if (e.PropertyName != "HasErrors" && e.PropertyName != "ErrorMessages")
                     ValidateProperty(e.PropertyName);
             };
         }
 
-        public override void OnRevive() {
-            base.OnRevive();
+        public void InitializeValidation() {
             if (_validations == null) {
                 _validations = new List<PropertyValidation<TBindingModel>>();
             }
             if (_errorMessages == null) {
                 _errorMessages = new SerializableDictionary<List<string>>();
             }
+
+            ListenForChanges();
         }
 
         #region INotifyDataErrorInfo

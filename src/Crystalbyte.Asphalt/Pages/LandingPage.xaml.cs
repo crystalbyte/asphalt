@@ -49,17 +49,17 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void OnDeleteMenuItemClicked(object sender, RoutedEventArgs e) {
-            var car = (Vehicle) ((MenuItem) sender).DataContext;
-            DeleteCarAndReload(car);
+            var vehicle = (Vehicle) ((MenuItem) sender).DataContext;
+            DeleteVehicleAndReload(vehicle);
         }
 
-        private static void DeleteCarAndReload(Vehicle car) {
+        private async static void DeleteVehicleAndReload(Vehicle vehicle) {
             var localStorage = App.Composition.GetExport<LocalStorage>();
-            localStorage.CarDataContext.Cars.DeleteOnSubmit(car);
-            localStorage.CarDataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            localStorage.VehicleDataContext.Vehicles.DeleteOnSubmit(vehicle);
+            localStorage.VehicleDataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
 
-            if (!string.IsNullOrWhiteSpace(car.ImagePath)) {
-                localStorage.DeleteImageAsync(car.ImagePath);
+            if (!string.IsNullOrWhiteSpace(vehicle.ImageName)) {
+                await localStorage.DeleteImageAsync(vehicle.ImageName);
             }
 
             // Force data reload
