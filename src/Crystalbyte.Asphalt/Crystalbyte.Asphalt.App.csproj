@@ -96,22 +96,26 @@
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Commands\AddVehicleCommand.cs" />
     <Compile Include="Commands\CancelCommand.cs" />
+    <Compile Include="Commands\StopTrackingCommand.cs" />
+    <Compile Include="Commands\StartTrackingCommand.cs" />
     <Compile Include="Commands\IButtonCommand.cs" />
     <Compile Include="Commands\IMenuCommand.cs" />
     <Compile Include="Commands\SettingsCommand.cs" />
     <Compile Include="Contexts\AppSettings.cs" />
     <Compile Include="Contexts\BindingModelBase.cs" />
+    <Compile Include="Contexts\Position.cs" />
     <Compile Include="Contexts\LocationTracker.cs" />
     <Compile Include="Contexts\PropertyValidation.cs" />
     <Compile Include="Contexts\Tour.cs" />
+    <Compile Include="Contexts\TourGroup.cs" />
+    <Compile Include="Contexts\VehicleSelectionSource.cs" />
+    <Compile Include="TourState.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Data\VehicleDataContext.cs" />
-    <Compile Include="Data\TourDataContext.cs" />
+    <Compile Include="Data\AsphaltDataContext.cs" />
     <Compile Include="Distance.cs" />
     <Compile Include="Data\LocalStorage.cs" />
     <Compile Include="Haversine.cs" />
     <Compile Include="Navigation.cs" />
-    <Compile Include="NavigationState.cs" />
     <Compile Include="PageExtensions.cs" />
     <Compile Include="Pages\LocationTrackingPage.xaml.cs">
       <DependentUpon>LocationTrackingPage.xaml</DependentUpon>
@@ -181,6 +185,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Background.jpg" />
+    <Content Include="Assets\ApplicationBar\Stop.png" />
+    <Content Include="Assets\ApplicationBar\Transport.Play.png" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />

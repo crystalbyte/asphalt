@@ -32,5 +32,9 @@ namespace Crystalbyte.Asphalt {
         public static void AddRange<T>(this Collection<T> collection, Func<IEnumerable<T>> iter) {
             collection.AddRange(iter());
         }
+
+        public static void AddRange<T>(this IList<T> collection, IEnumerable<T> range) {
+            range.ForEach(collection.Add);
+        }
     }
 }

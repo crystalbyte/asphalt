@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Data.Linq;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Pages;
 using Windows.Devices.Geolocation;
 using System.Windows.Threading;
@@ -12,7 +14,7 @@ using Windows.UI.Core;
 
 namespace Crystalbyte.Asphalt.Contexts {
 
-    [Export]
+    [Export, Shared]
     public sealed class LocationTracker : NotificationObject {
         private double _currentLatitude;
         private double _currentLongitude;
@@ -27,16 +29,33 @@ namespace Crystalbyte.Asphalt.Contexts {
         [Import]
         public AppContext AppContext { get; set; }
 
-        public Tour CurrentTour { get; set; }
-        public Geoposition LastPosition { get; set; }
-        public Geoposition CurrentPosition { get; set; }
-        public Geoposition AnchorPosition { get; set; }
+        [Import]
+        public AppSettings AppSettings { get; set; }
+
+        [Import]
+        public LocalStorage LocalStorage { get; set; }
+
+        public Tour CurrentTour { get; private set; }
+        public Geoposition LastPosition { get; private set; }
+        public Geoposition CurrentPosition { get; private set; }
+        public Geoposition AnchorPosition { get; private set; }
+        public Vehicle CurrentVehicle { get; private set; }
+        public bool IsLaunchedManually { get; private set; }
 
         public event EventHandler Updated;
 
         public void OnUpdated(EventArgs e) {
             var handler = Updated;
-            if (handler != null) handler(this, e);
+            if (handler != null)
+                handler(this, e);
+        }
+
+        public event EventHandler TrackingStarted;
+
+        public void OnTrackingStarted(EventArgs e) {
+            var handler = TrackingStarted;
+            if (handler != null)
+                handler(this, e);
         }
 
         public event EventHandler IsTrackingChanged;
@@ -64,6 +83,8 @@ namespace Crystalbyte.Asphalt.Contexts {
         public void Update(Geoposition position) {
             CurrentPosition = position;
 
+            Debug.WriteLine("Update received at lat:{0}, lon:{1}", position.Coordinate.Latitude, position.Coordinate.Longitude);
+
             if (LastPosition == null) {
                 LastPosition = position;
                 return;
@@ -71,10 +92,15 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             if (IsTracking) {
                 UpdateCurrentTour();
-                var stop = CheckTrackingStopCondition();
-                if (stop) {
-                    StopTracking();
+
+                // Manual launches can only be stopped manually
+                if (!IsLaunchedManually) {
+                    var stop = CheckTrackingStopCondition();
+                    if (stop) {
+                        StopTracking();
+                    }
                 }
+
                 OnUpdated(EventArgs.Empty);
                 return;
             }
@@ -87,15 +113,71 @@ namespace Crystalbyte.Asphalt.Contexts {
             LastPosition = position;
         }
 
-        private void StartTracking() {
-            IsTracking = true;
-            CurrentTour = new Tour { StartTime = DateTime.Now };
+        public void StartTrackingManually(Vehicle vehicle) {
+            IsLaunchedManually = true;
+            StartTracking(vehicle);
+        }
 
-            AppContext.History.Add(CurrentTour);
+        private void StartTracking(Vehicle vehicle = null) {
+            IsTracking = true;
+
+            CurrentVehicle = vehicle;
+
+            Debug.WriteLine("Tracking started ...");
+            if (vehicle != null) {
+                Debug.WriteLine("Associated vehicle found (Id = {0}, LicencePlate = {1}).", vehicle.Id, vehicle.LicencePlate);
+            } else {
+                Debug.WriteLine("No associated vehicle found.");
+            }
+
+            if (!App.IsGeolocatorAlive) {
+                Debug.WriteLine("Initializing geolocator ...");
+                App.InitializeGeolocator();
+            }
+
+            CurrentTour = new Tour {
+                StartTime = DateTime.Now
+            };
+
+            if (vehicle != null) {
+                CurrentTour.VehicleId = CurrentVehicle.Id;
+                CurrentVehicle.Tours.Add(CurrentTour);
+            }
+
+            Debug.WriteLine("Submitting tour (Id = {0}, VehicleId = {1}) ...", CurrentTour.Id, CurrentTour.VehicleId);
+            LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
+            LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+
+            OnTrackingStarted(EventArgs.Empty);
         }
 
         private void StopTracking() {
+            Debug.WriteLine("Stopping tracking ...");
             CurrentTour.StopTime = DateTime.Now;
+
+            Debug.WriteLine("Submitting positions ...");
+            foreach (var pos in CurrentTour.Positions) {
+                Debug.WriteLine("@: {0}", pos);
+            }
+
+            LocalStorage.DataContext.Positions.InsertAllOnSubmit(CurrentTour.Positions);
+            LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            Debug.WriteLine("Changes successfully submitted.");
+
+            IsTracking = false;
+
+            if (CurrentVehicle != null) {
+                CurrentVehicle.InvalidateData();
+            }
+
+            // Only disable geolocator if background services are disabled
+            if (AppSettings.IsBackgroundServiceEnabled) {
+                return;
+            }
+            
+            App.TombstoneGeolocator();
+            Debug.WriteLine("Tombstoned geolocator.");
+            Debug.WriteLine("Tracking stopped.");
         }
 
         private bool CheckTrackingStartCondition() {
@@ -115,11 +197,18 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private void UpdateCurrentTour() {
-            CurrentTour.Positions.Add(CurrentPosition);
-            if (!App.IsRunningInBackground) {
-                CurrentLatitude = CurrentPosition.Coordinate.Latitude;
-                CurrentLongitude = CurrentPosition.Coordinate.Longitude;
-            }
+            CurrentTour.Positions.Add(new Position {
+                TourId = CurrentTour.Id,
+                TimeStamp = CurrentPosition.Coordinate.Timestamp.Date,
+                Latitude = CurrentPosition.Coordinate.Latitude,
+                Longitude = CurrentPosition.Coordinate.Longitude
+            });
+
+            if (App.IsRunningInBackground)
+                return;
+
+            CurrentLatitude = CurrentPosition.Coordinate.Latitude;
+            CurrentLongitude = CurrentPosition.Coordinate.Longitude;
         }
 
         private double CalculateSpeed() {
@@ -153,6 +242,11 @@ namespace Crystalbyte.Asphalt.Contexts {
                 _currentLongitude = value;
                 RaisePropertyChanged(() => CurrentLongitude);
             }
+        }
+
+        public void StopTrackingManually() {
+            StopTracking();
+            IsLaunchedManually = false;
         }
     }
 }

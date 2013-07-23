@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Crystalbyte.Asphalt {
-    public enum TourType {
+    public enum TourType : byte {
         /// <summary>
         /// Business denotes a work related trip apart from the commute.
         /// </summary>

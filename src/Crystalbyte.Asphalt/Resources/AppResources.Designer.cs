@@ -133,11 +133,29 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Estimated current mileage.
+        /// </summary>
+        public static string EstimatedMileageLabelText {
+            get {
+                return ResourceManager.GetString("EstimatedMileageLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The expression is not a member access expression.
         /// </summary>
         public static string ExpressionNoMember {
             get {
                 return ResourceManager.GetString("ExpressionNoMember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial mileage.
+        /// </summary>
+        public static string InitialMileageLabelText {
+            get {
+                return ResourceManager.GetString("InitialMileageLabelText", resourceCulture);
             }
         }
         
@@ -237,6 +255,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string ToursPanoramaPageHeaderText {
             get {
                 return ResourceManager.GetString("ToursPanoramaPageHeaderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Track.
+        /// </summary>
+        public static string TrackingButtonText {
+            get {
+                return ResourceManager.GetString("TrackingButtonText", resourceCulture);
             }
         }
         

@@ -27,6 +27,9 @@ namespace Crystalbyte.Asphalt.Commands {
         [Import]
         public LocalStorage LocalStorage { get; set; }
 
+        [Import]
+        public VehicleSelectionSource VehicleSelector { get; set; }
+
         public AddVehicleCommand() {
             Button = new ApplicationBarIconButton(new Uri(@"Assets/ApplicationBar/Add.png", UriKind.Relative)) {
                 Text = AppResources.AddVehicleCommandText,
@@ -61,8 +64,8 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public void Execute(object parameter) {
-            NavigationState.Push(new Vehicle());
-            Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(LocationTrackingPage).Name), UriKind.Relative));
+            VehicleSelector.Selection = new Vehicle();
+            Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(VehicleCompositionPage).Name), UriKind.Relative));
         }
     }
 }

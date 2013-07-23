@@ -1,6 +1,8 @@
-﻿using System.Data.Linq;
+﻿using System;
+using System.Data.Linq;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using Crystalbyte.Asphalt.Commands;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
@@ -25,6 +27,8 @@ namespace Crystalbyte.Asphalt.Pages {
                 navigation.Initialize(NavigationService);    
             }
 
+            ClearPreviousSelection();
+
             UpdateApplicationBar();
 
             if (!App.Context.IsDataLoaded) {
@@ -32,6 +36,10 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             _isNewPageInstance = false;
+        }
+
+        private void ClearPreviousSelection() {
+            VehicleListSelector.SelectedItem = null;
         }
 
         private void UpdateApplicationBar() {
@@ -55,8 +63,8 @@ namespace Crystalbyte.Asphalt.Pages {
 
         private async static void DeleteVehicleAndReload(Vehicle vehicle) {
             var localStorage = App.Composition.GetExport<LocalStorage>();
-            localStorage.VehicleDataContext.Vehicles.DeleteOnSubmit(vehicle);
-            localStorage.VehicleDataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            localStorage.DataContext.Vehicles.DeleteOnSubmit(vehicle);
+            localStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
 
             if (!string.IsNullOrWhiteSpace(vehicle.ImageName)) {
                 await localStorage.DeleteImageAsync(vehicle.ImageName);
@@ -64,6 +72,15 @@ namespace Crystalbyte.Asphalt.Pages {
 
             // Force data reload
             App.Context.LoadData();
+        }
+
+        private void OnVehicleSelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (e.AddedItems.Count == 0 || !e.AddedItems.OfType<Vehicle>().Any()) {
+                return;
+            }
+
+            App.Composition.GetExport<VehicleSelectionSource>().Selection = e.AddedItems.OfType<Vehicle>().First();
+            NavigationService.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(VehicleDetailsPage).Name), UriKind.Relative));
         }
     }
 }

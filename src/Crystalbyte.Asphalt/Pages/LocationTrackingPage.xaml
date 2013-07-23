@@ -45,5 +45,7 @@
                       ZoomLevel="11" />
         </Grid>
     </Grid>
-
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar />
+    </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

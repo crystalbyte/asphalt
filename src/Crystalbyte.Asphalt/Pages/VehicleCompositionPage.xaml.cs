@@ -21,6 +21,7 @@ namespace Crystalbyte.Asphalt.Pages {
         public VehicleCompositionPage() {
             InitializeComponent();
             LocalStorage = App.Composition.GetExport<LocalStorage>();
+            VehicleSelector = App.Composition.GetExport<VehicleSelectionSource>();
             BindingValidationError += OnBindingValidationError;
 
             _photoChooser = new PhotoChooserTask { ShowCamera = true, PixelHeight = 200, PixelWidth = 200};
@@ -35,6 +36,7 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         public LocalStorage LocalStorage { get; private set; }
+        public VehicleSelectionSource VehicleSelector { get; internal set; }
 
         public Vehicle Vehicle {
             get { return (Vehicle)DataContext; }
@@ -67,13 +69,13 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void InitializeVehicle() {
-            Vehicle = (Vehicle)NavigationState.Pop();
+            Vehicle = VehicleSelector.Selection;
             Vehicle.ValidateAll();
         }
 
         private void OnCheckButtonClicked(object sender, EventArgs e) {
-            LocalStorage.VehicleDataContext.Vehicles.InsertOnSubmit(Vehicle);
-            LocalStorage.VehicleDataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            LocalStorage.DataContext.Vehicles.InsertOnSubmit(Vehicle);
+            LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
 
             App.Context.InvalidateData();
             NavigationService.GoBack();

@@ -5,6 +5,7 @@ using System.Linq;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
 using System.Composition;
+using Crystalbyte.Asphalt.Commands;
 
 namespace Crystalbyte.Asphalt.Contexts {
 
@@ -22,8 +23,8 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         public AppContext() {
             Vehicles = new ObservableCollection<Vehicle>();
-            History = new ObservableCollection<Tour>();
-            History.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedHistory);
+            Recent = new ObservableCollection<Tour>();
+            Recent.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedHistory);
         }
 
         /// <summary>
@@ -34,13 +35,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// <summary>
         /// A collection of recent tours.
         /// </summary>
-        public ObservableCollection<Tour> History { get; private set; }
+        public ObservableCollection<Tour> Recent { get; private set; }
 
         /// <summary>
         /// A collection of recent tours grouped by date.
         /// </summary>
         public object GroupedHistory {
-            get { return History.GroupBy(x => x.StartTime); }
+            get { return Recent.GroupBy(x => x.StartTime); }
         }
 
         public bool IsDataLoaded {
@@ -57,7 +58,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// </summary>
         public void LoadData() {
             Vehicles.Clear();
-            Vehicles.AddRange(LocalStorage.VehicleDataContext.Vehicles.Select(x => x));
+            Vehicles.AddRange(LocalStorage.DataContext.Vehicles
+                .Select(x => x));
+
+            Recent.Clear();
+            Recent.AddRange(LocalStorage.DataContext.Tours
+                .Select(x => x).OrderByDescending(x => x.StartTime));
+
             IsDataLoaded = true;
         }
     }

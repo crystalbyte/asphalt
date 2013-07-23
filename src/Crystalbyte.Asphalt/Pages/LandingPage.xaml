@@ -43,13 +43,17 @@
         <phone:Panorama Title="asphalt">
 
             <phone:Panorama.Background>
-                <ImageBrush ImageSource="/Asphalt;component/Assets/Background.jpg" />
+                <ImageBrush ImageSource="/Crystalbyte.Asphalt.App;component/Assets/Background.jpg" />
             </phone:Panorama.Background>
 
             <!--  Panorama item one  -->
             <phone:PanoramaItem Header="{Binding LocalizedResources.VehiclePanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
                 <!--  Single line list with text wrapping  -->
-                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Vehicles, Mode=OneTime}">
+                <phone:LongListSelector x:Name="VehicleListSelector"
+                                        Margin="0,0,-22,0"
+                                        ItemsSource="{Binding Vehicles,
+                                                              Mode=OneTime}"
+                                        SelectionChanged="OnVehicleSelectionChanged">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,-6,0,12"
@@ -179,14 +183,16 @@
             
             Before shipping remove this XAML and the image itself.
         -->
-        <Image Grid.Row="0"
-               Grid.RowSpan="2"
-               Width="480"
-               Height="800"
-               Margin="0"
-               VerticalAlignment="Top"
-               IsHitTestVisible="False"
-               Source="/Assets/AlignmentGrid.png" />
+        <!--
+            <Image Grid.Row="0"
+            Grid.RowSpan="2"
+            Width="480"
+            Height="800"
+            Margin="0"
+            VerticalAlignment="Top"
+            IsHitTestVisible="False"
+            Source="/Assets/AlignmentGrid.png" />
+        -->
 
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>

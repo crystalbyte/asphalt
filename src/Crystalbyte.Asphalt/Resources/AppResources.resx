@@ -186,4 +186,13 @@
   <data name="VehiclePanoramaPageHeaderText" xml:space="preserve">
     <value>vehicles</value>
   </data>
+  <data name="TrackingButtonText" xml:space="preserve">
+    <value>Track</value>
+  </data>
+  <data name="EstimatedMileageLabelText" xml:space="preserve">
+    <value>Estimated current mileage</value>
+  </data>
+  <data name="InitialMileageLabelText" xml:space="preserve">
+    <value>Initial mileage</value>
+  </data>
 </root>

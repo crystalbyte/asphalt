@@ -1,10 +1,13 @@
 #region Using directives
 
+using System.Collections.ObjectModel;
 using System.Data.Linq.Mapping;
+using System.Linq;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
 using System.Runtime.Serialization;
 using System.Windows.Media;
+using System.Collections.Generic;
 
 #endregion
 
@@ -14,20 +17,24 @@ namespace Crystalbyte.Asphalt.Contexts {
     public sealed class Vehicle : BindingModelBase<Vehicle> {
 
         private int _id;
-        private int? _initialMileage;
+        private int _initialMileage;
         private string _licencePlate;
         private string _notes;
         private string _imageName;
         private ImageSource _image;
 
         public Vehicle() {
+            Construct();
+        }
+
+        private void Construct() {
             AddValidators();
         }
 
         [OnDeserialized]
         public void OnDeserialized(StreamingContext context) {
             InitializeValidation();
-            AddValidators();
+            Construct();
         }
 
         private async void DeleteCurrentImageAsync() {
@@ -46,7 +53,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 .Show(AppResources.LicencePlateNotNullOrEmpty);
 
             AddValidationFor(() => InitialMileage)
-                .When(x => !x.InitialMileage.HasValue || x.InitialMileage.Value < 0 || x.InitialMileage > 99999999)
+                .When(x => x.InitialMileage < 0 || x.InitialMileage > 99999999)
                 .Show(AppResources.InitialMileageNotNegative);
         }
 
@@ -85,7 +92,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [Column, DataMember]
+        [DataMember, Column(CanBeNull = true)]
         public string ImageName {
             get { return _imageName; }
             set {
@@ -109,7 +116,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [Column, DataMember]
+        [DataMember, Column(CanBeNull = false)]
         public string LicencePlate {
             get { return _licencePlate; }
             set {
@@ -122,8 +129,8 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [Column, DataMember]
-        public int? InitialMileage {
+        [DataMember, Column(CanBeNull = false)]
+        public int InitialMileage {
             get { return _initialMileage; }
             set {
                 if (_initialMileage == value) {
@@ -135,7 +142,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [Column, DataMember]
+        [DataMember, Column(CanBeNull = true)]
         public string Notes {
             get { return _notes; }
             set {
@@ -146,6 +153,50 @@ namespace Crystalbyte.Asphalt.Contexts {
                 _notes = value;
                 RaisePropertyChanged(() => Notes);
             }
+        }
+
+        public List<TourGroup> GroupedTours {
+            get {
+                return Tours
+                .OrderByDescending(x => x.StartTime)
+                .GroupBy(x => x.Month)
+                .Select(x => new TourGroup(x.Key, x))
+                .ToList();
+            }
+        }
+
+        public ObservableCollection<Tour> Tours { get; private set; }
+
+        public int? CurrentMileage {
+            get { return 12; }
+        }
+
+        public bool IsDataLoaded { get; private set; }
+
+        public void InvalidateData() {
+            IsDataLoaded = false;
+        }
+
+        public void LoadData() {
+            var id = Id;
+            var storage = App.Composition.GetExport<LocalStorage>();
+
+            var tours = storage.DataContext.Tours
+                .Where(x => x.VehicleId.HasValue && x.VehicleId.Value == id)
+                .Select(x => x);
+
+            if (Tours == null) {
+                Tours = new ObservableCollection<Tour>();
+                Tours.CollectionChanged += (sende, e) => RaisePropertyChanged(() => GroupedTours);
+            } else {
+                Tours.Clear();
+            }
+
+            Tours.AddRange(tours);
+
+            IsDataLoaded = true;
+
+            RaisePropertyChanged(() => GroupedTours);
         }
     }
 }

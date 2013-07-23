@@ -16,16 +16,7 @@ namespace Crystalbyte.Asphalt.Data {
     public sealed class LocalStorage {
         private const string ImagePath = "Images";
 
-        private VehicleDataContext _carDataContext;
-        private TourDataContext _tourDataContext;
-
-        public VehicleDataContext VehicleDataContext {
-            get { return _carDataContext; }
-        }
-
-        //public Table<TourContext> Tours {
-        //    get { return _tourDataContext.Tours; }
-        //}
+        public AsphaltDataContext DataContext { get; private set; }
 
         public async Task DeleteImageAsync(string name) {
             var local = ApplicationData.Current.LocalFolder;
@@ -87,14 +78,9 @@ namespace Crystalbyte.Asphalt.Data {
         public async void OnImportsSatisfied() {
             var connectionString = (string)Application.Current.Resources["DefaultConnectionString"];
 
-            _carDataContext = new VehicleDataContext(connectionString);
-            if (!_carDataContext.DatabaseExists()) {
-                _carDataContext.CreateDatabase();
-            }
-
-            _tourDataContext = new TourDataContext(connectionString);
-            if (!_tourDataContext.DatabaseExists()) {
-                _tourDataContext.CreateDatabase();
+            DataContext = new AsphaltDataContext(connectionString);
+            if (!DataContext.DatabaseExists()) {
+                DataContext.CreateDatabase();
             }
 
             var local = ApplicationData.Current.LocalFolder;

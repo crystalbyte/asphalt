@@ -6,6 +6,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Crystalbyte.Asphalt.Commands;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Shell;
@@ -14,11 +15,18 @@ using Microsoft.Phone.Maps.Controls;
 
 namespace Crystalbyte.Asphalt.Pages {
     public partial class LocationTrackingPage {
+        private bool _isNewPageInstance;
+
         public LocationTrackingPage() {
             InitializeComponent();
-            LocationTracker = App.Context.LocationTracker;
+            LocationTracker = App.Composition.GetExport<LocationTracker>();
             LocationTracker.Updated += OnUpdated;
             LocationTracker.IsTrackingChanged += OnIsTrackingChanged;
+        }
+
+        public LocationTracker LocationTracker {
+            get { return DataContext as LocationTracker; }
+            set { DataContext = value; }
         }
 
         private void CenterMap() {
@@ -36,17 +44,47 @@ namespace Crystalbyte.Asphalt.Pages {
             });
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
+            if (_isNewPageInstance) {
+                var navigation = App.Composition.GetExport<Navigation>();
+                navigation.Initialize(NavigationService);
+            }
+
+            UpdateApplicationBar();
+
+            if (!App.Context.IsDataLoaded) {
+                App.Context.LoadData();
+            }
+
+            _isNewPageInstance = false;
+        }
+
+        private void UpdateApplicationBar() {
+            var buttonCommands = App.Composition.GetExports<IButtonCommand>()
+                .Where(x => x.IsApplicable).OrderBy(x => x.Position);
+
+            ApplicationBar.Buttons.Clear();
+            ApplicationBar.Buttons.AddRange(buttonCommands.Select(x => x.Button));
+
+            var menuCommands = App.Composition.GetExports<IMenuCommand>()
+                .Where(x => x.IsApplicable).OrderBy(x => x.Position);
+
+            ApplicationBar.MenuItems.Clear();
+            ApplicationBar.MenuItems.AddRange(menuCommands.Select(x => x.MenuItem));
+        }
+
         private void RequestRoute() {
             var positions = LocationTracker.CurrentTour.Positions;
-            if (positions.Count < 2) {
+            var enumerable = positions as Position[] ?? positions.ToArray();
+            if (enumerable.Count() < 2) {
                 return;
             }
 
             var query = new RouteQuery {
                 Waypoints =
                     new List<GeoCoordinate>(
-                        positions.Select(
-                            x => new GeoCoordinate(x.Coordinate.Latitude, x.Coordinate.Longitude)))
+                        enumerable.Select(
+                            x => new GeoCoordinate(x.Latitude, x.Longitude)))
             };
             query.QueryCompleted += OnRouteQueryCompleted;
             query.QueryAsync();
@@ -79,10 +117,5 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         public MapRoute CurrentRoute { get; set; }
-
-        public LocationTracker LocationTracker {
-            get { return DataContext as LocationTracker; }
-            set { DataContext = value; }
-        }
     }
 }
