@@ -50,7 +50,8 @@ namespace Crystalbyte.Asphalt.Pages {
             ApplicationBar.Buttons.AddRange(buttonCommands.Select(x => x.Button));
 
             var menuCommands = App.Composition.GetExports<IMenuCommand>()
-                .Where(x => x.IsApplicable).OrderBy(x => x.Position);
+                .Where(x => x.IsApplicable)
+                .OrderBy(x => x.Position);
 
             ApplicationBar.MenuItems.Clear();
             ApplicationBar.MenuItems.AddRange(menuCommands.Select(x => x.MenuItem));

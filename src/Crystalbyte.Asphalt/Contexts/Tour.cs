@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Data.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Linq.Mapping;
@@ -10,14 +9,15 @@ namespace Crystalbyte.Asphalt.Contexts {
 
     [DataContract, Table]
     public sealed class Tour : BindingModelBase<Tour> {
-        private TourState _state;
         private int _id;
+        private TourState _state;
         private DateTime _startTime;
         private DateTime? _stopTime;
         private string _reason;
         private string _destination;
         private int? _vehicleId;
         private TourType _type;
+        private string _street;
 
         public Tour() {
             Construct();
@@ -25,7 +25,8 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         private void Construct() {
             LoadPositions();
-            Destination = "Indn Route 5068";
+            Destination = "Subway Ltd.";
+            Street = "Indn Route 5068";
             Reason = "Debugging Asphalt application";
         }
 
@@ -110,6 +111,20 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public IList<Position> Positions { get; private set; }
+
+        [DataMember, Column(CanBeNull = true)]
+        public string Street {
+            get { return _street; }
+            set {
+                if (_street == value) {
+                    return;
+                }
+
+                RaisePropertyChanging(() => Street);
+                _street = value;
+                RaisePropertyChanged(() => Street);
+            }
+        }
 
         [DataMember, Column(CanBeNull = true)]
         public string Reason {

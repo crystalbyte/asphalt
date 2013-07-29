@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Pages;
 using Microsoft.Phone.Shell;
 using System.Composition;
@@ -35,6 +36,13 @@ namespace Crystalbyte.Asphalt.Commands {
 
         public void Execute(object parameter) {
             LocationTracker.StopTrackingManually();
+            if (LocationTracker.CurrentVehicle != null) {
+                App.Composition.GetExport<VehicleSelectionSource>().Selection = LocationTracker.CurrentVehicle;
+                Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml?page=history", typeof(VehicleDetailsPage).Name), UriKind.Relative));
+            }
+            else {
+                Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml?page=history", typeof(LandingPage).Name), UriKind.Relative));
+            }
         }
 
         public event EventHandler CanExecuteChanged;

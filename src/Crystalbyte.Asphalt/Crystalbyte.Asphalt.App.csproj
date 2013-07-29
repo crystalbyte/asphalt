@@ -109,6 +109,9 @@
     <Compile Include="Contexts\Tour.cs" />
     <Compile Include="Contexts\TourGroup.cs" />
     <Compile Include="Contexts\VehicleSelectionSource.cs" />
+    <Compile Include="UI\TrackingJumpControl.xaml.cs">
+      <DependentUpon>TrackingJumpControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TourState.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Data\AsphaltDataContext.cs" />
@@ -156,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="Pages\LocationTrackingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\TrackingJumpControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
