@@ -15,18 +15,18 @@ namespace Crystalbyte.Asphalt.Contexts {
         private DateTime? _stopTime;
         private string _reason;
         private string _destination;
-        private int? _vehicleId;
         private TourType _type;
-        private string _street;
+        private string _origin;
+        private bool _isEditing;
 
         public Tour() {
             Construct();
         }
 
         private void Construct() {
-            LoadPositions();
+            LoadData();
             Destination = "Subway Ltd.";
-            Street = "Indn Route 5068";
+            Origin = "Indn Route 5068";
             Reason = "Debugging Asphalt application";
         }
 
@@ -51,20 +51,6 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Id);
                 _id = value;
                 RaisePropertyChanged(() => Id);
-            }
-        }
-
-        [DataMember, Column(CanBeNull = true)]
-        public int? VehicleId {
-            get { return _vehicleId; }
-            set {
-                if (_vehicleId == value) {
-                    return;
-                }
-
-                RaisePropertyChanging(() => VehicleId);
-                _vehicleId = value;
-                RaisePropertyChanged(() => VehicleId);
             }
         }
 
@@ -96,7 +82,11 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        private void LoadPositions() {
+        public bool IsDataLoaded {
+            get { return Positions.Count > 0; }
+        }
+
+        public void LoadData() {
             var id = Id;
             var storage = App.Context.LocalStorage;
             var positions = storage.DataContext.Positions
@@ -113,16 +103,23 @@ namespace Crystalbyte.Asphalt.Contexts {
         public IList<Position> Positions { get; private set; }
 
         [DataMember, Column(CanBeNull = true)]
-        public string Street {
-            get { return _street; }
+        public string Origin {
+            get { return _origin; }
             set {
-                if (_street == value) {
+                if (_origin == value) {
                     return;
                 }
 
-                RaisePropertyChanging(() => Street);
-                _street = value;
-                RaisePropertyChanged(() => Street);
+                RaisePropertyChanging(() => Origin);
+                _origin = value;
+                RaisePropertyChanged(() => Origin);
+            }
+        }
+
+        public string OriginCoordinates {
+            get {
+                var begin = Positions.First();
+                return string.Format("lat: {0}, lon: {1}", begin.Latitude, begin.Longitude);
             }
         }
 
@@ -154,6 +151,13 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
+        public string DestinationCoordinates {
+            get {
+                var end = Positions.Last();
+                return string.Format("lat: {0}, lon: {1}", end.Latitude, end.Longitude);
+            }
+        }
+
         [DataMember, Column(DbType = "TINYINT NOT NULL")]
         public TourState State {
             get { return _state; }
@@ -177,6 +181,22 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Type);
                 _type = value;
                 RaisePropertyChanged(() => Type);
+            }
+        }
+
+        public IEnumerable<TourType> TourTypeSource {
+            get { return Enum.GetValues(typeof(TourType)).OfType<TourType>(); }
+        }
+
+        public bool IsEditing {
+            get { return _isEditing; }
+            set {
+                if (_isEditing == value) {
+                    return;
+                }
+                RaisePropertyChanging(() => IsEditing);
+                _isEditing = value;
+                RaisePropertyChanged(() => IsEditing);
             }
         }
     }

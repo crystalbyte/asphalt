@@ -78,18 +78,7 @@ namespace Crystalbyte.Asphalt {
         }
 
         private static void InitializeApplication() {
-            Context.AppSettings.BackgroundServiceChanged += OnBackgroundServiceChanged;
-            if (Context.AppSettings.IsBackgroundServiceEnabled) {
-                InitializeGeolocator();
-            }
-        }
-
-        private static void OnBackgroundServiceChanged(object sender, EventArgs e) {
-            if (Context.AppSettings.IsBackgroundServiceEnabled) {
-                InitializeGeolocator();
-            } else {
-                TombstoneGeolocator();
-            }
+            InitializeGeolocator();
         }
 
         public static void TombstoneGeolocator() {
@@ -286,9 +275,6 @@ namespace Crystalbyte.Asphalt {
 
         private void OnApplicationRunningInBackground(object sender, RunningInBackgroundEventArgs e) {
             IsRunningInBackground = true;
-            if (Context.AppSettings.IsBackgroundServiceEnabled) {
-                InitializeGeolocator();
-            }
         }
     }
 }

@@ -22,26 +22,20 @@ namespace Crystalbyte.Asphalt.Contexts {
         public LocationTracker LocationTracker { get; set; }
 
         public AppContext() {
-            Vehicles = new ObservableCollection<Vehicle>();
-            Recent = new ObservableCollection<Tour>();
-            Recent.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedHistory);
+            Tours = new ObservableCollection<Tour>();
+            Tours.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedTours);
         }
-
-        /// <summary>
-        /// A collection of all vehicles.
-        /// </summary>
-        public ObservableCollection<Vehicle> Vehicles { get; private set; }
 
         /// <summary>
         /// A collection of recent tours.
         /// </summary>
-        public ObservableCollection<Tour> Recent { get; private set; }
+        public ObservableCollection<Tour> Tours { get; private set; }
 
         /// <summary>
         /// A collection of recent tours grouped by date.
         /// </summary>
-        public object GroupedHistory {
-            get { return Recent.GroupBy(x => x.StartTime); }
+        public object GroupedTours {
+            get { return Tours.GroupBy(x => x.StartTime); }
         }
 
         public bool IsDataLoaded {
@@ -57,12 +51,8 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// Creates and adds a few ItemViewModel objects into the Items collection.
         /// </summary>
         public void LoadData() {
-            Vehicles.Clear();
-            Vehicles.AddRange(LocalStorage.DataContext.Vehicles
-                .Select(x => x));
-
-            Recent.Clear();
-            Recent.AddRange(LocalStorage.DataContext.Tours
+            Tours.Clear();
+            Tours.AddRange(LocalStorage.DataContext.Tours
                 .Select(x => x).OrderByDescending(x => x.StartTime));
 
             IsDataLoaded = true;

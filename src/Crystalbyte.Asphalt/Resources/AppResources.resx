@@ -128,9 +128,6 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>asphalt</value>
   </data>
-  <data name="AddVehicleCommandText" xml:space="preserve">
-    <value>Add</value>
-  </data>
   <data name="LabelNotNullOrEmpty" xml:space="preserve">
     <value>The label must not be empty</value>
   </data>
@@ -146,12 +143,6 @@
   <data name="LicencePlateNotNullOrEmpty" xml:space="preserve">
     <value>The licence plate must not be empty</value>
   </data>
-  <data name="AddVehiclePageTitle" xml:space="preserve">
-    <value>add vehicle</value>
-  </data>
-  <data name="AddPhotoText" xml:space="preserve">
-    <value>add photo</value>
-  </data>
   <data name="ApplicationTitleCapital" xml:space="preserve">
     <value>ASPHALT</value>
   </data>
@@ -161,12 +152,6 @@
   <data name="DeleteMenuHeader" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="BackgroundServiceDescriptionText" xml:space="preserve">
-    <value>The background service will continue running, even if the app has been closed. While active it will automatically start a new tour whenever the movement speed exceeds 30 km/h. The tour can be halted manually or automatically when the gps location remains unchanged for 5 minutes.</value>
-  </data>
-  <data name="BackgroundServiceSettingsText" xml:space="preserve">
-    <value>Background service</value>
-  </data>
   <data name="SettingsPageTitle" xml:space="preserve">
     <value>settings</value>
   </data>
@@ -175,7 +160,7 @@
   </data>
   <data name="SettingsMenuItemText" xml:space="preserve">
     <value>Settings</value>
-    <comment>Sits inside the ApplicationBar on the LandingPage</comment>
+    <comment>LandingPage.xaml</comment>
   </data>
   <data name="LocationTrackingPageTitle" xml:space="preserve">
     <value>current tour</value>
@@ -183,8 +168,9 @@
   <data name="ToursPanoramaPageHeaderText" xml:space="preserve">
     <value>records</value>
   </data>
-  <data name="VehiclePanoramaPageHeaderText" xml:space="preserve">
-    <value>vehicles</value>
+  <data name="TrackingPanoramaItemTitle" xml:space="preserve">
+    <value>tracking</value>
+    <comment>LandingPage.xaml</comment>
   </data>
   <data name="TrackingButtonText" xml:space="preserve">
     <value>Track</value>
@@ -194,5 +180,30 @@
   </data>
   <data name="InitialMileageLabelText" xml:space="preserve">
     <value>Initial mileage</value>
+  </data>
+  <data name="DestinationLabelText" xml:space="preserve">
+    <value>Destination</value>
+    <comment>TourDetailsPage.xaml</comment>
+  </data>
+  <data name="OriginLabelText" xml:space="preserve">
+    <value>Origin</value>
+  </data>
+  <data name="ReasonLabelText" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="StartTimeLabelText" xml:space="preserve">
+    <value>Begin</value>
+  </data>
+  <data name="StopTimeLabelText" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="UnitOfLengthDescriptionText" xml:space="preserve">
+    <value>When exporting data the selected  unit of length will be used to </value>
+  </data>
+  <data name="RouteLabelText" xml:space="preserve">
+    <value>Route</value>
+  </data>
+  <data name="TourTypeLabelText" xml:space="preserve">
+    <value>Type</value>
   </data>
 </root>

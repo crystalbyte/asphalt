@@ -12,8 +12,14 @@ namespace Crystalbyte.Asphalt.Data {
             : base(connectionString) {
         }
 
+        /// <summary>
+        /// The LINQ to SQL position table. This property is auto populated.
+        /// </summary>
         public Table<Position> Positions;
-        public Table<Vehicle> Vehicles;
+
+        /// <summary>
+        /// The LINQ to SQL tour table. This property is auto populated.
+        /// </summary>
         public Table<Tour> Tours;
     }
 }

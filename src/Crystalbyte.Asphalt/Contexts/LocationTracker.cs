@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Composition;
 using System.Data.Linq;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Crystalbyte.Asphalt.Data;
-using Crystalbyte.Asphalt.Pages;
 using Windows.Devices.Geolocation;
-using System.Windows.Threading;
-using Windows.UI.Core;
 
 namespace Crystalbyte.Asphalt.Contexts {
 
@@ -21,7 +14,12 @@ namespace Crystalbyte.Asphalt.Contexts {
         private bool _isTracking;
 
         private const double SpeedThresholdInKilometersPerSecond = 8.3;
+
+#if DEBUG
+        private const double TimeThresholdInMinutes = 0.6;
+#else
         private const double TimeThresholdInMinutes = 5;
+#endif
 
         [Import]
         public Navigation Navigation { get; set; }
@@ -35,11 +33,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         [Import]
         public LocalStorage LocalStorage { get; set; }
 
+        [Import]
+        public DispatcherService DispatcherService { get; set; }
+
         public Tour CurrentTour { get; private set; }
         public Geoposition LastPosition { get; private set; }
         public Geoposition CurrentPosition { get; private set; }
         public Geoposition AnchorPosition { get; private set; }
-        public Vehicle CurrentVehicle { get; private set; }
         public bool IsLaunchedManually { get; private set; }
 
         public event EventHandler Updated;
@@ -113,22 +113,8 @@ namespace Crystalbyte.Asphalt.Contexts {
             LastPosition = position;
         }
 
-        public void StartTrackingManually(Vehicle vehicle) {
-            IsLaunchedManually = true;
-            StartTracking(vehicle);
-        }
-
-        private void StartTracking(Vehicle vehicle = null) {
-            IsTracking = true;
-
-            CurrentVehicle = vehicle;
-
-            Debug.WriteLine("Tracking started ...");
-            if (vehicle != null) {
-                Debug.WriteLine("Associated vehicle found (Id = {0}, LicencePlate = {1}).", vehicle.Id, vehicle.LicencePlate);
-            } else {
-                Debug.WriteLine("No associated vehicle found.");
-            }
+        private void StartTracking() {
+            NotifyStartTracking();
 
             if (!App.IsGeolocatorAlive) {
                 Debug.WriteLine("Initializing geolocator ...");
@@ -139,16 +125,20 @@ namespace Crystalbyte.Asphalt.Contexts {
                 StartTime = DateTime.Now
             };
 
-            if (vehicle != null) {
-                CurrentTour.VehicleId = CurrentVehicle.Id;
-                CurrentVehicle.Tours.Add(CurrentTour);
-            }
-
-            Debug.WriteLine("Submitting tour (Id = {0}, VehicleId = {1}) ...", CurrentTour.Id, CurrentTour.VehicleId);
+            Debug.WriteLine("Submitting tour (Id = {0}) ...", CurrentTour.Id);
             LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
             LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
 
             OnTrackingStarted(EventArgs.Empty);
+        }
+
+        private void NotifyStartTracking() {
+            if (!DispatcherService.Dispatcher.CheckAccess()) {
+                DispatcherService.Dispatcher.BeginInvoke(NotifyStartTracking);
+                return;
+            }
+
+            IsTracking = true;
         }
 
         private void StopTracking() {
@@ -164,20 +154,18 @@ namespace Crystalbyte.Asphalt.Contexts {
             LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
             Debug.WriteLine("Changes successfully submitted.");
 
-            IsTracking = false;
+            NotifyStopTracking();
 
-            if (CurrentVehicle != null) {
-                CurrentVehicle.InvalidateData();
-            }
+            Debug.WriteLine("Tracking stopped.");
+        }
 
-            // Only disable geolocator if background services are disabled
-            if (AppSettings.IsBackgroundServiceEnabled) {
+        private void NotifyStopTracking() {
+            if (!DispatcherService.Dispatcher.CheckAccess()) {
+                DispatcherService.Dispatcher.BeginInvoke(NotifyStopTracking);
                 return;
             }
-            
-            App.TombstoneGeolocator();
-            Debug.WriteLine("Tombstoned geolocator.");
-            Debug.WriteLine("Tracking stopped.");
+
+            IsTracking = false;
         }
 
         private bool CheckTrackingStartCondition() {
@@ -185,6 +173,11 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private bool CheckTrackingStopCondition() {
+            if (AnchorPosition == null) {
+                AnchorPosition = CurrentPosition;
+                return false;
+            }
+
             var speed = CalculateSpeed();
             if (speed > SpeedThresholdInKilometersPerSecond) {
                 AnchorPosition = CurrentPosition;
@@ -242,11 +235,6 @@ namespace Crystalbyte.Asphalt.Contexts {
                 _currentLongitude = value;
                 RaisePropertyChanged(() => CurrentLongitude);
             }
-        }
-
-        public void StopTrackingManually() {
-            StopTracking();
-            IsLaunchedManually = false;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         public double Latitude {
             get { return _latitude; }
             set {
-                if (Math.Abs(_latitude - value) < 0.01) {
+                if (Math.Abs(_latitude - value) < 0.0001) {
                     return;
                 }
                 RaisePropertyChanging(() => Latitude);
@@ -61,7 +61,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         public double Longitude {
             get { return _longitude; }
             set {
-                if (Math.Abs(_longitude - value) < 0.01) {
+                if (Math.Abs(_longitude - value) < 0.0001) {
                     return;
                 }
 

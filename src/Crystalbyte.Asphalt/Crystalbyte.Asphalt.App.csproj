@@ -94,10 +94,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="CollectionExtensions.cs" />
-    <Compile Include="Commands\AddVehicleCommand.cs" />
     <Compile Include="Commands\CancelCommand.cs" />
-    <Compile Include="Commands\StopTrackingCommand.cs" />
-    <Compile Include="Commands\StartTrackingCommand.cs" />
     <Compile Include="Commands\IButtonCommand.cs" />
     <Compile Include="Commands\IMenuCommand.cs" />
     <Compile Include="Commands\SettingsCommand.cs" />
@@ -105,10 +102,17 @@
     <Compile Include="Contexts\BindingModelBase.cs" />
     <Compile Include="Contexts\Position.cs" />
     <Compile Include="Contexts\LocationTracker.cs" />
-    <Compile Include="Contexts\PropertyValidation.cs" />
+    <Compile Include="Converters\BooleanToBrushConverter.cs" />
+    <Compile Include="Converters\BooleanToStaticStringConverter.cs" />
+    <Compile Include="DispatcherService.cs" />
+    <Compile Include="PropertyValidation.cs" />
     <Compile Include="Contexts\Tour.cs" />
     <Compile Include="Contexts\TourGroup.cs" />
-    <Compile Include="Contexts\VehicleSelectionSource.cs" />
+    <Compile Include="SelectionSource.cs" />
+    <Compile Include="TourSelectionSource.cs" />
+    <Compile Include="Pages\TourDetailsPage.xaml.cs">
+      <DependentUpon>TourDetailsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\TrackingJumpControl.xaml.cs">
       <DependentUpon>TrackingJumpControl.xaml</DependentUpon>
     </Compile>
@@ -123,18 +127,11 @@
     <Compile Include="Pages\LocationTrackingPage.xaml.cs">
       <DependentUpon>LocationTrackingPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\VehicleCompositionPage.xaml.cs">
-      <DependentUpon>VehicleCompositionPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Contexts\Vehicle.cs" />
     <Compile Include="Contexts\NotificationObject.cs" />
-    <Compile Include="Contexts\PropertySupport.cs" />
+    <Compile Include="PropertySupport.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Pages\LandingPage.xaml.cs">
       <DependentUpon>LandingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\VehicleDetailsPage.xaml.cs">
-      <DependentUpon>VehicleDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -162,19 +159,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\TourDetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\TrackingJumpControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\VehicleCompositionPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\LandingPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\VehicleDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

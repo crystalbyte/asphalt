@@ -61,33 +61,6 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to add photo.
-        /// </summary>
-        public static string AddPhotoText {
-            get {
-                return ResourceManager.GetString("AddPhotoText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add.
-        /// </summary>
-        public static string AddVehicleCommandText {
-            get {
-                return ResourceManager.GetString("AddVehicleCommandText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to add vehicle.
-        /// </summary>
-        public static string AddVehiclePageTitle {
-            get {
-                return ResourceManager.GetString("AddVehiclePageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to asphalt.
         /// </summary>
         public static string ApplicationTitle {
@@ -106,29 +79,20 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The background service will continue running, even if the app has been closed. While active it will automatically start a new tour whenever the movement speed exceeds 30 km/h. The tour can be halted manually or automatically when the gps location remains unchanged for 5 minutes..
-        /// </summary>
-        public static string BackgroundServiceDescriptionText {
-            get {
-                return ResourceManager.GetString("BackgroundServiceDescriptionText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Background service.
-        /// </summary>
-        public static string BackgroundServiceSettingsText {
-            get {
-                return ResourceManager.GetString("BackgroundServiceSettingsText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string DeleteMenuHeader {
             get {
                 return ResourceManager.GetString("DeleteMenuHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination.
+        /// </summary>
+        public static string DestinationLabelText {
+            get {
+                return ResourceManager.GetString("DestinationLabelText", resourceCulture);
             }
         }
         
@@ -205,6 +169,24 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Origin.
+        /// </summary>
+        public static string OriginLabelText {
+            get {
+                return ResourceManager.GetString("OriginLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason.
+        /// </summary>
+        public static string ReasonLabelText {
+            get {
+                return ResourceManager.GetString("ReasonLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The referenced property is a static property.
         /// </summary>
         public static string ReferencedPropertyIsStatic {
@@ -232,6 +214,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Route.
+        /// </summary>
+        public static string RouteLabelText {
+            get {
+                return ResourceManager.GetString("RouteLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string SettingsMenuItemText {
@@ -250,11 +241,38 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Begin.
+        /// </summary>
+        public static string StartTimeLabelText {
+            get {
+                return ResourceManager.GetString("StartTimeLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End.
+        /// </summary>
+        public static string StopTimeLabelText {
+            get {
+                return ResourceManager.GetString("StopTimeLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to records.
         /// </summary>
         public static string ToursPanoramaPageHeaderText {
             get {
                 return ResourceManager.GetString("ToursPanoramaPageHeaderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string TourTypeLabelText {
+            get {
+                return ResourceManager.GetString("TourTypeLabelText", resourceCulture);
             }
         }
         
@@ -268,20 +286,29 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to tracking.
+        /// </summary>
+        public static string TrackingPanoramaItemTitle {
+            get {
+                return ResourceManager.GetString("TrackingPanoramaItemTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When exporting data the selected  unit of length will be used to .
+        /// </summary>
+        public static string UnitOfLengthDescriptionText {
+            get {
+                return ResourceManager.GetString("UnitOfLengthDescriptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unit of length.
         /// </summary>
         public static string UnitOfLengthSettingsText {
             get {
                 return ResourceManager.GetString("UnitOfLengthSettingsText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to vehicles.
-        /// </summary>
-        public static string VehiclePanoramaPageHeaderText {
-            get {
-                return ResourceManager.GetString("VehiclePanoramaPageHeaderText", resourceCulture);
             }
         }
     }

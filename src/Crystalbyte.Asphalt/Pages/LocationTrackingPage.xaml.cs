@@ -50,7 +50,7 @@ namespace Crystalbyte.Asphalt.Pages {
                 navigation.Initialize(NavigationService);
             }
 
-            UpdateApplicationBar();
+            this.UpdateApplicationBar();
 
             if (!App.Context.IsDataLoaded) {
                 App.Context.LoadData();
@@ -58,21 +58,7 @@ namespace Crystalbyte.Asphalt.Pages {
 
             _isNewPageInstance = false;
         }
-
-        private void UpdateApplicationBar() {
-            var buttonCommands = App.Composition.GetExports<IButtonCommand>()
-                .Where(x => x.IsApplicable).OrderBy(x => x.Position);
-
-            ApplicationBar.Buttons.Clear();
-            ApplicationBar.Buttons.AddRange(buttonCommands.Select(x => x.Button));
-
-            var menuCommands = App.Composition.GetExports<IMenuCommand>()
-                .Where(x => x.IsApplicable).OrderBy(x => x.Position);
-
-            ApplicationBar.MenuItems.Clear();
-            ApplicationBar.MenuItems.AddRange(menuCommands.Select(x => x.MenuItem));
-        }
-
+  
         private void RequestRoute() {
             var positions = LocationTracker.CurrentTour.Positions;
             var enumerable = positions as Position[] ?? positions.ToArray();

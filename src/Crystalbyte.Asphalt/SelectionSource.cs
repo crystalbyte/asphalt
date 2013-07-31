@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Crystalbyte.Asphalt.Contexts;
+using System;
 using System.Collections.Generic;
-using System.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crystalbyte.Asphalt.Contexts {
-    [Export, Shared]
-    public sealed class VehicleSelectionSource : NotificationObject {
-
+namespace Crystalbyte.Asphalt {
+    public abstract class SelectionSource<T> : NotificationObject where T : class {
         public event EventHandler SelectionChanged;
 
         public void OnSelectionChanged(EventArgs e) {
@@ -17,8 +15,8 @@ namespace Crystalbyte.Asphalt.Contexts {
                 handler(this, e);
         }
 
-        private Vehicle _selection;
-        public Vehicle Selection {
+        private T _selection;
+        public T Selection {
             get { return _selection; }
             set {
                 if (_selection == value) {
