@@ -93,22 +93,27 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Channels.cs" />
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Commands\CancelCommand.cs" />
+    <Compile Include="Commands\StopTrackingCommand.cs" />
     <Compile Include="Commands\IButtonCommand.cs" />
     <Compile Include="Commands\IMenuCommand.cs" />
     <Compile Include="Commands\SettingsCommand.cs" />
+    <Compile Include="Commands\StartTrackingCommand.cs" />
+    <Compile Include="ConcurrentQueue.cs" />
     <Compile Include="Contexts\AppSettings.cs" />
     <Compile Include="Contexts\BindingModelBase.cs" />
     <Compile Include="Contexts\Position.cs" />
     <Compile Include="Contexts\LocationTracker.cs" />
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
-    <Compile Include="Converters\BooleanToStaticStringConverter.cs" />
-    <Compile Include="DispatcherService.cs" />
+    <Compile Include="Converters\DistanceFormatter.cs" />
     <Compile Include="PropertyValidation.cs" />
     <Compile Include="Contexts\Tour.cs" />
     <Compile Include="Contexts\TourGroup.cs" />
+    <Compile Include="ReverseGeocodeQueryPool.cs" />
     <Compile Include="SelectionSource.cs" />
+    <Compile Include="SmartDispatcher.cs" />
     <Compile Include="TourSelectionSource.cs" />
     <Compile Include="Pages\TourDetailsPage.xaml.cs">
       <DependentUpon>TourDetailsPage.xaml</DependentUpon>
@@ -119,7 +124,6 @@
     <Compile Include="TourState.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Data\AsphaltDataContext.cs" />
-    <Compile Include="Distance.cs" />
     <Compile Include="Data\LocalStorage.cs" />
     <Compile Include="Haversine.cs" />
     <Compile Include="Navigation.cs" />

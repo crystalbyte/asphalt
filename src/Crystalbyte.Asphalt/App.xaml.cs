@@ -10,6 +10,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Composition.Hosting;
 using Windows.Devices.Geolocation;
+using Crystalbyte.Asphalt.Data;
 
 namespace Crystalbyte.Asphalt {
     public partial class App {
@@ -90,7 +91,7 @@ namespace Crystalbyte.Asphalt {
         }
 
         private static void OnGeolocatorPositionChanged(Geolocator sender, PositionChangedEventArgs args) {
-            Context.LocationTracker.Update(args.Position);
+            SmartDispatcher.InvokeAsync(() => Context.LocationTracker.Update(args.Position));
         }
 
         private static void ComposeApplication() {
@@ -106,8 +107,12 @@ namespace Crystalbyte.Asphalt {
 
         public static void InitializeGeolocator() {
             Geolocator = new Geolocator {
-                DesiredAccuracy = PositionAccuracy.High,
+                DesiredAccuracy = PositionAccuracy.Default,
+#if DEBUG
+                ReportInterval = 1000
+#else
                 ReportInterval = 15000
+#endif
             };
             Geolocator.PositionChanged += OnGeolocatorPositionChanged;
         }
@@ -144,6 +149,8 @@ namespace Crystalbyte.Asphalt {
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
         private void OnApplicationClosing(object sender, ClosingEventArgs e) {
+            var storage = Composition.GetExport<LocalStorage>();
+            storage.DataContext.Dispose();
         }
 
         // Code to execute if a navigation fails

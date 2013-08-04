@@ -33,97 +33,97 @@
         <ScrollViewer>
             <!--  ContentPanel - place additional content here  -->
             <ui:DockPanel x:Name="ContentPanel"
-                      Grid.Row="1"
-                      Margin="12,0,12,0">
+                          Grid.Row="1"
+                          Margin="12,0,12,0">
 
                 <!--
-                <toolkit:ListPicker IsEnabled="{Binding IsEditing}"
-                ItemsSource="{Binding TourTypeSource}"
-                ui:DockPanel.Dock="Top">
-                <toolkit:ListPicker.ItemTemplate>
-                <DataTemplate>
-                <StackPanel Orientation="Horizontal">
-                <Rectangle Width="55"
-                Height="55"
-                Fill="Purple" />
-                <TextBlock Margin="6"
-                VerticalAlignment="Center"
-                FontSize="{StaticResource PhoneFontSizeExtraLarge}"
-                Style="{StaticResource PhoneTextLargeStyle}"
-                Text="{Binding}" />
-                </StackPanel>
-                </DataTemplate>
-                </toolkit:ListPicker.ItemTemplate>
-                </toolkit:ListPicker>
-            -->
+                    <toolkit:ListPicker IsEnabled="{Binding IsEditing}"
+                    ItemsSource="{Binding TourTypeSource}"
+                    ui:DockPanel.Dock="Top">
+                    <toolkit:ListPicker.ItemTemplate>
+                    <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="55"
+                    Height="55"
+                    Fill="Purple" />
+                    <TextBlock Margin="6"
+                    VerticalAlignment="Center"
+                    FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                    Style="{StaticResource PhoneTextLargeStyle}"
+                    Text="{Binding}" />
+                    </StackPanel>
+                    </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                    </toolkit:ListPicker>
+                -->
                 <TextBlock Margin="12,15,0,0"
-                       Style="{StaticResource PhoneTextSmallStyle}"
-                       Text="{Binding LocalizedResources.RouteLabelText,
-                                      Source={StaticResource LocalizedStrings}}"
-                       ui:DockPanel.Dock="Top" />
+                           Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding LocalizedResources.RouteLabelText,
+                                          Source={StaticResource LocalizedStrings}}"
+                           ui:DockPanel.Dock="Top" />
                 <maps:Map x:Name="TourMap"
-                      Grid.Row="0"
-                      Height="240"
-                      Margin="12,0,12,0"
-                      ZoomLevel="11"
-                      ui:DockPanel.Dock="Top" />
+                          Grid.Row="0"
+                          Height="240"
+                          Margin="12,0,12,0"
+                          ZoomLevel="11"
+                          ui:DockPanel.Dock="Top" />
                 <TextBlock Margin="12,15,0,0"
-                       Style="{StaticResource PhoneTextSmallStyle}"
-                       Text="{Binding LocalizedResources.OriginLabelText,
-                                      Source={StaticResource LocalizedStrings}}"
-                       ui:DockPanel.Dock="Top" />
+                           Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding LocalizedResources.OriginLabelText,
+                                          Source={StaticResource LocalizedStrings}}"
+                           ui:DockPanel.Dock="Top" />
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                       Text="{Binding Origin}"
-                       ui:DockPanel.Dock="Top" />
+                           Text="{Binding Origin}"
+                           ui:DockPanel.Dock="Top" />
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                       Text="{Binding OriginCoordinates}"
-                       ui:DockPanel.Dock="Top" />
+                           Text="{Binding OriginCoordinates}"
+                           ui:DockPanel.Dock="Top" />
 
                 <TextBlock Margin="12,15,0,0"
-                       Style="{StaticResource PhoneTextSmallStyle}"
-                       Text="{Binding LocalizedResources.DestinationLabelText,
-                                      Source={StaticResource LocalizedStrings}}"
-                       ui:DockPanel.Dock="Top" />
+                           Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding LocalizedResources.DestinationLabelText,
+                                          Source={StaticResource LocalizedStrings}}"
+                           ui:DockPanel.Dock="Top" />
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                       Text="{Binding Destination}"
-                       ui:DockPanel.Dock="Top" />
+                           Text="{Binding Destination}"
+                           ui:DockPanel.Dock="Top" />
 
                 <TextBlock Margin="12,15,0,0"
-                       Style="{StaticResource PhoneTextSmallStyle}"
-                       Text="{Binding LocalizedResources.TourTypeLabelText,
-                                      Source={StaticResource LocalizedStrings}}"
-                       ui:DockPanel.Dock="Top" />
+                           Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding LocalizedResources.TourTypeLabelText,
+                                          Source={StaticResource LocalizedStrings}}"
+                           ui:DockPanel.Dock="Top" />
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                       Text="{Binding Type}"
-                       ui:DockPanel.Dock="Top" />
+                           Text="{Binding Type}"
+                           ui:DockPanel.Dock="Top" />
 
                 <TextBlock Margin="12,15,0,0"
-                       Style="{StaticResource PhoneTextSmallStyle}"
-                       Text="{Binding LocalizedResources.StartTimeLabelText,
-                                      Source={StaticResource LocalizedStrings}}"
-                       ui:DockPanel.Dock="Top" />
+                           Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding LocalizedResources.StartTimeLabelText,
+                                          Source={StaticResource LocalizedStrings}}"
+                           ui:DockPanel.Dock="Top" />
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                       Text="{Binding StartTime,
-                                      StringFormat='{}{0:D}'}"
-                       ui:DockPanel.Dock="Top" />
+                           Text="{Binding StartTime,
+                                          StringFormat='{}{0:D}'}"
+                           ui:DockPanel.Dock="Top" />
 
                 <TextBlock Margin="12,15,0,0"
-                       Style="{StaticResource PhoneTextSmallStyle}"
-                       Text="{Binding LocalizedResources.StopTimeLabelText,
-                                      Source={StaticResource LocalizedStrings}}"
-                       ui:DockPanel.Dock="Top" />
+                           Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding LocalizedResources.StopTimeLabelText,
+                                          Source={StaticResource LocalizedStrings}}"
+                           ui:DockPanel.Dock="Top" />
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                       Text="{Binding StopTime,
-                                      StringFormat='{}{0:D}'}"
-                       ui:DockPanel.Dock="Top" />
+                           Text="{Binding StopTime,
+                                          StringFormat='{}{0:D}'}"
+                           ui:DockPanel.Dock="Top" />
                 <TextBlock Margin="12,15,0,0"
-                       Style="{StaticResource PhoneTextSmallStyle}"
-                       Text="{Binding LocalizedResources.ReasonLabelText,
-                                      Source={StaticResource LocalizedStrings}}"
-                       ui:DockPanel.Dock="Top" />
+                           Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding LocalizedResources.ReasonLabelText,
+                                          Source={StaticResource LocalizedStrings}}"
+                           ui:DockPanel.Dock="Top" />
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                       Text="{Binding Reason}"
-                       ui:DockPanel.Dock="Top" />
+                           Text="{Binding Reason}"
+                           ui:DockPanel.Dock="Top" />
 
             </ui:DockPanel>
         </ScrollViewer>

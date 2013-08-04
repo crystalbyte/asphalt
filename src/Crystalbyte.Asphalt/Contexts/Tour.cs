@@ -2,8 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Linq.Mapping;
+using System.Device.Location;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
+using Microsoft.Phone.Maps.Services;
+using Windows.Devices.Geolocation;
 
 namespace Crystalbyte.Asphalt.Contexts {
 
@@ -18,16 +23,78 @@ namespace Crystalbyte.Asphalt.Contexts {
         private TourType _type;
         private string _origin;
         private bool _isEditing;
+        private bool _isExported;
 
         public Tour() {
             Construct();
         }
 
+        public event EventHandler OriginCivicAddressRequestCompleted;
+
+        public void OnOriginCivicAddressRequestCompleted(EventArgs e) {
+            var handler = OriginCivicAddressRequestCompleted;
+            if (handler != null)
+                handler(this, e);
+        }
+
+        public event EventHandler DestinationCivicAddressRequestCompleted;
+
+        public void OnDestinationCivicAddressRequestCompleted(EventArgs e) {
+            var handler = DestinationCivicAddressRequestCompleted;
+            if (handler != null)
+                handler(this, e);
+        }
+
         private void Construct() {
             LoadData();
-            Destination = "Subway Ltd.";
-            Origin = "Indn Route 5068";
-            Reason = "Debugging Asphalt application";
+        }
+
+        public void RequestOriginCivicAddressAsync(Geocoordinate coordinate) {
+            SmartDispatcher.InvokeAsync(() => {
+                var reverseGeocode = new ReverseGeocodeQuery { GeoCoordinate = new GeoCoordinate(coordinate.Latitude, coordinate.Longitude) };
+                reverseGeocode.QueryCompleted += OnOriginReverseGeocodeQueryCompleted;
+                reverseGeocode.QueryAsync();
+            });
+        }
+
+        public void RequestDestinationCivicAddressAsync(Position position) {
+            SmartDispatcher.InvokeAsync(() => {
+                var reverseGeocode = new ReverseGeocodeQuery { GeoCoordinate = new GeoCoordinate(position.Latitude, position.Longitude) };
+                reverseGeocode.QueryCompleted += OnDestinationReverseGeocodeQueryCompleted;
+                reverseGeocode.QueryAsync();
+            });
+        }
+
+        private void OnDestinationReverseGeocodeQueryCompleted(object sender, QueryCompletedEventArgs<IList<MapLocation>> e) {
+            var query = (ReverseGeocodeQuery)sender;
+            query.QueryCompleted -= OnDestinationReverseGeocodeQueryCompleted;
+
+            if (e.Result.Count < 1) {
+                Debug.WriteLine("ReverseGeocodeQuery returned no results.");
+                return;
+            }
+
+            var address = e.Result[0].Information.Address;
+            Destination = string.Format("{0} {1}, {2} {3}", address.Street, address.HouseNumber, address.PostalCode,
+                                        address.State);
+
+            OnDestinationCivicAddressRequestCompleted(EventArgs.Empty);
+        }
+
+        private void OnOriginReverseGeocodeQueryCompleted(object sender, QueryCompletedEventArgs<IList<MapLocation>> e) {
+            var query = (ReverseGeocodeQuery)sender;
+            query.QueryCompleted -= OnOriginReverseGeocodeQueryCompleted;
+
+            if (e.Result.Count < 1) {
+                Debug.WriteLine("ReverseGeocodeQuery returned no results.");
+                return;
+            }
+
+            var address = e.Result[0].Information.Address;
+            Origin = string.Format("{0} {1}, {2} {3}", address.Street, address.HouseNumber, address.PostalCode,
+                                        address.State);
+
+            OnOriginCivicAddressRequestCompleted(EventArgs.Empty);
         }
 
         [OnDeserialized]
@@ -102,6 +169,20 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         public IList<Position> Positions { get; private set; }
 
+        [DataMember, Column(CanBeNull = false)]
+        public bool IsExported {
+            get { return _isExported; }
+            set {
+                if (_isExported == value) {
+                    return;
+                }
+
+                RaisePropertyChanging(() => IsExported);
+                _isExported = value;
+                RaisePropertyChanged(() => IsExported);
+            }
+        }
+
         [DataMember, Column(CanBeNull = true)]
         public string Origin {
             get { return _origin; }
@@ -155,6 +236,25 @@ namespace Crystalbyte.Asphalt.Contexts {
             get {
                 var end = Positions.Last();
                 return string.Format("lat: {0}, lon: {1}", end.Latitude, end.Longitude);
+            }
+        }
+
+        public double Distance {
+            get {
+                if (Positions.Count < 2) {
+                    return 0.0d;
+                }
+                var distance = 0.0d;
+                for (var i = 0; i < Positions.Count; i++) {
+                    if (Positions.Count == i + 1) {
+                        break;
+                    }
+                    var current = Positions[i];
+                    var next = Positions[i + 1];
+
+                    distance += Haversine.Delta(current, next);
+                }
+                return distance;
             }
         }
 

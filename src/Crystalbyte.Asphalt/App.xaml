@@ -11,6 +11,75 @@
     <Application.Resources>
         <sys:String x:Key="DefaultConnectionString">Data Source=isostore:/asphalt.sdf</sys:String>
         <sys:Double x:Key="PanoramaItemHeaderFontSize">66</sys:Double>
+        <Style x:Key="PlayButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="Green" />
+            <Setter Property="VerticalContentAlignment" Value="Top" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border>
+                            <StackPanel Orientation="Horizontal">
+                                <Grid>
+                                    <Ellipse Width="64"
+                                             Height="64"
+                                             Fill="Transparent"
+                                             Stroke="{TemplateBinding Foreground}"
+                                             StrokeThickness="4" />
+                                    <Polygon Fill="{TemplateBinding Foreground}"
+                                             Points="0,0 51.2,32 0,64"
+                                             StrokeThickness="0">
+                                        <Polygon.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform CenterX="32"
+                                                                CenterY="32"
+                                                                ScaleX="0.5"
+                                                                ScaleY="0.5" />
+                                                <TranslateTransform X="6" />
+                                            </TransformGroup>
+                                        </Polygon.RenderTransform>
+                                    </Polygon>
+                                </Grid>
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="StopButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="Red" />
+            <Setter Property="VerticalContentAlignment" Value="Top" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border>
+                            <StackPanel Orientation="Horizontal">
+                                <Grid>
+                                    <Ellipse Width="64"
+                                             Height="64"
+                                             Fill="Transparent"
+                                             Stroke="{TemplateBinding Foreground}"
+                                             StrokeThickness="4" />
+                                    <Rectangle Width="22"
+                                               Height="22"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Fill="{TemplateBinding Foreground}"
+                                               StrokeThickness="4" />
+                                </Grid>
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
@@ -20,6 +89,7 @@
 
         <local:LocalizedStrings x:Key="LocalizedStrings" />
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:DistanceFormatter x:Key="DistanceFormatter" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

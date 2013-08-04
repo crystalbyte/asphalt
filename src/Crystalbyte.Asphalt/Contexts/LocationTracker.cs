@@ -2,6 +2,8 @@
 using System.Composition;
 using System.Data.Linq;
 using System.Diagnostics;
+using System.Linq;
+using Crystalbyte.Asphalt.Commands;
 using Crystalbyte.Asphalt.Data;
 using Windows.Devices.Geolocation;
 
@@ -34,7 +36,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         public LocalStorage LocalStorage { get; set; }
 
         [Import]
-        public DispatcherService DispatcherService { get; set; }
+        public Channels Channels { get; set; }
+
+        [Import]
+        public StartTrackingCommand StartTrackingCommand { get; set; }
+
+        [Import]
+        public StopTrackingCommand StopTrackingCommand { get; set; }
 
         public Tour CurrentTour { get; private set; }
         public Geoposition LastPosition { get; private set; }
@@ -113,7 +121,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             LastPosition = position;
         }
 
-        private void StartTracking() {
+        private async void StartTracking() {
             NotifyStartTracking();
 
             if (!App.IsGeolocatorAlive) {
@@ -122,50 +130,78 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
 
             CurrentTour = new Tour {
-                StartTime = DateTime.Now
+                StartTime = DateTime.Now,
+                Origin = "Origin is being determined ...",
+                Reason = "Reason not specified"
             };
 
+            App.Geolocator.PositionChanged += OnGeoLocatorFirstPositionChanged;
+
             Debug.WriteLine("Submitting tour (Id = {0}) ...", CurrentTour.Id);
-            LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
-            LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+
+            await Channels.Database.Enqueue(() => {
+                LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            });
 
             OnTrackingStarted(EventArgs.Empty);
         }
 
-        private void NotifyStartTracking() {
-            if (!DispatcherService.Dispatcher.CheckAccess()) {
-                DispatcherService.Dispatcher.BeginInvoke(NotifyStartTracking);
-                return;
-            }
-
-            IsTracking = true;
+        private void OnGeoLocatorFirstPositionChanged(Geolocator sender, PositionChangedEventArgs args) {
+            App.Geolocator.PositionChanged -= OnGeoLocatorFirstPositionChanged;
+            var tour = CurrentTour;
+            tour.OriginCivicAddressRequestCompleted += OnOriginCivicAddressRequestCompleted;
+            tour.RequestOriginCivicAddressAsync(args.Position.Coordinate);
         }
 
-        private void StopTracking() {
+        private async void OnOriginCivicAddressRequestCompleted(object sender, EventArgs e) {
+            var tour = (Tour)sender;
+            tour.OriginCivicAddressRequestCompleted -= OnOriginCivicAddressRequestCompleted;
+            await Channels.Database.Enqueue(() =>
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+
+        }
+
+        private void NotifyStartTracking() {
+            SmartDispatcher.InvokeAsync(() => IsTracking = true);
+        }
+
+        private async void StopTracking() {
+            var tour = CurrentTour;
             Debug.WriteLine("Stopping tracking ...");
-            CurrentTour.StopTime = DateTime.Now;
+            tour.StopTime = DateTime.Now;
 
             Debug.WriteLine("Submitting positions ...");
-            foreach (var pos in CurrentTour.Positions) {
-                Debug.WriteLine("@: {0}", pos);
+            foreach (var pos in tour.Positions) {
+                Debug.WriteLine("@: lat:{0}, lon:{1}", pos.Latitude, pos.Longitude);
             }
 
-            LocalStorage.DataContext.Positions.InsertAllOnSubmit(CurrentTour.Positions);
-            LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            await Channels.Database.Enqueue(() => {
+                LocalStorage.DataContext.Positions.InsertAllOnSubmit(tour.Positions);
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            });
+
             Debug.WriteLine("Changes successfully submitted.");
 
             NotifyStopTracking();
 
+            if (tour.Positions.Any()) {
+                tour.DestinationCivicAddressRequestCompleted += OnDestinationCivicAddressRequestCompleted;
+                tour.RequestDestinationCivicAddressAsync(tour.Positions.Last());
+            }
+
             Debug.WriteLine("Tracking stopped.");
         }
 
-        private void NotifyStopTracking() {
-            if (!DispatcherService.Dispatcher.CheckAccess()) {
-                DispatcherService.Dispatcher.BeginInvoke(NotifyStopTracking);
-                return;
-            }
+        private async void OnDestinationCivicAddressRequestCompleted(object sender, EventArgs e) {
+            var tour = (Tour)sender;
+            tour.DestinationCivicAddressRequestCompleted -= OnDestinationCivicAddressRequestCompleted;
+            await Channels.Database.Enqueue(() =>
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+        }
 
-            IsTracking = false;
+        private void NotifyStopTracking() {
+            SmartDispatcher.InvokeAsync(() => IsTracking = false);
         }
 
         private bool CheckTrackingStartCondition() {
@@ -235,6 +271,16 @@ namespace Crystalbyte.Asphalt.Contexts {
                 _currentLongitude = value;
                 RaisePropertyChanged(() => CurrentLongitude);
             }
+        }
+
+        internal void StartTrackingManually() {
+            IsLaunchedManually = true;
+            StartTracking();
+        }
+
+        internal void StopTrackingManually() {
+            StopTracking();
+            IsLaunchedManually = false;
         }
     }
 }

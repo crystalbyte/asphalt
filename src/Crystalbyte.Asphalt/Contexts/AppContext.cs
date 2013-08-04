@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using Crystalbyte.Asphalt.Data;
-using Crystalbyte.Asphalt.Resources;
 using System.Composition;
-using Crystalbyte.Asphalt.Commands;
 
 namespace Crystalbyte.Asphalt.Contexts {
 
@@ -21,6 +18,9 @@ namespace Crystalbyte.Asphalt.Contexts {
         [Import]
         public LocationTracker LocationTracker { get; set; }
 
+        [Import]
+        public Channels Channels { get; set; }
+
         public AppContext() {
             Tours = new ObservableCollection<Tour>();
             Tours.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedTours);
@@ -35,7 +35,11 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// A collection of recent tours grouped by date.
         /// </summary>
         public object GroupedTours {
-            get { return Tours.GroupBy(x => x.StartTime); }
+            get {
+                return Tours
+                    .GroupBy(x => new DateTime(x.StartTime.Year, x.StartTime.Month, 1))
+                    .Select(x => new TourGroup(x.Key, x)).ToList();
+            }
         }
 
         public bool IsDataLoaded {
@@ -50,10 +54,16 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// <summary>
         /// Creates and adds a few ItemViewModel objects into the Items collection.
         /// </summary>
-        public void LoadData() {
+        public async void LoadData() {
             Tours.Clear();
-            Tours.AddRange(LocalStorage.DataContext.Tours
-                .Select(x => x).OrderByDescending(x => x.StartTime));
+
+            var tours = await Channels.Database.Enqueue(
+                () => LocalStorage.DataContext.Tours
+                    .Select(x => x)
+                    .OrderByDescending(x => x.StartTime)
+                    .ToArray());
+
+            Tours.AddRange(tours);
 
             IsDataLoaded = true;
         }

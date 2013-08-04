@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -14,7 +15,11 @@ namespace Crystalbyte.Asphalt.Data {
 
     [Export, Shared]
     public sealed class LocalStorage {
+
         private const string ImagePath = "Images";
+
+        [Import]
+        public Channels Channels { get; set; }
 
         public AsphaltDataContext DataContext { get; private set; }
 
@@ -76,15 +81,26 @@ namespace Crystalbyte.Asphalt.Data {
 
         [OnImportsSatisfied]
         public async void OnImportsSatisfied() {
-            var connectionString = (string)Application.Current.Resources["DefaultConnectionString"];
+            await InitializeStorage();
+        }
 
-            DataContext = new AsphaltDataContext(connectionString);
-            if (!DataContext.DatabaseExists()) {
-                DataContext.CreateDatabase();
-            }
+        private async Task InitializeStorage() {
+            var connectionString = (string)Application.Current.Resources["DefaultConnectionString"];
+            await IntializeDatabaseAsync(connectionString);
 
             var local = ApplicationData.Current.LocalFolder;
             await local.CreateFolderAsync(ImagePath, CreationCollisionOption.OpenIfExists);
+        }
+
+        private Task IntializeDatabaseAsync(string connectionString) {
+            return Channels.Database.Enqueue(() => {
+                Debug.WriteLine("ThreadId: {0}", System.Threading.Thread.CurrentThread.ManagedThreadId);
+
+                DataContext = new AsphaltDataContext(connectionString);
+                if (!DataContext.DatabaseExists()) {
+                    DataContext.CreateDatabase();
+                }
+            });
         }
     }
 }
