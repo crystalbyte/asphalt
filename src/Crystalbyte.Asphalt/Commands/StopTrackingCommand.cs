@@ -4,6 +4,7 @@ using System.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Crystalbyte.Asphalt.Contexts;
 
@@ -22,6 +23,13 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public void Execute(object parameter) {
+            const string caption = "Terminate recording?";
+            const string message = "A terminated route cannot be resumed.";
+            var result = MessageBox.Show(message, caption, MessageBoxButton.OKCancel);
+
+            if (result.HasFlag(MessageBoxResult.Cancel)) {
+                return;
+            }
             LocationTracker.StopTrackingManually();
             AppContext.LoadData();
         }

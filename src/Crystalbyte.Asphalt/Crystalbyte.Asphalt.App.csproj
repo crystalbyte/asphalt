@@ -106,11 +106,13 @@
     <Compile Include="Contexts\BindingModelBase.cs" />
     <Compile Include="Contexts\Position.cs" />
     <Compile Include="Contexts\LocationTracker.cs" />
+    <Compile Include="Converters\AngleFormatter.cs" />
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
     <Compile Include="Converters\DistanceFormatter.cs" />
     <Compile Include="PropertyValidation.cs" />
     <Compile Include="Contexts\Tour.cs" />
     <Compile Include="Contexts\TourGroup.cs" />
+    <Compile Include="QueryExtensions.cs" />
     <Compile Include="ReverseGeocodeQueryPool.cs" />
     <Compile Include="SelectionSource.cs" />
     <Compile Include="SmartDispatcher.cs" />
@@ -128,9 +130,6 @@
     <Compile Include="Haversine.cs" />
     <Compile Include="Navigation.cs" />
     <Compile Include="PageExtensions.cs" />
-    <Compile Include="Pages\LocationTrackingPage.xaml.cs">
-      <DependentUpon>LocationTrackingPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Contexts\NotificationObject.cs" />
     <Compile Include="PropertySupport.cs" />
     <Compile Include="LocalizedStrings.cs" />
@@ -159,10 +158,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="Pages\LocationTrackingPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\TourDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

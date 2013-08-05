@@ -16,7 +16,7 @@ namespace Crystalbyte.Asphalt.UI {
 
         private void OnOverlayRectangleTapped(object sender, GestureEventArgs e) {
             var navigation = App.Composition.GetExport<Navigation>();
-            navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(LocationTrackingPage).Name), UriKind.Relative));
+            navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(LandingPage).Name), UriKind.Relative));
         }
     }
 }

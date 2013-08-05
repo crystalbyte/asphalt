@@ -44,7 +44,7 @@
         -->
 
         <!--  Panorama control  -->
-        <phone:Panorama Title="asphalt" Grid.Row="1">
+        <phone:Panorama Title="{Binding LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Grid.Row="1">
 
             <phone:Panorama.Background>
                 <ImageBrush ImageSource="/Crystalbyte.Asphalt.App;component/Assets/Background.jpg" />
@@ -65,9 +65,8 @@
                                     toolkit:TiltEffect.IsTiltEnabled="True">
                                 <StackPanel Margin="0,-6,0,0">
                                     <TextBlock Style="{StaticResource PhoneTextLargeStyle}">Start</TextBlock>
-                                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}">Begins the recording of a new tour.</TextBlock>
+                                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="Begins the recording of a new tour" />
                                 </StackPanel>
-
                             </Button>
                             <Button Margin="12,0,0,0"
                                     Command="{Binding StopTrackingCommand}"
@@ -82,18 +81,19 @@
                             </Button>
                         </StackPanel>
                     </StackPanel>
-
                 </Border>
             </phone:PanoramaItem>
-
             <phone:PanoramaItem Header="{Binding LocalizedResources.ToursPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
                 <!--  Single line list with text wrapping  -->
-                <phone:LongListSelector Margin="0,0,-22,0"
-                                        IsGroupingEnabled="True"
-                                        ItemsSource="{Binding GroupedTours,
-                                                              Mode=OneWay}">
-                    <phone:LongListSelector.JumpListStyle>
-                        <Style TargetType="phone:LongListSelector">
+                <toolkit:LongListMultiSelector Margin="-12,0,0,0"
+                                               IsGroupingEnabled="True"
+                                               IsSelectionEnabled="{Binding IsSelectionEnabled,
+                                                                            Mode=TwoWay}"
+                                               ItemsSource="{Binding GroupedTours,
+                                                                     Mode=OneWay}"
+                                               Tap="OnTourTapped">
+                    <toolkit:LongListMultiSelector.JumpListStyle>
+                        <Style TargetType="toolkit:LongListMultiSelector">
                             <Setter Property="Margin" Value="12,12,0,0" />
                             <Setter Property="ItemTemplate">
                                 <Setter.Value>
@@ -113,21 +113,29 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                    </phone:LongListSelector.JumpListStyle>
-                    <phone:LongListSelector.ItemTemplate>
+                    </toolkit:LongListMultiSelector.JumpListStyle>
+                    <toolkit:LongListMultiSelector.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,-6,0,12"
+                            <Grid Margin="-12,0,22,22"
                                   d:DataContext="{d:DesignInstance Type=contexts:Tour}"
                                   toolkit:TiltEffect.IsTiltEnabled="True">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0">
-                                    <TextBlock FontSize="{StaticResource PhoneFontSizeNormal}"
-                                               Style="{StaticResource PhoneTextLargeStyle}"
-                                               Text="{Binding Destination}"
-                                               TextWrapping="Wrap" />
+                                <StackPanel>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock FontSize="{StaticResource PhoneFontSizeNormal}"
+                                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                                   Text="{Binding Destination}"
+                                                   TextWrapping="Wrap"
+                                                   Visibility="{Binding IsQuerying,
+                                                                        ConverterParameter=!,
+                                                                        Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                        <TextBlock FontSize="{StaticResource PhoneFontSizeNormal}"
+                                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                                   Text="{Binding LocalizedResources.LoadingText,
+                                                                  Source={StaticResource LocalizedStrings}}"
+                                                   TextWrapping="Wrap"
+                                                   Visibility="{Binding IsQuerying,
+                                                                        Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    </StackPanel>
                                     <TextBlock FontSize="{StaticResource PhoneFontSizeSmall}"
                                                Style="{StaticResource PhoneTextAccentStyle}"
                                                Text="{Binding Reason}"
@@ -137,22 +145,20 @@
                                                Text="{Binding StartTime,
                                                               StringFormat=R}"
                                                TextWrapping="Wrap" />
+                                    <Border Height="10">
+                                        <ProgressBar IsIndeterminate="True" Visibility="{Binding IsQuerying, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    </Border>
                                 </StackPanel>
-                                <Border Grid.Column="1"
-                                        Margin="0,0,12,0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top">
-                                    <TextBlock Margin="0"
-                                               FontSize="{StaticResource PhoneFontSizeSmall}"
-                                               Padding="0"
-                                               Style="{StaticResource PhoneTextNormalStyle}"
-                                               Text="{Binding Distance,
-                                                              Converter={StaticResource DistanceFormatter}}"
-                                               TextWrapping="Wrap" />
-                                </Border>
-                                <Rectangle Grid.Column="0"
-                                           Grid.ColumnSpan="2"
-                                           HorizontalAlignment="Stretch"
+                                <TextBlock Margin="0"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource PhoneFontSizeSmall}"
+                                           Padding="0"
+                                           Style="{StaticResource PhoneTextNormalStyle}"
+                                           Text="{Binding Distance,
+                                                          Converter={StaticResource DistanceFormatter}}"
+                                           TextWrapping="Wrap" />
+                                <Rectangle HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch"
                                            Fill="Transparent"
                                            Stroke="Transparent">
@@ -165,10 +171,9 @@
 
                             </Grid>
                         </DataTemplate>
-                    </phone:LongListSelector.ItemTemplate>
-                </phone:LongListSelector>
+                    </toolkit:LongListMultiSelector.ItemTemplate>
+                </toolkit:LongListMultiSelector>
             </phone:PanoramaItem>
-
         </phone:Panorama>
 
         <!--

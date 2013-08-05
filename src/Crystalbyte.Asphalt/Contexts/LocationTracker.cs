@@ -2,10 +2,11 @@
 using System.Composition;
 using System.Data.Linq;
 using System.Diagnostics;
-using System.Linq;
 using Crystalbyte.Asphalt.Commands;
 using Crystalbyte.Asphalt.Data;
+using Crystalbyte.Asphalt.Resources;
 using Windows.Devices.Geolocation;
+using System.Windows;
 
 namespace Crystalbyte.Asphalt.Contexts {
 
@@ -18,7 +19,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         private const double SpeedThresholdInKilometersPerSecond = 8.3;
 
 #if DEBUG
-        private const double TimeThresholdInMinutes = 0.6;
+        private const double TimeThresholdInMinutes = 0.2;
 #else
         private const double TimeThresholdInMinutes = 5;
 #endif
@@ -121,7 +122,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             LastPosition = position;
         }
 
-        private async void StartTracking() {
+        private void StartTracking() {
             NotifyStartTracking();
 
             if (!App.IsGeolocatorAlive) {
@@ -131,35 +132,12 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             CurrentTour = new Tour {
                 StartTime = DateTime.Now,
-                Origin = "Origin is being determined ...",
                 Reason = "Reason not specified"
             };
 
-            App.Geolocator.PositionChanged += OnGeoLocatorFirstPositionChanged;
-
             Debug.WriteLine("Submitting tour (Id = {0}) ...", CurrentTour.Id);
 
-            await Channels.Database.Enqueue(() => {
-                LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-            });
-
             OnTrackingStarted(EventArgs.Empty);
-        }
-
-        private void OnGeoLocatorFirstPositionChanged(Geolocator sender, PositionChangedEventArgs args) {
-            App.Geolocator.PositionChanged -= OnGeoLocatorFirstPositionChanged;
-            var tour = CurrentTour;
-            tour.OriginCivicAddressRequestCompleted += OnOriginCivicAddressRequestCompleted;
-            tour.RequestOriginCivicAddressAsync(args.Position.Coordinate);
-        }
-
-        private async void OnOriginCivicAddressRequestCompleted(object sender, EventArgs e) {
-            var tour = (Tour)sender;
-            tour.OriginCivicAddressRequestCompleted -= OnOriginCivicAddressRequestCompleted;
-            await Channels.Database.Enqueue(() =>
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
-
         }
 
         private void NotifyStartTracking() {
@@ -167,9 +145,26 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private async void StopTracking() {
+
+            if (CurrentTour.Positions.Count < 2) {
+                var caption = AppResources.InsufficientDataCaption;
+                var message = AppResources.InsufficientDataMessage;
+                MessageBox.Show(message, caption, MessageBoxButton.OK);
+                NotifyStopTracking();
+                return;
+            }
+
+            await Channels.Database.Enqueue(() => {
+                LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            });
+
             var tour = CurrentTour;
             Debug.WriteLine("Stopping tracking ...");
             tour.StopTime = DateTime.Now;
+
+            Debug.WriteLine("Calculating distance ...");
+            tour.CalculateDistance();
 
             Debug.WriteLine("Submitting positions ...");
             foreach (var pos in tour.Positions) {
@@ -185,17 +180,17 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             NotifyStopTracking();
 
-            if (tour.Positions.Any()) {
-                tour.DestinationCivicAddressRequestCompleted += OnDestinationCivicAddressRequestCompleted;
-                tour.RequestDestinationCivicAddressAsync(tour.Positions.Last());
+            if (tour.Positions.Count > 0) {
+                tour.CivicAddressesResolved += OnCivicAddressesResolved;
+                tour.ResolveCivicAddresses();
             }
 
             Debug.WriteLine("Tracking stopped.");
         }
 
-        private async void OnDestinationCivicAddressRequestCompleted(object sender, EventArgs e) {
+        private async void OnCivicAddressesResolved(object sender, EventArgs e) {
             var tour = (Tour)sender;
-            tour.DestinationCivicAddressRequestCompleted -= OnDestinationCivicAddressRequestCompleted;
+            tour.CivicAddressesResolved -= OnCivicAddressesResolved;
             await Channels.Database.Enqueue(() =>
                 LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
         }
@@ -252,7 +247,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         public double CurrentLatitude {
             get { return _currentLatitude; }
             set {
-                if (Math.Abs(_currentLatitude - value) < 0.1) {
+                if (Math.Abs(_currentLatitude - value) < double.Epsilon) {
                     return;
                 }
                 RaisePropertyChanging(() => CurrentLatitude);
@@ -264,7 +259,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         public double CurrentLongitude {
             get { return _currentLongitude; }
             set {
-                if (Math.Abs(_currentLongitude - value) < 0.1) {
+                if (Math.Abs(_currentLongitude - value) < double.Epsilon) {
                     return;
                 }
                 RaisePropertyChanging(() => CurrentLongitude);

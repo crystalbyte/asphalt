@@ -115,20 +115,20 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initial mileage.
+        ///   Looks up a localized string similar to Insufficient data.
         /// </summary>
-        public static string InitialMileageLabelText {
+        public static string InsufficientDataCaption {
             get {
-                return ResourceManager.GetString("InitialMileageLabelText", resourceCulture);
+                return ResourceManager.GetString("InsufficientDataCaption", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The initial mile age must not be negative.
+        ///   Looks up a localized string similar to The current recording yielded insufficient data and will be discarded..
         /// </summary>
-        public static string InitialMileageNotNegative {
+        public static string InsufficientDataMessage {
             get {
-                return ResourceManager.GetString("InitialMileageNotNegative", resourceCulture);
+                return ResourceManager.GetString("InsufficientDataMessage", resourceCulture);
             }
         }
         
@@ -151,11 +151,11 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to current tour.
+        ///   Looks up a localized string similar to Loading ....
         /// </summary>
-        public static string LocationTrackingPageTitle {
+        public static string LoadingText {
             get {
-                return ResourceManager.GetString("LocationTrackingPageTitle", resourceCulture);
+                return ResourceManager.GetString("LoadingText", resourceCulture);
             }
         }
         
@@ -259,7 +259,16 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to records.
+        ///   Looks up a localized string similar to Tap to change.
+        /// </summary>
+        public static string TapToChangeText {
+            get {
+                return ResourceManager.GetString("TapToChangeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tours.
         /// </summary>
         public static string ToursPanoramaPageHeaderText {
             get {
@@ -277,15 +286,6 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Track.
-        /// </summary>
-        public static string TrackingButtonText {
-            get {
-                return ResourceManager.GetString("TrackingButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to tracking.
         /// </summary>
         public static string TrackingPanoramaItemTitle {
@@ -295,7 +295,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When exporting data the selected  unit of length will be used to .
+        ///   Looks up a localized string similar to Sets the preferred unit of length for displaying distances.
         /// </summary>
         public static string UnitOfLengthDescriptionText {
             get {

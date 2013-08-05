@@ -8,6 +8,7 @@ namespace Crystalbyte.Asphalt.Contexts {
 
     [Export, Shared]
     public sealed class AppContext : NotificationObject {
+        private bool _isSelectionEnabled;
 
         [Import]
         public LocalStorage LocalStorage { get; set; }
@@ -24,6 +25,26 @@ namespace Crystalbyte.Asphalt.Contexts {
         public AppContext() {
             Tours = new ObservableCollection<Tour>();
             Tours.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedTours);
+        }
+
+        public bool IsSelectionEnabled {
+            get { return _isSelectionEnabled; }
+            set {
+                if (_isSelectionEnabled == value) {
+                    return;
+                }
+                RaisePropertyChanging(() => IsSelectionEnabled);
+                _isSelectionEnabled = value;
+                RaisePropertyChanged(() => IsSelectionEnabled);
+                OnSelectionEnabledChanged(EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler SelectionEnabledChanged;
+        public void OnSelectionEnabledChanged(EventArgs e) {
+            var handler = SelectionEnabledChanged;
+            if (handler != null)
+                handler(this, e);
         }
 
         /// <summary>

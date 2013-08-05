@@ -146,9 +146,6 @@
   <data name="ApplicationTitleCapital" xml:space="preserve">
     <value>ASPHALT</value>
   </data>
-  <data name="InitialMileageNotNegative" xml:space="preserve">
-    <value>The initial mile age must not be negative</value>
-  </data>
   <data name="DeleteMenuHeader" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -162,24 +159,15 @@
     <value>Settings</value>
     <comment>LandingPage.xaml</comment>
   </data>
-  <data name="LocationTrackingPageTitle" xml:space="preserve">
-    <value>current tour</value>
-  </data>
   <data name="ToursPanoramaPageHeaderText" xml:space="preserve">
-    <value>records</value>
+    <value>tours</value>
   </data>
   <data name="TrackingPanoramaItemTitle" xml:space="preserve">
     <value>tracking</value>
     <comment>LandingPage.xaml</comment>
   </data>
-  <data name="TrackingButtonText" xml:space="preserve">
-    <value>Track</value>
-  </data>
   <data name="EstimatedMileageLabelText" xml:space="preserve">
     <value>Estimated current mileage</value>
-  </data>
-  <data name="InitialMileageLabelText" xml:space="preserve">
-    <value>Initial mileage</value>
   </data>
   <data name="DestinationLabelText" xml:space="preserve">
     <value>Destination</value>
@@ -198,12 +186,24 @@
     <value>End</value>
   </data>
   <data name="UnitOfLengthDescriptionText" xml:space="preserve">
-    <value>When exporting data the selected  unit of length will be used to </value>
+    <value>Sets the preferred unit of length for displaying distances</value>
   </data>
   <data name="RouteLabelText" xml:space="preserve">
     <value>Route</value>
   </data>
   <data name="TourTypeLabelText" xml:space="preserve">
     <value>Type</value>
+  </data>
+  <data name="LoadingText" xml:space="preserve">
+    <value>Loading ...</value>
+  </data>
+  <data name="TapToChangeText" xml:space="preserve">
+    <value>Tap to change</value>
+  </data>
+  <data name="InsufficientDataCaption" xml:space="preserve">
+    <value>Insufficient data</value>
+  </data>
+  <data name="InsufficientDataMessage" xml:space="preserve">
+    <value>The current recording yielded insufficient data and will be discarded.</value>
   </data>
 </root>

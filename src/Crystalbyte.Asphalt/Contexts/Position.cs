@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Linq.Mapping;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Crystalbyte.Asphalt.Contexts {
     [DataContract, Table]
@@ -48,7 +44,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         public double Latitude {
             get { return _latitude; }
             set {
-                if (Math.Abs(_latitude - value) < 0.0001) {
+                if (Math.Abs(_latitude - value) < double.Epsilon) {
                     return;
                 }
                 RaisePropertyChanging(() => Latitude);
@@ -61,7 +57,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         public double Longitude {
             get { return _longitude; }
             set {
-                if (Math.Abs(_longitude - value) < 0.0001) {
+                if (Math.Abs(_longitude - value) < double.Epsilon) {
                     return;
                 }
 
