@@ -18,12 +18,34 @@
                             shell:SystemTray.IsVisible="True"
                             mc:Ignorable="d">
 
+
     <!--  LayoutRoot is the root grid where all page content is placed  -->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <Popup x:Name="ReasonInputPrompt"
+               Grid.Row="0"
+               HorizontalAlignment="Stretch"
+               VerticalAlignment="Stretch"
+               Grid.RowSpan="2">
+            <Border HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Black"
+                    Opacity="0.8">
+                <Border Background="#333" Padding="20">
+                    <StackPanel>
+                        <TextBlock Margin="0,0,0,10"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   Text="{Binding LocalizedResources.ChangeReasonPopupText,
+                                                  Source={StaticResource LocalizedStrings}}" />
+                        <TextBox HorizontalAlignment="Stretch" Text="{Binding Reason, Mode=TwoWay}" />
+                    </StackPanel>
+                </Border>
+            </Border>
+        </Popup>
 
         <!--  TitlePanel contains the name of the application and page title  -->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
@@ -34,15 +56,18 @@
               Grid.Row="1"
               Margin="12,0,12,0">
             <ScrollViewer>
-                <ui:DockPanel Margin="0,0,0,20">
+                <ui:DockPanel Margin="0,0,0,40">
 
                     <!--  Type  -->
-                    <Button Style="{StaticResource TextButtonStyle}" ui:DockPanel.Dock="Top">
+                    <TextBlock Margin="12,15,0,0"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.TourTypeLabelText,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+                    <Button Click="OnChangeTypeButtonClicked"
+                            Style="{StaticResource TextButtonStyle}"
+                            ui:DockPanel.Dock="Top">
                         <StackPanel>
-                            <TextBlock Margin="12,15,0,0"
-                                       Style="{StaticResource PhoneTextSmallStyle}"
-                                       Text="{Binding LocalizedResources.TourTypeLabelText,
-                                                      Source={StaticResource LocalizedStrings}}" />
                             <TextBlock FontSize="{StaticResource PhoneFontSizeLarge}"
                                        Style="{StaticResource PhoneTextNormalStyle}"
                                        Text="{Binding Type}" />
@@ -66,16 +91,37 @@
                             BorderBrush="{StaticResource PhoneAccentBrush}"
                             BorderThickness="1"
                             ui:DockPanel.Dock="Top">
-                        <maps:Map x:Name="TourMap" ZoomLevel="11" />
+                        <Grid>
+                            <StackPanel Margin="10,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Visibility="{Binding IsQuerying,
+                                                             Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <ProgressBar HorizontalAlignment="Stretch" IsIndeterminate="True" />
+                                <TextBlock HorizontalAlignment="Center"
+                                           Style="{StaticResource PhoneTextNormalStyle}"
+                                           Text="{Binding LocalizedResources.EstimatingRoute,
+                                                          Source={StaticResource LocalizedStrings}}" />
+                            </StackPanel>
+                            <maps:Map x:Name="TourMap"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      Visibility="{Binding IsQuerying,
+                                                           Converter={StaticResource BooleanToVisibilityConverter},
+                                                           ConverterParameter=!}" />
+                        </Grid>
                     </Border>
 
                     <!--  Reason  -->
-                    <Button Style="{StaticResource TextButtonStyle}" ui:DockPanel.Dock="Top">
+                    <TextBlock Margin="12,15,0,0"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.ReasonLabelText,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+                    <Button Click="OnChangeReasonButtonClicked"
+                            Style="{StaticResource TextButtonStyle}"
+                            ui:DockPanel.Dock="Top">
                         <StackPanel>
-                            <TextBlock Margin="12,15,0,0"
-                                       Style="{StaticResource PhoneTextSmallStyle}"
-                                       Text="{Binding LocalizedResources.ReasonLabelText,
-                                                      Source={StaticResource LocalizedStrings}}" />
                             <TextBlock FontSize="{StaticResource PhoneFontSizeLarge}"
                                        Style="{StaticResource PhoneTextTitle1Style}"
                                        Text="{Binding Reason}" />
@@ -86,6 +132,28 @@
                                                       Source={StaticResource LocalizedStrings}}" />
                         </StackPanel>
                     </Button>
+
+                    <!--  Distance  -->
+                    <TextBlock Margin="12,15,0,0"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.DistanceLabelText,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               Text="{Binding Distance,
+                                              Converter={StaticResource DistanceFormatter}}"
+                               ui:DockPanel.Dock="Top" />
+
+                    <!--  Start  -->
+                    <TextBlock Margin="12,15,0,0"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.StartTimeLabelText,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               Text="{Binding StartTime,
+                                              StringFormat=\{0:R\}}"
+                               ui:DockPanel.Dock="Top" />
 
                     <!--  Origin  -->
                     <TextBlock Margin="12,15,0,0"
@@ -103,6 +171,17 @@
                         <Run Text="{Binding OriginLongitude, Converter={StaticResource AngleFormatter}}" />
                     </TextBlock>
 
+                    <!--  Stop  -->
+                    <TextBlock Margin="12,15,0,0"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.StopTimeLabelText,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               Text="{Binding StopTime,
+                                              StringFormat=\{0:R\}}"
+                               ui:DockPanel.Dock="Top" />
+
                     <!--  Destination  -->
                     <TextBlock Margin="12,15,0,0"
                                Style="{StaticResource PhoneTextSmallStyle}"
@@ -118,27 +197,6 @@
                         <Run Text="{Binding DestinationLongitude, Converter={StaticResource AngleFormatter}}" />
                     </TextBlock>
 
-                    <!--  Start  -->
-                    <TextBlock Margin="12,15,0,0"
-                               Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.StartTimeLabelText,
-                                              Source={StaticResource LocalizedStrings}}"
-                               ui:DockPanel.Dock="Top" />
-                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                               Text="{Binding StartTime,
-                                              StringFormat=\{0:D\}}"
-                               ui:DockPanel.Dock="Top" />
-
-                    <!--  Stop  -->
-                    <TextBlock Margin="12,15,0,0"
-                               Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.StopTimeLabelText,
-                                              Source={StaticResource LocalizedStrings}}"
-                               ui:DockPanel.Dock="Top" />
-                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                               Text="{Binding StopTime,
-                                              StringFormat=\{0:D\}}"
-                               ui:DockPanel.Dock="Top" />
                 </ui:DockPanel>
             </ScrollViewer>
         </Grid>

@@ -9,11 +9,12 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Crystalbyte.Asphalt.Data;
 using Microsoft.Phone.Maps.Services;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace Crystalbyte.Asphalt.Contexts {
 
     [DataContract, Table]
+    [DebuggerDisplay("Id = {Id}")]
     public sealed class Tour : BindingModelBase<Tour> {
         private int _id;
         private TourState _state;
@@ -111,6 +112,14 @@ namespace Crystalbyte.Asphalt.Contexts {
             IsQuerying = false;
         }
 
+        public event EventHandler PositionsRestored;
+
+        public void OnPositionsRestored(EventArgs e) {
+            var handler = PositionsRestored;
+            if (handler != null)
+                handler(this, e);
+        }
+
         private void SetDestination(IList<MapLocation> locations) {
             if (locations.Count < 1) {
                 Debug.WriteLine("Unable to determine origin, service response was empty.");
@@ -132,7 +141,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         [OnDeserialized]
-        public void OnDeserialized() {
+        public void OnDeserialized(StreamingContext e) {
             Construct();
         }
 
@@ -241,7 +250,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             get { return Positions.Count > 0; }
         }
 
-        public async void LoadData() {
+        public async Task LoadData() {
             var id = Id;
 
             var positions = await Channels.Database.Enqueue(
@@ -252,6 +261,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                     .ToArray());
 
             Positions.AddRange(positions);
+            OnPositionsRestored(EventArgs.Empty);
         }
 
         public ObservableCollection<Position> Positions { get; private set; }
@@ -387,5 +397,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanged(() => IsEditing);
             }
         }
+
+        public Route CachedRoute { get; set; }
     }
 }

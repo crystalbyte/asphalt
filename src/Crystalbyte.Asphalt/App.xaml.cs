@@ -107,7 +107,7 @@ namespace Crystalbyte.Asphalt {
 
         public static void InitializeGeolocator() {
             Geolocator = new Geolocator {
-                DesiredAccuracy = PositionAccuracy.Default,
+                DesiredAccuracy = PositionAccuracy.High,
 #if DEBUG
                 ReportInterval = 1000
 #else

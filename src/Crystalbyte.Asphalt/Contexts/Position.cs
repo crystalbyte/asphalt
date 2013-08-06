@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Data.Linq.Mapping;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace Crystalbyte.Asphalt.Contexts {
+
     [DataContract, Table]
+    [DebuggerDisplay("Id = {Id}, TourId = {TourId}")]
     public sealed class Position : NotificationObject {
         private int _id;
         private int _tourId;

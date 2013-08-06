@@ -124,9 +124,6 @@ namespace Crystalbyte.Asphalt.Pages {
 
         private void HandleTourTap(Tour tour) {
             TourSelectionSource.Selection = tour;
-            if (!tour.IsDataLoaded) {
-                tour.LoadData();
-            }
             NavigationService.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(TourDetailsPage).Name),
                                                UriKind.Relative));
         }

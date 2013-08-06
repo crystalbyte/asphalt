@@ -154,11 +154,6 @@ namespace Crystalbyte.Asphalt.Contexts {
                 return;
             }
 
-            await Channels.Database.Enqueue(() => {
-                LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-            });
-
             var tour = CurrentTour;
             Debug.WriteLine("Stopping tracking ...");
             tour.StopTime = DateTime.Now;
@@ -166,9 +161,14 @@ namespace Crystalbyte.Asphalt.Contexts {
             Debug.WriteLine("Calculating distance ...");
             tour.CalculateDistance();
 
+            await Channels.Database.Enqueue(() => {
+                LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            });
+
             Debug.WriteLine("Submitting positions ...");
             foreach (var pos in tour.Positions) {
-                Debug.WriteLine("@: lat:{0}, lon:{1}", pos.Latitude, pos.Longitude);
+                pos.TourId = tour.Id;
             }
 
             await Channels.Database.Enqueue(() => {
@@ -222,7 +222,6 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         private void UpdateCurrentTour() {
             CurrentTour.Positions.Add(new Position {
-                TourId = CurrentTour.Id,
                 TimeStamp = CurrentPosition.Coordinate.Timestamp.Date,
                 Latitude = CurrentPosition.Coordinate.Latitude,
                 Longitude = CurrentPosition.Coordinate.Longitude

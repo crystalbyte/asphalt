@@ -1,33 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Device.Location;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
 using System.ComponentModel;
+using System.Windows;
 
 namespace Crystalbyte.Asphalt.Pages {
     public partial class TourDetailsPage {
 
         private const string TourStateKey = "tour";
         private bool _isNewPageInstance;
+        private bool _routeQueryCompleted;
+        private bool _isZoomed;
 
         public TourDetailsPage() {
             InitializeComponent();
-            if (!DesignerProperties.IsInDesignTool) {
-                TourSelector = App.Composition.GetExport<TourSelectionSource>();    
-            }
+            TourMap.ZoomLevelChanged += OnTourMapZoomLevelChanged;
+        }
+
+        private void OnTourMapZoomLevelChanged(object sender, MapZoomLevelChangedEventArgs e) {
+            if (_isZoomed) 
+                return;
+
+            // The method "ZoomToFit(positions)" uses the "Map.SetView(bounds)" function to scale the map.
+            // Unfortunately we have to wait until the map control has been properly initialized.
+            // The ZoomLevelChanged event serves as the "readyness" indicator.
+            // http://www.awenius.de/blog/2013/07/26/windows-phone-8-map-setview-funktioniert-erst-nach-dem-ersten-zoomlevelchanged-event/
+            ZoomToFit(Tour.Positions);
+
+            _isZoomed = true;
         }
 
         // [Import]
-        protected TourSelectionSource TourSelector { get; set; }
-
-        /// <summary>
-        /// Set or gets the current route displayed on the map.
-        /// </summary>
-        public MapRoute CurrentRoute { get; private set; }
+        protected TourSelectionSource TourSelector {
+            get {
+                return App.Composition.GetExport<TourSelectionSource>();
+            }
+        }
 
         public Tour Tour {
             get { return (Tour)DataContext; }
@@ -57,10 +73,6 @@ namespace Crystalbyte.Asphalt.Pages {
                 Tour = (Tour)State[TourStateKey];
             }
 
-            if (!Tour.IsDataLoaded) {
-                Tour.LoadData();
-            }
-
             Tour.ValidateAll();
 
             this.UpdateApplicationBar();
@@ -81,37 +93,62 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private async void RequestRoute() {
-            var positions = TourSelector.Selection.Positions;
+            if (!Tour.IsDataLoaded) {
+                await Tour.LoadData();
+            }
 
-            if (positions.Count < 2) {
+            var positions = Tour.Positions;
+
+            if (positions.Count < 2 || _routeQueryCompleted) {
                 return;
             }
+
+            Tour.IsQuerying = true;
 
             var query = QueryPool.RequestRouteQuery(
                 new List<GeoCoordinate>(
                     positions.Select(x => new GeoCoordinate(x.Latitude, x.Longitude))));
 
-            var route = await query.ExecuteAsync();
-            QueryPool.Drop(query);
+            try {
+                if (Tour.CachedRoute == null) {
+                    Tour.CachedRoute = await query.ExecuteAsync();
+                }
+                
+                DisplayRoute(Tour.CachedRoute);
 
-            UpdateMapRoute(route);
-            CenterMap(positions);
-        }
-
-        private void UpdateMapRoute(Route route) {
-            if (CurrentRoute != null) {
-                TourMap.RemoveRoute(CurrentRoute);
+                _routeQueryCompleted = true;
+            }
+            catch (COMException ex) {
+                const string message = "Unable to display route.";
+                MessageBox.Show(message, ex.Message, MessageBoxButton.OK);
+            }
+            finally {
+                QueryPool.Drop(query);
             }
 
+            Tour.IsQuerying = false;
+        }
+
+        private void ZoomToFit(ObservableCollection<Position> positions) {
+            var bounds = new LocationRectangle(
+                positions.Max(p => p.Latitude),
+                positions.Min(p => p.Longitude),
+                positions.Min(p => p.Latitude),
+                positions.Max(p => p.Longitude));
+            TourMap.SetView(bounds);
+        }
+
+        private void DisplayRoute(Route route) {
             var mapRoute = new MapRoute(route);
-            CurrentRoute = mapRoute;
             TourMap.AddRoute(mapRoute);
         }
 
-        private void CenterMap(IList<Position> positions) {
-            var centralIndex = positions.Count / 2;
-            var center = positions[centralIndex];
-            TourMap.Center = new GeoCoordinate(center.Latitude, center.Longitude);
+        private void OnChangeTypeButtonClicked(object sender, RoutedEventArgs e) {
+            
+        }
+
+        private void OnChangeReasonButtonClicked(object sender, RoutedEventArgs e) {
+            ReasonInputPrompt.IsOpen = true;
         }
     }
 }
