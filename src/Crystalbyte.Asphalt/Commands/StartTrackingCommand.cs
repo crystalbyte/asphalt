@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using directives
+
+using System;
 using System.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Crystalbyte.Asphalt.Contexts;
-using System.Windows;
+using Crystalbyte.Asphalt.Resources;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
     public sealed class StartTrackingCommand : ICommand {
-
         [Import]
         public LocationTracker LocationTracker { get; set; }
 
@@ -20,6 +20,13 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public void Execute(object parameter) {
+            var message = AppResources.RecordRouteConfirmMessage;
+            var caption = AppResources.RecordRouteConfirmCaption;
+            var result = MessageBox.Show(message, caption, MessageBoxButton.OKCancel);
+
+            if (result.HasFlag(MessageBoxResult.Cancel)) {
+                return;
+            }
             LocationTracker.StartTrackingManually();
         }
 

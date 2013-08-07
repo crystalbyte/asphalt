@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using directives
+
+using System;
 using System.Linq;
-using System.Net;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Pages {
     public partial class SettingsPage {
@@ -23,7 +21,7 @@ namespace Crystalbyte.Asphalt.Pages {
 
         private void Initialize() {
             AppSettings = App.Context.AppSettings;
-            UnitOfLengthListPicker.ItemsSource = Enum.GetValues(typeof(UnitOfLength));
+            UnitOfLengthListPicker.ItemsSource = Enum.GetValues(typeof (UnitOfLength));
         }
 
         private void OnUnitOfLengthListBoxSelectionChanged(object sender, SelectionChangedEventArgs e) {

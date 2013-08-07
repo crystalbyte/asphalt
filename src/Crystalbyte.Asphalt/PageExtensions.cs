@@ -1,17 +1,16 @@
-﻿using System;
+﻿#region Using directives
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Crystalbyte.Asphalt.Commands;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
+
+#endregion
 
 namespace Crystalbyte.Asphalt {
     internal static class PageExtensions {
-
         public static void UpdateApplicationBar(this PhoneApplicationPage page) {
             var buttonCommands = App.Composition.GetExports<IButtonCommand>()
                 .Where(x => x.IsApplicable).OrderBy(x => x.Position);
@@ -26,10 +25,13 @@ namespace Crystalbyte.Asphalt {
             page.ApplicationBar.MenuItems.AddRange(menuCommands.Select(x => x.MenuItem));
         }
 
-        private static readonly SolidColorBrush ErrorBackgroundBrush = new SolidColorBrush(Color.FromArgb(255,255,224,224));
+        private static readonly SolidColorBrush ErrorBackgroundBrush =
+            new SolidColorBrush(Color.FromArgb(255, 255, 224, 224));
+
         private static readonly Dictionary<Control, Brush> Brushes = new Dictionary<Control, Brush>();
 
-        public static void HandleBindingValidationError(this PhoneApplicationPage phoneApplicationPage, object sender, ValidationErrorEventArgs e) {
+        public static void HandleBindingValidationError(this PhoneApplicationPage phoneApplicationPage, object sender,
+                                                        ValidationErrorEventArgs e) {
             var control = e.OriginalSource as Control;
             if (control == null)
                 return;

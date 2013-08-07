@@ -24,7 +24,9 @@ namespace Crystalbyte.Asphalt {
 
         public void Shutdown(bool waitForWorkers) {
             // Enqueue one null item per worker to make each exit.
+#pragma warning disable 168
             foreach (var worker in _workers)
+#pragma warning restore 168
                 Enqueue(null);
 
             // Wait for workers to finish
@@ -65,7 +67,7 @@ namespace Crystalbyte.Asphalt {
                 if (task == null)
                     return; // This signals our exit.
 #if DEBUG
-  task.ContinueWith(t => Debug.WriteLine("Task with hash {0} has finished.", t.GetHashCode()));
+                task.ContinueWith(t => Debug.WriteLine("Task with hash {0} has finished.", t.GetHashCode()));
 #endif
                 task.RunSynchronously(); // Execute item.
             }

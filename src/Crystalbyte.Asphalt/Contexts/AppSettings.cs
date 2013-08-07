@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using directives
+
+using System;
 using System.Composition;
 using System.IO.IsolatedStorage;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
-
     [Export]
     public sealed class AppSettings : NotificationObject {
-
         private readonly IsolatedStorageSettings _isolatedStorage;
 
         public AppSettings() {
@@ -19,13 +17,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// The unit of length used for export and displaying data.
+        ///   The unit of length used for export and displaying data.
         /// </summary>
         public UnitOfLength UnitOfLength {
             get {
                 var name = NameOf(() => UnitOfLength);
                 if (_isolatedStorage.Contains(name)) {
-                    return (UnitOfLength)_isolatedStorage[name];
+                    return (UnitOfLength) _isolatedStorage[name];
                 }
                 return UnitOfLength.Kilometer;
             }

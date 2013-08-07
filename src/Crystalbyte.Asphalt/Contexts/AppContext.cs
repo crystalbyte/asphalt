@@ -1,11 +1,14 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.Collections.ObjectModel;
+using System.Composition;
 using System.Linq;
 using Crystalbyte.Asphalt.Data;
-using System.Composition;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
-
     [Export, Shared]
     public sealed class AppContext : NotificationObject {
         private bool _isSelectionEnabled;
@@ -41,6 +44,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public event EventHandler SelectionEnabledChanged;
+
         public void OnSelectionEnabledChanged(EventArgs e) {
             var handler = SelectionEnabledChanged;
             if (handler != null)
@@ -48,12 +52,12 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// A collection of recent tours.
+        ///   A collection of recent tours.
         /// </summary>
         public ObservableCollection<Tour> Tours { get; private set; }
 
         /// <summary>
-        /// A collection of recent tours grouped by date.
+        ///   A collection of recent tours grouped by date.
         /// </summary>
         public object GroupedTours {
             get {
@@ -63,26 +67,23 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        public bool IsDataLoaded {
-            get;
-            private set;
-        }
+        public bool IsDataLoaded { get; private set; }
 
         public void InvalidateData() {
             IsDataLoaded = false;
         }
 
         /// <summary>
-        /// Creates and adds a few ItemViewModel objects into the Items collection.
+        ///   Creates and adds a few ItemViewModel objects into the Items collection.
         /// </summary>
         public async void LoadData() {
             Tours.Clear();
 
             var tours = await Channels.Database.Enqueue(
                 () => LocalStorage.DataContext.Tours
-                    .Select(x => x)
-                    .OrderByDescending(x => x.StartTime)
-                    .ToArray());
+                          .Select(x => x)
+                          .OrderByDescending(x => x.StartTime)
+                          .ToArray());
 
             Tours.AddRange(tours);
 

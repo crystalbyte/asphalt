@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using directives
+
 using System.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace Crystalbyte.Asphalt {
     [Export, Shared]
     public sealed class Channels {
-
         public Channels() {
             Database = new ConcurrentQueue(1);
         }

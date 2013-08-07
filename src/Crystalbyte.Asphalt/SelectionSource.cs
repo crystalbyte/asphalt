@@ -1,9 +1,9 @@
-﻿using Crystalbyte.Asphalt.Contexts;
+﻿#region Using directives
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Crystalbyte.Asphalt.Contexts;
+
+#endregion
 
 namespace Crystalbyte.Asphalt {
     public abstract class SelectionSource<T> : NotificationObject where T : class {
@@ -16,6 +16,7 @@ namespace Crystalbyte.Asphalt {
         }
 
         private T _selection;
+
         public T Selection {
             get { return _selection; }
             set {

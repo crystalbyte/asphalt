@@ -1,12 +1,15 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.Threading.Tasks;
 using Microsoft.Phone.Maps.Services;
 
-namespace Crystalbyte.Asphalt {
+#endregion
 
+namespace Crystalbyte.Asphalt {
     /// <summary>
-    /// See limitations on query usage.
-    /// http://stackoverflow.com/questions/17784234/exception-in-reversegeocodequery
+    ///   See limitations on query usage.
+    ///   http://stackoverflow.com/questions/17784234/exception-in-reversegeocodequery
     /// </summary>
     public static class QueryExtensions {
         public static Task<T> ExecuteAsync<T>(this Query<T> query) {

@@ -1,20 +1,24 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Device.Location;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
-using Microsoft.Phone.Controls;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
-using System.ComponentModel;
-using System.Windows;
+using Microsoft.Phone.Controls;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Pages {
     public partial class TourDetailsPage {
-
         private const string TourStateKey = "tour";
         private bool _isNewPageInstance;
         private bool _routeQueryCompleted;
@@ -26,7 +30,7 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void OnTourMapZoomLevelChanged(object sender, MapZoomLevelChangedEventArgs e) {
-            if (_isZoomed) 
+            if (_isZoomed)
                 return;
 
             // The method "ZoomToFit(positions)" uses the "Map.SetView(bounds)" function to scale the map.
@@ -40,13 +44,11 @@ namespace Crystalbyte.Asphalt.Pages {
 
         // [Import]
         protected TourSelectionSource TourSelector {
-            get {
-                return App.Composition.GetExport<TourSelectionSource>();
-            }
+            get { return App.Composition.GetExport<TourSelectionSource>(); }
         }
 
         public Tour Tour {
-            get { return (Tour)DataContext; }
+            get { return (Tour) DataContext; }
             set { DataContext = value; }
         }
 
@@ -70,7 +72,7 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             if (_isNewPageInstance && Tour == null) {
-                Tour = (Tour)State[TourStateKey];
+                Tour = (Tour) State[TourStateKey];
             }
 
             Tour.ValidateAll();
@@ -80,7 +82,8 @@ namespace Crystalbyte.Asphalt.Pages {
             // We can't launch multiple queries and have to wait for previous one's to complete.
             if (Tour.IsQuerying) {
                 Tour.CivicAddressesResolved += OnTourCivicAddressesResolved;
-            } else {
+            }
+            else {
                 RequestRoute();
             }
 
@@ -113,7 +116,7 @@ namespace Crystalbyte.Asphalt.Pages {
                 if (Tour.CachedRoute == null) {
                     Tour.CachedRoute = await query.ExecuteAsync();
                 }
-                
+
                 DisplayRoute(Tour.CachedRoute);
 
                 _routeQueryCompleted = true;
@@ -143,12 +146,9 @@ namespace Crystalbyte.Asphalt.Pages {
             TourMap.AddRoute(mapRoute);
         }
 
-        private void OnChangeTypeButtonClicked(object sender, RoutedEventArgs e) {
-            
-        }
-
-        private void OnChangeReasonButtonClicked(object sender, RoutedEventArgs e) {
-            ReasonInputPrompt.IsOpen = true;
+        private void OnTourTypeSelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var picker = (ListPicker) sender;
+            Tour.Type = (TourType) picker.SelectedItem;
         }
     }
 }

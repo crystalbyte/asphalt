@@ -1,22 +1,25 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Crystalbyte.Asphalt.Resources;
 using System.Runtime.Serialization;
+using Crystalbyte.Asphalt.Resources;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
     /// <summary>
-    /// BindingModel to support validation and handling of error messages (Implements INotifyDataError)
+    ///   BindingModel to support validation and handling of error messages (Implements INotifyDataError)
     /// </summary>
-    /// <typeparam name="TBindingModel">Model to bind</typeparam>
+    /// <typeparam name="TBindingModel"> Model to bind </typeparam>
     [DataContract]
     public abstract class BindingModelBase<TBindingModel> : NotificationObject, INotifyDataErrorInfo
         where TBindingModel : BindingModelBase<TBindingModel> {
-
         private List<PropertyValidation<TBindingModel>> _validations;
         private SerializableDictionary<List<string>> _errorMessages;
 
@@ -26,9 +29,9 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         private void ListenForChanges() {
             PropertyChanged += (s, e) => {
-                if (e.PropertyName != "HasErrors" && e.PropertyName != "ErrorMessages")
-                    ValidateProperty(e.PropertyName);
-            };
+                                   if (e.PropertyName != "HasErrors" && e.PropertyName != "ErrorMessages")
+                                       ValidateProperty(e.PropertyName);
+                               };
         }
 
         public void InitializeValidation() {
@@ -53,7 +56,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         public bool HasErrors {
             get { return _errorMessages.Any(); }
         }
-        
+
         public SerializableDictionary<List<string>> ErrorMessages {
             get { return _errorMessages; }
             set { _errorMessages = value; }
@@ -110,8 +113,9 @@ namespace Crystalbyte.Asphalt.Contexts {
             RaisePropertyChanged(() => HasErrors);
             RaisePropertyChanged(() => ErrorMessages);
         }
+
         private void PerformValidation(PropertyValidation<TBindingModel> validation) {
-            if (validation.IsInvalid((TBindingModel)this)) {
+            if (validation.IsInvalid((TBindingModel) this)) {
                 AddErrorMessageForProperty(validation.PropertyName, validation.ErrorMessage);
             }
         }
@@ -119,8 +123,9 @@ namespace Crystalbyte.Asphalt.Contexts {
         private void AddErrorMessageForProperty(string propertyName, string errorMessage) {
             if (_errorMessages.ContainsKey(propertyName)) {
                 _errorMessages[propertyName].Add(errorMessage);
-            } else {
-                _errorMessages.Add(propertyName, new List<string> { errorMessage });
+            }
+            else {
+                _errorMessages.Add(propertyName, new List<string> {errorMessage});
             }
         }
 
@@ -129,7 +134,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 throw new ArgumentNullException("expression");
             MemberExpression memberExpression;
             if (expression.Body is UnaryExpression)
-                memberExpression = ((UnaryExpression)expression.Body).Operand as MemberExpression;
+                memberExpression = ((UnaryExpression) expression.Body).Operand as MemberExpression;
             else
                 memberExpression = expression.Body as MemberExpression;
             if (memberExpression == null)
@@ -142,5 +147,5 @@ namespace Crystalbyte.Asphalt.Contexts {
                 throw new ArgumentException(AppResources.ReferencedPropertyIsStatic, "expression");
             return memberExpression.Member.Name;
         }
-    }
+        }
 }

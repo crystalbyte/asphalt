@@ -109,6 +109,7 @@
     <Compile Include="Converters\AngleFormatter.cs" />
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
     <Compile Include="Converters\DistanceFormatter.cs" />
+    <Compile Include="Converters\NullTextConverter.cs" />
     <Compile Include="PropertyValidation.cs" />
     <Compile Include="Contexts\Tour.cs" />
     <Compile Include="Contexts\TourGroup.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="TourType.cs" />
     <Compile Include="UI\Dock.cs" />
     <Compile Include="UI\DockPanel.cs" />
+    <Compile Include="UI\WatermarkTextBox.cs" />
     <Compile Include="UnitOfLength.cs" />
     <Compile Include="ValidationException.cs" />
   </ItemGroup>
@@ -161,6 +163,14 @@
     <Page Include="Pages\TourDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\WatermarkTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\TrackingJumpControl.xaml">
       <SubType>Designer</SubType>
@@ -186,6 +196,9 @@
     <Resource Include="Assets\Background.jpg" />
     <Content Include="Assets\ApplicationBar\Stop.png" />
     <Content Include="Assets\ApplicationBar\Transport.Play.png" />
+    <Content Include="Assets\ApplicationIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
@@ -196,9 +209,6 @@
     <Content Include="Assets\ApplicationBar\Add.png" />
     <Content Include="Assets\ApplicationBar\Cancel.png" />
     <Content Include="Assets\ApplicationBar\Check.png" />
-    <Content Include="Assets\ApplicationIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

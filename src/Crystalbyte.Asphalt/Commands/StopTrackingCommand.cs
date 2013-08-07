@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using directives
+
+using System;
 using System.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Crystalbyte.Asphalt.Contexts;
+using Crystalbyte.Asphalt.Resources;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
     public sealed class StopTrackingCommand : ICommand {
-
         [Import]
         public LocationTracker LocationTracker { get; set; }
 
@@ -23,8 +23,8 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public void Execute(object parameter) {
-            const string caption = "Terminate recording?";
-            const string message = "A terminated route cannot be resumed.";
+            var message = AppResources.TerminateRouteConfirmMessage;
+            var caption = AppResources.TerminateRouteConfirmCaption;
             var result = MessageBox.Show(message, caption, MessageBoxButton.OKCancel);
 
             if (result.HasFlag(MessageBoxResult.Cancel)) {

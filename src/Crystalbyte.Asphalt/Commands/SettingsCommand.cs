@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using directives
+
+using System;
 using System.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Pages;
-using Microsoft.Phone.Controls;
 using Crystalbyte.Asphalt.Resources;
 using Microsoft.Phone.Shell;
 
+#endregion
+
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof(IMenuCommand))]
+    [Export(typeof (IMenuCommand))]
     public sealed class SettingsCommand : IMenuCommand {
-
         public SettingsCommand() {
-            MenuItem = new ApplicationBarMenuItem { Text = AppResources.SettingsMenuItemText };
+            MenuItem = new ApplicationBarMenuItem {Text = AppResources.SettingsMenuItemText};
             MenuItem.Click += OnMenuItemClicked;
         }
 
@@ -39,7 +37,8 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public void Execute(object parameter) {
-            Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(SettingsPage).Name), UriKind.Relative));
+            Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof (SettingsPage).Name),
+                                                UriKind.Relative));
         }
 
         public event EventHandler CanExecuteChanged;
@@ -53,10 +52,9 @@ namespace Crystalbyte.Asphalt.Commands {
         public ApplicationBarMenuItem MenuItem { get; private set; }
 
         public bool IsApplicable {
-            get {
-                return ((Frame)Application.Current.RootVisual).Content.GetType() == typeof(LandingPage);
-            }
+            get { return ((Frame) Application.Current.RootVisual).Content.GetType() == typeof (LandingPage); }
         }
+
         public int Position {
             get { return 1; }
         }

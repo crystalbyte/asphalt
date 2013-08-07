@@ -1,9 +1,11 @@
-﻿using System;
+﻿#region Using directives
+
 using System.Composition;
 using Crystalbyte.Asphalt.Contexts;
 
-namespace Crystalbyte.Asphalt {
+#endregion
 
+namespace Crystalbyte.Asphalt {
     [Export, Shared]
-    public sealed class TourSelectionSource : SelectionSource<Tour> { }
+    public sealed class TourSelectionSource : SelectionSource<Tour> {}
 }

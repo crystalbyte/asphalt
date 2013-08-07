@@ -26,27 +26,6 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Popup x:Name="ReasonInputPrompt"
-               Grid.Row="0"
-               HorizontalAlignment="Stretch"
-               VerticalAlignment="Stretch"
-               Grid.RowSpan="2">
-            <Border HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Background="Black"
-                    Opacity="0.8">
-                <Border Background="#333" Padding="20">
-                    <StackPanel>
-                        <TextBlock Margin="0,0,0,10"
-                                   Style="{StaticResource PhoneTextNormalStyle}"
-                                   Text="{Binding LocalizedResources.ChangeReasonPopupText,
-                                                  Source={StaticResource LocalizedStrings}}" />
-                        <TextBox HorizontalAlignment="Stretch" Text="{Binding Reason, Mode=TwoWay}" />
-                    </StackPanel>
-                </Border>
-            </Border>
-        </Popup>
-
         <!--  TitlePanel contains the name of the application and page title  -->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding LocalizedResources.ApplicationTitleCapital, Source={StaticResource LocalizedStrings}}" />
@@ -54,42 +33,22 @@
 
         <Grid x:Name="ContentPanel"
               Grid.Row="1"
-              Margin="12,0,12,0">
+              Margin="0,0,0,40">
+
             <ScrollViewer>
-                <ui:DockPanel Margin="0,0,0,40">
+                <ui:DockPanel>
 
-                    <!--  Type  -->
-                    <TextBlock Margin="12,15,0,0"
-                               Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.TourTypeLabelText,
-                                              Source={StaticResource LocalizedStrings}}"
-                               ui:DockPanel.Dock="Top" />
-                    <Button Click="OnChangeTypeButtonClicked"
-                            Style="{StaticResource TextButtonStyle}"
-                            ui:DockPanel.Dock="Top">
-                        <StackPanel>
-                            <TextBlock FontSize="{StaticResource PhoneFontSizeLarge}"
-                                       Style="{StaticResource PhoneTextNormalStyle}"
-                                       Text="{Binding Type}" />
-                            <TextBlock FontSize="{StaticResource PhoneFontSizeSmall}"
-                                       Foreground="{StaticResource PhoneAccentBrush}"
-                                       Style="{StaticResource PhoneTextNormalStyle}"
-                                       Text="{Binding LocalizedResources.TapToChangeText,
-                                                      Source={StaticResource LocalizedStrings}}" />
-                        </StackPanel>
-                    </Button>
-
-
-                    <TextBlock Margin="12,15,0,0"
+                    <!--  Route  -->
+                    <TextBlock Foreground="{StaticResource PhoneAccentBrush}"
                                Style="{StaticResource PhoneTextSmallStyle}"
                                Text="{Binding LocalizedResources.RouteLabelText,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
 
                     <Border Height="300"
-                            Margin="12,0,12,0"
-                            BorderBrush="{StaticResource PhoneAccentBrush}"
-                            BorderThickness="1"
+                            Margin="12,4,12,12"
+                            BorderBrush="White"
+                            BorderThickness="3"
                             ui:DockPanel.Dock="Top">
                         <Grid>
                             <StackPanel Margin="10,0"
@@ -112,29 +71,35 @@
                         </Grid>
                     </Border>
 
+                    <!--  Type  -->
+                    <TextBlock Foreground="{StaticResource PhoneAccentBrush}"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.TourTypeLabelText,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+
+                    <toolkit:ListPicker Margin="12,-1,12,0"
+                                        HorizontalAlignment="Stretch"
+                                        ItemsSource="{Binding TourTypeSource}"
+                                        SelectionChanged="OnTourTypeSelectionChanged"
+                                        ui:DockPanel.Dock="Top" />
+
                     <!--  Reason  -->
-                    <TextBlock Margin="12,15,0,0"
+                    <TextBlock Margin="12,12,0,0"
+                               Foreground="{StaticResource PhoneAccentBrush}"
                                Style="{StaticResource PhoneTextSmallStyle}"
                                Text="{Binding LocalizedResources.ReasonLabelText,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
-                    <Button Click="OnChangeReasonButtonClicked"
-                            Style="{StaticResource TextButtonStyle}"
-                            ui:DockPanel.Dock="Top">
-                        <StackPanel>
-                            <TextBlock FontSize="{StaticResource PhoneFontSizeLarge}"
-                                       Style="{StaticResource PhoneTextTitle1Style}"
-                                       Text="{Binding Reason}" />
-                            <TextBlock FontSize="{StaticResource PhoneFontSizeSmall}"
-                                       Foreground="{StaticResource PhoneAccentBrush}"
-                                       Style="{StaticResource PhoneTextNormalStyle}"
-                                       Text="{Binding LocalizedResources.TapToChangeText,
-                                                      Source={StaticResource LocalizedStrings}}" />
-                        </StackPanel>
-                    </Button>
+                    <ui:WatermarkTextBox Margin="0,-4,0,0"
+                                         WatermarkText="Reason not specified ..."
+                             HorizontalAlignment="Stretch"
+                             Text="{Binding Reason,
+                                            Mode=TwoWay}"
+                             ui:DockPanel.Dock="Top" />
 
                     <!--  Distance  -->
-                    <TextBlock Margin="12,15,0,0"
+                    <TextBlock Margin="12,12,0,0"
                                Style="{StaticResource PhoneTextSmallStyle}"
                                Text="{Binding LocalizedResources.DistanceLabelText,
                                               Source={StaticResource LocalizedStrings}}"

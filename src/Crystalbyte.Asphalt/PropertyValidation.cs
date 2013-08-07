@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Using directives
+
+using System;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
     /// <summary>
-    /// Add validation support to properties 
+    ///   Add validation support to properties
     /// </summary>
-    /// <typeparam name="TBindingModel">Model to bind</typeparam>
+    /// <typeparam name="TBindingModel"> Model to bind </typeparam>
     public class PropertyValidation<TBindingModel> where TBindingModel : BindingModelBase<TBindingModel> {
-
         private Func<TBindingModel, bool> _validationCriteria;
         private string _errorMessage;
 
@@ -35,14 +33,16 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         public bool IsInvalid(TBindingModel presentationModel) {
             if (_validationCriteria == null)
-                throw new InvalidOperationException("No criteria have been provided for this validation. (Use the 'When(..)' method.)");
+                throw new InvalidOperationException(
+                    "No criteria have been provided for this validation. (Use the 'When(..)' method.)");
             return _validationCriteria(presentationModel);
         }
 
         public string ErrorMessage {
             get {
                 if (_errorMessage == null)
-                    throw new InvalidOperationException("No error message has been set for this validation. (Use the 'Show(..)' method.)");
+                    throw new InvalidOperationException(
+                        "No error message has been set for this validation. (Use the 'Show(..)' method.)");
                 return _errorMessage;
             }
             set { _errorMessage = value; }

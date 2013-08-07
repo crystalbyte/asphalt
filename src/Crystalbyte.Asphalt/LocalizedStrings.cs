@@ -1,13 +1,18 @@
-﻿using Crystalbyte.Asphalt.Resources;
-using System.Composition;
+﻿#region Using directives
+
+using Crystalbyte.Asphalt.Resources;
+
+#endregion
 
 namespace Crystalbyte.Asphalt {
     /// <summary>
-    /// Provides access to string resources.
+    ///   Provides access to string resources.
     /// </summary>
     public sealed class LocalizedStrings {
         private static readonly AppResources AppResources = new AppResources();
 
-        public AppResources LocalizedResources { get { return AppResources; } }
+        public AppResources LocalizedResources {
+            get { return AppResources; }
+        }
     }
 }

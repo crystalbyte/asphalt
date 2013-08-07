@@ -1,15 +1,18 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.Composition;
 using System.Data.Linq;
 using System.Diagnostics;
+using System.Windows;
 using Crystalbyte.Asphalt.Commands;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
 using Windows.Devices.Geolocation;
-using System.Windows;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
-
     [Export, Shared]
     public sealed class LocationTracker : NotificationObject {
         private double _currentLatitude;
@@ -92,7 +95,8 @@ namespace Crystalbyte.Asphalt.Contexts {
         public void Update(Geoposition position) {
             CurrentPosition = position;
 
-            Debug.WriteLine("Update received at lat:{0}, lon:{1}", position.Coordinate.Latitude, position.Coordinate.Longitude);
+            Debug.WriteLine("Update received at lat:{0}, lon:{1}", position.Coordinate.Latitude,
+                            position.Coordinate.Longitude);
 
             if (LastPosition == null) {
                 LastPosition = position;
@@ -130,10 +134,10 @@ namespace Crystalbyte.Asphalt.Contexts {
                 App.InitializeGeolocator();
             }
 
-            CurrentTour = new Tour {
-                StartTime = DateTime.Now,
-                Reason = "Reason not specified"
-            };
+            CurrentTour = new Tour
+                              {
+                                  StartTime = DateTime.Now
+                              };
 
             Debug.WriteLine("Submitting tour (Id = {0}) ...", CurrentTour.Id);
 
@@ -145,7 +149,6 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private async void StopTracking() {
-
             if (CurrentTour.Positions.Count < 2) {
                 var caption = AppResources.InsufficientDataCaption;
                 var message = AppResources.InsufficientDataMessage;
@@ -162,9 +165,9 @@ namespace Crystalbyte.Asphalt.Contexts {
             tour.CalculateDistance();
 
             await Channels.Database.Enqueue(() => {
-                LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-            });
+                                                LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
+                                                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+                                            });
 
             Debug.WriteLine("Submitting positions ...");
             foreach (var pos in tour.Positions) {
@@ -172,9 +175,9 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
 
             await Channels.Database.Enqueue(() => {
-                LocalStorage.DataContext.Positions.InsertAllOnSubmit(tour.Positions);
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-            });
+                                                LocalStorage.DataContext.Positions.InsertAllOnSubmit(tour.Positions);
+                                                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+                                            });
 
             Debug.WriteLine("Changes successfully submitted.");
 
@@ -189,10 +192,10 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private async void OnCivicAddressesResolved(object sender, EventArgs e) {
-            var tour = (Tour)sender;
+            var tour = (Tour) sender;
             tour.CivicAddressesResolved -= OnCivicAddressesResolved;
             await Channels.Database.Enqueue(() =>
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+                                            LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
         }
 
         private void NotifyStopTracking() {
@@ -221,11 +224,12 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private void UpdateCurrentTour() {
-            CurrentTour.Positions.Add(new Position {
-                TimeStamp = CurrentPosition.Coordinate.Timestamp.Date,
-                Latitude = CurrentPosition.Coordinate.Latitude,
-                Longitude = CurrentPosition.Coordinate.Longitude
-            });
+            CurrentTour.Positions.Add(new Position
+                                          {
+                                              TimeStamp = CurrentPosition.Coordinate.Timestamp.Date,
+                                              Latitude = CurrentPosition.Coordinate.Latitude,
+                                              Longitude = CurrentPosition.Coordinate.Longitude
+                                          });
 
             if (App.IsRunningInBackground)
                 return;
@@ -238,9 +242,9 @@ namespace Crystalbyte.Asphalt.Contexts {
             var distance = Haversine.Delta(CurrentPosition.Coordinate, LastPosition.Coordinate);
             var timeElapsed = CurrentPosition.Coordinate.Timestamp.Subtract(LastPosition.Coordinate.Timestamp);
 
-            var distanceInMeters = distance * 1000;
+            var distanceInMeters = distance*1000;
             var timeElapsedInSeconds = timeElapsed.TotalSeconds;
-            return distanceInMeters / timeElapsedInSeconds;
+            return distanceInMeters/timeElapsedInSeconds;
         }
 
         public double CurrentLatitude {

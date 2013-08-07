@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using directives
+
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Converters {
     public sealed class BooleanToVisibilityConverter : IValueConverter {
@@ -19,7 +19,7 @@ namespace Crystalbyte.Asphalt.Converters {
                 return b ? Visibility.Collapsed : Visibility.Visible;
             }
 
-            return b ? Visibility.Visible: Visibility.Collapsed;
+            return b ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {

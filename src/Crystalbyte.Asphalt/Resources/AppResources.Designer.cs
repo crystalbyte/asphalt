@@ -214,6 +214,33 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reason not specified.
+        /// </summary>
+        public static string ReasonNotSpecified {
+            get {
+                return ResourceManager.GetString("ReasonNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start recording?.
+        /// </summary>
+        public static string RecordRouteConfirmCaption {
+            get {
+                return ResourceManager.GetString("RecordRouteConfirmCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your phone&apos;s geolocator will record your route until you manually press the stop button..
+        /// </summary>
+        public static string RecordRouteConfirmMessage {
+            get {
+                return ResourceManager.GetString("RecordRouteConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The referenced property is a static property.
         /// </summary>
         public static string ReferencedPropertyIsStatic {
@@ -291,6 +318,24 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string TapToChangeText {
             get {
                 return ResourceManager.GetString("TapToChangeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminate route?.
+        /// </summary>
+        public static string TerminateRouteConfirmCaption {
+            get {
+                return ResourceManager.GetString("TerminateRouteConfirmCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A terminated route cannot be resumed..
+        /// </summary>
+        public static string TerminateRouteConfirmMessage {
+            get {
+                return ResourceManager.GetString("TerminateRouteConfirmMessage", resourceCulture);
             }
         }
         

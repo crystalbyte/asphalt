@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Using directives
+
+using System;
 using System.Windows;
 using System.Windows.Threading;
+
+#endregion
 
 namespace Crystalbyte.Asphalt {
     public static class SmartDispatcher {
@@ -18,10 +17,10 @@ namespace Crystalbyte.Asphalt {
         public static void InvokeAsync(Action action) {
             if (!CurrentDispatcher.CheckAccess()) {
                 CurrentDispatcher.BeginInvoke(action);
-            } else {
+            }
+            else {
                 action();
             }
         }
-
     }
 }

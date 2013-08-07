@@ -1,21 +1,22 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Crystalbyte.Asphalt.Contexts;
+﻿#region Using directives
+
+using System;
 using System.Composition;
-using System.Data.Linq;
-using System.Windows;
-using Windows.Storage;
+using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Windows.Storage;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Data {
-
     [Export, Shared]
     public sealed class LocalStorage {
-
         private const string ImagePath = "Images";
 
         [Import]
@@ -40,7 +41,7 @@ namespace Crystalbyte.Asphalt.Data {
             var imageFolder = await local.GetFolderAsync(ImagePath);
 
             var file = await imageFolder.CreateFileAsync(name,
-            CreationCollisionOption.FailIfExists);
+                                                         CreationCollisionOption.FailIfExists);
 
             using (var sr = new BinaryReader(stream)) {
                 var bytes = sr.ReadBytes(Convert.ToInt32(stream.Length));
@@ -85,7 +86,7 @@ namespace Crystalbyte.Asphalt.Data {
         }
 
         private async Task InitializeStorage() {
-            var connectionString = (string)Application.Current.Resources["DefaultConnectionString"];
+            var connectionString = (string) Application.Current.Resources["DefaultConnectionString"];
             await IntializeDatabaseAsync(connectionString);
 
             var local = ApplicationData.Current.LocalFolder;
@@ -94,13 +95,13 @@ namespace Crystalbyte.Asphalt.Data {
 
         private Task IntializeDatabaseAsync(string connectionString) {
             return Channels.Database.Enqueue(() => {
-                Debug.WriteLine("ThreadId: {0}", System.Threading.Thread.CurrentThread.ManagedThreadId);
+                                                 Debug.WriteLine("ThreadId: {0}", Thread.CurrentThread.ManagedThreadId);
 
-                DataContext = new AsphaltDataContext(connectionString);
-                if (!DataContext.DatabaseExists()) {
-                    DataContext.CreateDatabase();
-                }
-            });
+                                                 DataContext = new AsphaltDataContext(connectionString);
+                                                 if (!DataContext.DatabaseExists()) {
+                                                     DataContext.CreateDatabase();
+                                                 }
+                                             });
         }
     }
 }

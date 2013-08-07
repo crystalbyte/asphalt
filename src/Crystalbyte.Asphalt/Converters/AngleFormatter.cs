@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using directives
+
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Converters {
     public sealed class AngleFormatter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            var l = (double)value;
+            var l = (double) value;
 
-            if (parameter is string && (string)parameter == "lat") {
+            if (parameter is string && (string) parameter == "lat") {
                 return ParseLatitude(l);
             }
 
@@ -29,10 +29,10 @@ namespace Crystalbyte.Asphalt.Converters {
 
             var degrees = Math.Truncate(value);
 
-            value = (value - degrees) * 60;       //not Value = (Value - degrees) / 60;
+            value = (value - degrees)*60; //not Value = (Value - degrees) / 60;
 
             var minutes = Math.Truncate(value);
-            var seconds = Math.Round((value - minutes) * 60, 3); //not Value = (Value - degrees) / 60;
+            var seconds = Math.Round((value - minutes)*60, 3); //not Value = (Value - degrees) / 60;
 
             return string.Format("{0}° {1}′ {2}″ {3}", degrees, minutes, seconds, direction);
         }
@@ -44,10 +44,10 @@ namespace Crystalbyte.Asphalt.Converters {
 
             var degrees = Math.Truncate(value);
 
-            value = (value - degrees) * 60;       //not Value = (Value - degrees) / 60;
+            value = (value - degrees)*60; //not Value = (Value - degrees) / 60;
 
             var minutes = Math.Truncate(value);
-            var seconds = Math.Round((value - minutes) * 60, 3); //not Value = (Value - degrees) / 60;
+            var seconds = Math.Round((value - minutes)*60, 3); //not Value = (Value - degrees) / 60;
 
             return string.Format("{0}° {1}′ {2}″ {3}", degrees, minutes, seconds, direction);
         }

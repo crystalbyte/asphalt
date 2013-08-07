@@ -1,18 +1,22 @@
-﻿using System.Collections.ObjectModel;
+﻿#region Using directives
+
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Device.Location;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 using Crystalbyte.Asphalt.Data;
 using Microsoft.Phone.Maps.Services;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
-
     [DataContract, Table]
     [DebuggerDisplay("Id = {Id}")]
     public sealed class Tour : BindingModelBase<Tour> {
@@ -92,17 +96,20 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private async void ResolveCivicAddressesInternal() {
-
             IsQuerying = true;
 
             var first = Positions.First();
-            var startQuery = QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate { Latitude = first.Latitude, Longitude = first.Longitude });
+            var startQuery =
+                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate
+                                                         {Latitude = first.Latitude, Longitude = first.Longitude});
             var start = await startQuery.ExecuteAsync();
             QueryPool.Drop(startQuery);
             SetOrigin(start);
 
             var last = Positions.Last();
-            var stopQuery = QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate { Latitude = last.Latitude, Longitude = last.Longitude });
+            var stopQuery =
+                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate
+                                                         {Latitude = last.Latitude, Longitude = last.Longitude});
             var stop = await stopQuery.ExecuteAsync();
             QueryPool.Drop(stopQuery);
             SetDestination(stop);
@@ -137,7 +144,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
             var address = locations[0].Information.Address;
             Origin = string.Format("{0} {1}, {2} {3}", address.Street, address.HouseNumber, address.PostalCode,
-                                        address.State);
+                                   address.State);
         }
 
         [OnDeserialized]
@@ -255,10 +262,10 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             var positions = await Channels.Database.Enqueue(
                 () => LocalStorage.DataContext.Positions
-                    .Where(x => x.TourId == id)
-                    .Select(x => x)
-                    .OrderBy(x => x.TimeStamp)
-                    .ToArray());
+                          .Where(x => x.TourId == id)
+                          .Select(x => x)
+                          .OrderBy(x => x.TimeStamp)
+                          .ToArray());
 
             Positions.AddRange(positions);
             OnPositionsRestored(EventArgs.Empty);
@@ -305,6 +312,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Reason);
                 _reason = value;
                 RaisePropertyChanged(() => Reason);
+                CommitChanges();
             }
         }
 
@@ -323,7 +331,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// Gets or sets the accumulated distance for all recorded waypoints.
+        ///   Gets or sets the accumulated distance for all recorded waypoints.
         /// </summary>
         [DataMember, Column(CanBeNull = false)]
         public double Distance {
@@ -379,11 +387,16 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Type);
                 _type = value;
                 RaisePropertyChanged(() => Type);
+                CommitChanges();
             }
         }
 
+        private void CommitChanges() {
+            Channels.Database.Enqueue(() => LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+        }
+
         public IEnumerable<TourType> TourTypeSource {
-            get { return Enum.GetValues(typeof(TourType)).OfType<TourType>(); }
+            get { return Enum.GetValues(typeof (TourType)).OfType<TourType>(); }
         }
 
         public bool IsEditing {

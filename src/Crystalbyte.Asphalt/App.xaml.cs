@@ -1,41 +1,44 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
+using System.Composition.Hosting;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
+using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using System.Composition.Hosting;
 using Windows.Devices.Geolocation;
-using Crystalbyte.Asphalt.Data;
+
+#endregion
 
 namespace Crystalbyte.Asphalt {
     public partial class App {
-
         /// <summary>
-        /// A static ViewModel used by the views to bind against.
+        ///   A static ViewModel used by the views to bind against.
         /// </summary>
-        /// <returns>The main viewmodel object.</returns>
+        /// <returns> The main viewmodel object. </returns>
         public static AppContext Context {
             get { return Composition.GetExport<AppContext>(); }
         }
 
         /// <summary>
-        /// Provides easy access to the root frame of the Phone Application.
+        ///   Provides easy access to the root frame of the Phone Application.
         /// </summary>
-        /// <returns>The root frame of the Phone Application.</returns>
+        /// <returns> The root frame of the Phone Application. </returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
 
         /// <summary>
-        /// Gets the composition host container.
+        ///   Gets the composition host container.
         /// </summary>
         public static CompositionHost Composition { get; set; }
 
         /// <summary>
-        /// Constructor for the Application object.
+        ///   Constructor for the Application object.
         /// </summary>
         public App() {
             // Global handler for uncaught exceptions.
@@ -96,7 +99,7 @@ namespace Crystalbyte.Asphalt {
 
         private static void ComposeApplication() {
             var config = new ContainerConfiguration()
-                .WithAssembly(typeof(App).GetTypeInfo().Assembly);
+                .WithAssembly(typeof (App).GetTypeInfo().Assembly);
 
             Composition = config.CreateContainer();
         }
@@ -106,28 +109,28 @@ namespace Crystalbyte.Asphalt {
         }
 
         public static void InitializeGeolocator() {
-            Geolocator = new Geolocator {
-                DesiredAccuracy = PositionAccuracy.High,
+            Geolocator = new Geolocator
+                             {
+                                 DesiredAccuracy = PositionAccuracy.High,
 #if DEBUG
-                ReportInterval = 1000
+                                 ReportInterval = 1000
 #else
                 ReportInterval = 15000
 #endif
-            };
+                             };
             Geolocator.PositionChanged += OnGeolocatorPositionChanged;
         }
 
         public static Geolocator Geolocator { get; private set; }
 
         /// <summary>
-        /// Returns <code>true</code> if the application is running in the background, <code>false</code> if not.
+        ///   Returns <code>true</code> if the application is running in the background, <code>false</code> if not.
         /// </summary>
         public static bool IsRunningInBackground { get; private set; }
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void OnApplicationActivated(object sender, ActivatedEventArgs e) {
-
             IsRunningInBackground = false;
 
             // App has been tombstoned, we need to reactivate its state
@@ -263,7 +266,7 @@ namespace Crystalbyte.Asphalt {
                 //
                 // If a compiler error is hit then ResourceFlowDirection is missing from
                 // the resource file.
-                var flow = (FlowDirection)Enum.Parse(typeof(FlowDirection), AppResources.ResourceFlowDirection);
+                var flow = (FlowDirection) Enum.Parse(typeof (FlowDirection), AppResources.ResourceFlowDirection);
                 RootFrame.FlowDirection = flow;
             }
             catch {
