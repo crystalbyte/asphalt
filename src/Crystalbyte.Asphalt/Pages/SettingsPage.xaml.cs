@@ -19,6 +19,12 @@ namespace Crystalbyte.Asphalt.Pages {
             set { DataContext = value; }
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
+            base.OnNavigatedTo(e);
+
+            this.UpdateApplicationBar();
+        }
+
         private void Initialize() {
             AppSettings = App.Context.AppSettings;
             UnitOfLengthListPicker.ItemsSource = Enum.GetValues(typeof (UnitOfLength));

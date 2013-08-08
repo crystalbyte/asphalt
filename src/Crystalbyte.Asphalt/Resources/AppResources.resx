@@ -166,39 +166,36 @@
     <value>tracking</value>
     <comment>LandingPage.xaml</comment>
   </data>
-  <data name="EstimatedMileageLabelText" xml:space="preserve">
+  <data name="EstimatedMileageLabel" xml:space="preserve">
     <value>Estimated current mileage</value>
   </data>
-  <data name="DestinationLabelText" xml:space="preserve">
+  <data name="DestinationLabel" xml:space="preserve">
     <value>Destination</value>
     <comment>TourDetailsPage.xaml</comment>
   </data>
-  <data name="OriginLabelText" xml:space="preserve">
+  <data name="OriginLabel" xml:space="preserve">
     <value>Origin</value>
   </data>
-  <data name="ReasonLabelText" xml:space="preserve">
+  <data name="ReasonLabel" xml:space="preserve">
     <value>Reason</value>
   </data>
-  <data name="StartTimeLabelText" xml:space="preserve">
+  <data name="StartTimeLabel" xml:space="preserve">
     <value>Begin</value>
   </data>
-  <data name="StopTimeLabelText" xml:space="preserve">
+  <data name="StopTimeLabel" xml:space="preserve">
     <value>End</value>
   </data>
   <data name="UnitOfLengthDescriptionText" xml:space="preserve">
-    <value>Sets the preferred unit of length for displaying distances</value>
+    <value>Sets the preferred unit of length for export and visual output.</value>
   </data>
-  <data name="RouteLabelText" xml:space="preserve">
+  <data name="RouteLabel" xml:space="preserve">
     <value>Estimated Route</value>
   </data>
-  <data name="TourTypeLabelText" xml:space="preserve">
+  <data name="TourTypeLabel" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="LoadingText" xml:space="preserve">
     <value>Loading ...</value>
-  </data>
-  <data name="TapToChangeText" xml:space="preserve">
-    <value>Tap to change</value>
   </data>
   <data name="InsufficientDataCaption" xml:space="preserve">
     <value>Insufficient data</value>
@@ -209,7 +206,7 @@
   <data name="ChangeReasonPopupText" xml:space="preserve">
     <value>Enter a new reason for the current tour.</value>
   </data>
-  <data name="DistanceLabelText" xml:space="preserve">
+  <data name="DistanceLabel" xml:space="preserve">
     <value>Distance</value>
   </data>
   <data name="EstimatingRoute" xml:space="preserve">
@@ -230,5 +227,20 @@
   </data>
   <data name="TerminateRouteConfirmMessage" xml:space="preserve">
     <value>A terminated route cannot be resumed.</value>
+  </data>
+  <data name="DeleteRouteConfirmCaption" xml:space="preserve">
+    <value>Delete route?</value>
+  </data>
+  <data name="DeleteRouteConfirmMessage" xml:space="preserve">
+    <value>This action cannot be undone.</value>
+  </data>
+  <data name="ExportButtonText" xml:space="preserve">
+    <value>export</value>
+  </data>
+  <data name="MovementDetectionDescription" xml:space="preserve">
+    <value>The app will automatically start and stop recordings for new routes based on you traveling speed.</value>
+  </data>
+  <data name="MovementDetectionLabel" xml:space="preserve">
+    <value>Automated movement detection</value>
   </data>
 </root>

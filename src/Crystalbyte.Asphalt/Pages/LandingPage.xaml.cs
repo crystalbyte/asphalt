@@ -3,11 +3,14 @@
 using System;
 using System.Data.Linq;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
+using Crystalbyte.Asphalt.Resources;
 using Microsoft.Phone.Controls;
 using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
@@ -68,6 +71,14 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private async void OnDeleteTourMenuItemClicked(object sender, RoutedEventArgs e) {
+
+            var caption = AppResources.DeleteRouteConfirmCaption;
+            var message = AppResources.DeleteRouteConfirmMessage;
+            var result = MessageBox.Show(message, caption, MessageBoxButton.OKCancel);
+            if (result.HasFlag(MessageBoxResult.Cancel)) {
+                return;
+            }
+
             var item = (MenuItem) sender;
             var tour = (Tour) item.DataContext;
 
@@ -131,6 +142,18 @@ namespace Crystalbyte.Asphalt.Pages {
             TourSelectionSource.Selection = tour;
             NavigationService.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof (TourDetailsPage).Name),
                                                UriKind.Relative));
+        }
+
+        private void OnToursSelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var selector = (LongListMultiSelector) sender;
+
+            var selections = TourSelectionSource.Selections;
+            selections.Clear();
+
+            if (selector.SelectedItems == null) {
+                return;
+            }
+            selections.AddRange(selector.SelectedItems.Cast<Tour>());
         }
     }
 }

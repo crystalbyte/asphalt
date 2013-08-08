@@ -31,9 +31,7 @@
             <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding LocalizedResources.ApplicationTitleCapital, Source={StaticResource LocalizedStrings}}" />
         </StackPanel>
 
-        <Grid x:Name="ContentPanel"
-              Grid.Row="1"
-              Margin="0,0,0,40">
+        <Grid x:Name="ContentPanel" Grid.Row="1">
 
             <ScrollViewer>
                 <ui:DockPanel>
@@ -41,7 +39,7 @@
                     <!--  Route  -->
                     <TextBlock Foreground="{StaticResource PhoneAccentBrush}"
                                Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.RouteLabelText,
+                               Text="{Binding LocalizedResources.RouteLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
 
@@ -74,7 +72,7 @@
                     <!--  Type  -->
                     <TextBlock Foreground="{StaticResource PhoneAccentBrush}"
                                Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.TourTypeLabelText,
+                               Text="{Binding LocalizedResources.TourTypeLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
 
@@ -88,20 +86,22 @@
                     <TextBlock Margin="12,12,0,0"
                                Foreground="{StaticResource PhoneAccentBrush}"
                                Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.ReasonLabelText,
+                               Text="{Binding LocalizedResources.ReasonLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <ui:WatermarkTextBox Margin="0,-4,0,0"
+                                         HorizontalAlignment="Stretch"
+                                         GotFocus="OnReasonInputFormGotFocus"
+                                         LostFocus="OnReasonInputFormLostFocus"
+                                         Text="{Binding Reason,
+                                                        Mode=TwoWay}"
                                          WatermarkText="Reason not specified ..."
-                             HorizontalAlignment="Stretch"
-                             Text="{Binding Reason,
-                                            Mode=TwoWay}"
-                             ui:DockPanel.Dock="Top" />
+                                         ui:DockPanel.Dock="Top" />
 
                     <!--  Distance  -->
                     <TextBlock Margin="12,12,0,0"
                                Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.DistanceLabelText,
+                               Text="{Binding LocalizedResources.DistanceLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
@@ -112,7 +112,7 @@
                     <!--  Start  -->
                     <TextBlock Margin="12,15,0,0"
                                Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.StartTimeLabelText,
+                               Text="{Binding LocalizedResources.StartTimeLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
@@ -123,7 +123,7 @@
                     <!--  Origin  -->
                     <TextBlock Margin="12,15,0,0"
                                Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.OriginLabelText,
+                               Text="{Binding LocalizedResources.OriginLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <TextBlock FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -139,7 +139,7 @@
                     <!--  Stop  -->
                     <TextBlock Margin="12,15,0,0"
                                Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.StopTimeLabelText,
+                               Text="{Binding LocalizedResources.StopTimeLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
@@ -150,13 +150,15 @@
                     <!--  Destination  -->
                     <TextBlock Margin="12,15,0,0"
                                Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.DestinationLabelText,
+                               Text="{Binding LocalizedResources.DestinationLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                                Text="{Binding Destination}"
                                ui:DockPanel.Dock="Top" />
-                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}" ui:DockPanel.Dock="Top">
+                    <TextBlock Margin="12,0,0,20"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               ui:DockPanel.Dock="Top">
                         <Run Text="{Binding DestinationLatitude, Converter={StaticResource AngleFormatter}, ConverterParameter=lat}" />
                         <Run Text=" - " />
                         <Run Text="{Binding DestinationLongitude, Converter={StaticResource AngleFormatter}}" />

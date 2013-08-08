@@ -7,6 +7,7 @@
                             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
                             xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+                            xmlns:ui="clr-namespace:Crystalbyte.Asphalt.UI"
                             FontFamily="{StaticResource PhoneFontFamilyNormal}"
                             FontSize="{StaticResource PhoneFontSizeNormal}"
                             Foreground="{StaticResource PhoneForegroundBrush}"
@@ -21,6 +22,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--
@@ -54,33 +56,35 @@
             <phone:PanoramaItem Header="{Binding LocalizedResources.TrackingPanoramaItemTitle, Source={StaticResource LocalizedStrings}}">
                 <!--  Single line list with text wrapping  -->
                 <Border DataContext="{Binding LocationTracker}">
-                    <StackPanel Orientation="Vertical">
-                        <StackPanel Margin="0" Orientation="Horizontal">
-                            <Button Margin="12,0,0,0"
-                                    Command="{Binding StartTrackingCommand}"
-                                    Style="{StaticResource PlayButtonStyle}"
-                                    Visibility="{Binding IsTracking,
-                                                         Converter={StaticResource BooleanToVisibilityConverter},
-                                                         ConverterParameter=!}"
-                                    toolkit:TiltEffect.IsTiltEnabled="True">
-                                <StackPanel Margin="0,-6,0,0">
-                                    <TextBlock Style="{StaticResource PhoneTextLargeStyle}">Start</TextBlock>
-                                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="Begins the recording of a new tour" />
-                                </StackPanel>
-                            </Button>
-                            <Button Margin="12,0,0,0"
-                                    Command="{Binding StopTrackingCommand}"
-                                    Style="{StaticResource StopButtonStyle}"
-                                    Visibility="{Binding IsTracking,
-                                                         Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    toolkit:TiltEffect.IsTiltEnabled="True">
-                                <StackPanel Margin="0,-6,0,0">
-                                    <TextBlock Style="{StaticResource PhoneTextLargeStyle}">Stop</TextBlock>
-                                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}">Terminates the current recording.</TextBlock>
-                                </StackPanel>
-                            </Button>
+                    <ui:DockPanel LastChildFill="True">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Margin="0" Orientation="Horizontal">
+                                <Button Margin="12,0,0,0"
+                                        Command="{Binding StartTrackingCommand}"
+                                        Style="{StaticResource PlayButtonStyle}"
+                                        Visibility="{Binding IsTracking,
+                                                             Converter={StaticResource BooleanToVisibilityConverter},
+                                                             ConverterParameter=!}"
+                                        toolkit:TiltEffect.IsTiltEnabled="True">
+                                    <StackPanel Margin="2,-6,0,0">
+                                        <TextBlock Style="{StaticResource PhoneTextLargeStyle}">Start</TextBlock>
+                                        <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="Start recording a new tour" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Margin="12,0,0,0"
+                                        Command="{Binding StopTrackingCommand}"
+                                        Style="{StaticResource StopButtonStyle}"
+                                        Visibility="{Binding IsTracking,
+                                                             Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        toolkit:TiltEffect.IsTiltEnabled="True">
+                                    <StackPanel Margin="2,-6,0,0">
+                                        <TextBlock Style="{StaticResource PhoneTextLargeStyle}">Stop</TextBlock>
+                                        <TextBlock Style="{StaticResource PhoneTextSmallStyle}">Terminate current recording.</TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
+                    </ui:DockPanel>
                 </Border>
             </phone:PanoramaItem>
             <phone:PanoramaItem Header="{Binding LocalizedResources.ToursPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
@@ -91,6 +95,7 @@
                                                                             Mode=TwoWay}"
                                                ItemsSource="{Binding GroupedTours,
                                                                      Mode=OneWay}"
+                                               SelectionChanged="OnToursSelectionChanged"
                                                Tap="OnTourTapped">
                     <toolkit:LongListMultiSelector.JumpListStyle>
                         <Style TargetType="toolkit:LongListMultiSelector">

@@ -95,10 +95,11 @@
     </Compile>
     <Compile Include="Channels.cs" />
     <Compile Include="CollectionExtensions.cs" />
-    <Compile Include="Commands\CancelCommand.cs" />
+    <Compile Include="Commands\ExportCommand.cs" />
+    <Compile Include="Commands\NavigateBackCommand.cs" />
     <Compile Include="Commands\StopTrackingCommand.cs" />
-    <Compile Include="Commands\IButtonCommand.cs" />
-    <Compile Include="Commands\IMenuCommand.cs" />
+    <Compile Include="Commands\IAppBarButtonCommand.cs" />
+    <Compile Include="Commands\IAppBarMenuCommand.cs" />
     <Compile Include="Commands\SettingsCommand.cs" />
     <Compile Include="Commands\StartTrackingCommand.cs" />
     <Compile Include="ConcurrentQueue.cs" />
@@ -110,6 +111,10 @@
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
     <Compile Include="Converters\DistanceFormatter.cs" />
     <Compile Include="Converters\NullTextConverter.cs" />
+    <Compile Include="Converters\UnitOfLengthFormatter.cs" />
+    <Compile Include="Pages\ExportPage.xaml.cs">
+      <DependentUpon>ExportPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PropertyValidation.cs" />
     <Compile Include="Contexts\Tour.cs" />
     <Compile Include="Contexts\TourGroup.cs" />
@@ -117,12 +122,10 @@
     <Compile Include="ReverseGeocodeQueryPool.cs" />
     <Compile Include="SelectionSource.cs" />
     <Compile Include="SmartDispatcher.cs" />
+    <Compile Include="Speed.cs" />
     <Compile Include="TourSelectionSource.cs" />
     <Compile Include="Pages\TourDetailsPage.xaml.cs">
       <DependentUpon>TourDetailsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\TrackingJumpControl.xaml.cs">
-      <DependentUpon>TrackingJumpControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="TourState.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
@@ -160,6 +163,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Pages\ExportPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\TourDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -171,10 +178,6 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UI\TrackingJumpControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\LandingPage.xaml">
       <SubType>Designer</SubType>
@@ -194,8 +197,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Background.jpg" />
+    <Content Include="Assets\ApplicationBar\Back.png" />
+    <Content Include="Assets\ApplicationBar\Save.png" />
     <Content Include="Assets\ApplicationBar\Stop.png" />
     <Content Include="Assets\ApplicationBar\Transport.Play.png" />
+    <Content Include="Assets\ApplicationBar\Upload.png" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

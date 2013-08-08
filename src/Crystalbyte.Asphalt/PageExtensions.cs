@@ -12,13 +12,13 @@ using Microsoft.Phone.Controls;
 namespace Crystalbyte.Asphalt {
     internal static class PageExtensions {
         public static void UpdateApplicationBar(this PhoneApplicationPage page) {
-            var buttonCommands = App.Composition.GetExports<IButtonCommand>()
+            var buttonCommands = App.Composition.GetExports<IAppBarButtonCommand>()
                 .Where(x => x.IsApplicable).OrderBy(x => x.Position);
 
             page.ApplicationBar.Buttons.Clear();
             page.ApplicationBar.Buttons.AddRange(buttonCommands.Select(x => x.Button));
 
-            var menuCommands = App.Composition.GetExports<IMenuCommand>()
+            var menuCommands = App.Composition.GetExports<IAppBarMenuCommand>()
                 .Where(x => x.IsApplicable).OrderBy(x => x.Position);
 
             page.ApplicationBar.MenuItems.Clear();

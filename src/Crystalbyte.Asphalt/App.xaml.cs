@@ -19,11 +19,23 @@ using Windows.Devices.Geolocation;
 namespace Crystalbyte.Asphalt {
     public partial class App {
         /// <summary>
-        ///   A static ViewModel used by the views to bind against.
+        ///   Gets the main context object.
         /// </summary>
-        /// <returns> The main viewmodel object. </returns>
+        /// <returns> The main context object. </returns>
         public static AppContext Context {
             get { return Composition.GetExport<AppContext>(); }
+        }
+
+        public static AppSettings AppSettings {
+            get { return Composition.GetExport<AppSettings>(); }
+        }
+
+        public static event EventHandler GeolocatorTombstoned;
+
+        public static void OnGeolocatorTombstoned(EventArgs e) {
+            var handler = GeolocatorTombstoned;
+            if (handler != null)
+                handler(null, e);
         }
 
         /// <summary>
@@ -82,15 +94,21 @@ namespace Crystalbyte.Asphalt {
         }
 
         private static void InitializeApplication() {
-            InitializeGeolocator();
-        }
+            if (AppSettings.IsMovementDetectionEnabled) {
+                InitializeGeolocator();
+            }
+        }        
 
         public static void TombstoneGeolocator() {
-            if (Geolocator == null)
-                return;
+            Debug.WriteLine("Geolocator tombstoning ...");
 
-            Geolocator.PositionChanged -= OnGeolocatorPositionChanged;
-            Geolocator = null;
+            if (Geolocator != null) {
+                Geolocator.PositionChanged -= OnGeolocatorPositionChanged;
+                Geolocator = null;
+            }
+
+            OnGeolocatorTombstoned(EventArgs.Empty);
+            Debug.WriteLine("Geolocator tombstoned.");
         }
 
         private static void OnGeolocatorPositionChanged(Geolocator sender, PositionChangedEventArgs args) {
@@ -99,7 +117,7 @@ namespace Crystalbyte.Asphalt {
 
         private static void ComposeApplication() {
             var config = new ContainerConfiguration()
-                .WithAssembly(typeof (App).GetTypeInfo().Assembly);
+                .WithAssembly(typeof(App).GetTypeInfo().Assembly);
 
             Composition = config.CreateContainer();
         }
@@ -109,16 +127,13 @@ namespace Crystalbyte.Asphalt {
         }
 
         public static void InitializeGeolocator() {
-            Geolocator = new Geolocator
-                             {
-                                 DesiredAccuracy = PositionAccuracy.High,
-#if DEBUG
-                                 ReportInterval = 1000
-#else
-                ReportInterval = 15000
-#endif
-                             };
+            Debug.WriteLine("Geolocator initializing ...");
+            Geolocator = new Geolocator {
+                DesiredAccuracy = PositionAccuracy.High,
+                ReportInterval = 7500
+            };
             Geolocator.PositionChanged += OnGeolocatorPositionChanged;
+            Debug.WriteLine("Geolocator initialized.");
         }
 
         public static Geolocator Geolocator { get; private set; }
@@ -266,7 +281,7 @@ namespace Crystalbyte.Asphalt {
                 //
                 // If a compiler error is hit then ResourceFlowDirection is missing from
                 // the resource file.
-                var flow = (FlowDirection) Enum.Parse(typeof (FlowDirection), AppResources.ResourceFlowDirection);
+                var flow = (FlowDirection)Enum.Parse(typeof(FlowDirection), AppResources.ResourceFlowDirection);
                 RootFrame.FlowDirection = flow;
             }
             catch {

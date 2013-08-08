@@ -13,8 +13,8 @@ using Microsoft.Phone.Shell;
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof (IMenuCommand))]
-    public sealed class SettingsCommand : IMenuCommand {
+    [Export(typeof (IAppBarMenuCommand))]
+    public sealed class SettingsCommand : IAppBarMenuCommand {
         public SettingsCommand() {
             MenuItem = new ApplicationBarMenuItem {Text = AppResources.SettingsMenuItemText};
             MenuItem.Click += OnMenuItemClicked;

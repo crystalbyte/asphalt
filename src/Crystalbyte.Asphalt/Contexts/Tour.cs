@@ -36,6 +36,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         private double _destinationLongitude;
         private bool _isQuerying;
         private double _distance;
+        private Guid _uniqueId;
 
         public Tour() {
             Construct();
@@ -100,16 +101,14 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             var first = Positions.First();
             var startQuery =
-                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate
-                                                         {Latitude = first.Latitude, Longitude = first.Longitude});
+                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate { Latitude = first.Latitude, Longitude = first.Longitude });
             var start = await startQuery.ExecuteAsync();
             QueryPool.Drop(startQuery);
             SetOrigin(start);
 
             var last = Positions.Last();
             var stopQuery =
-                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate
-                                                         {Latitude = last.Latitude, Longitude = last.Longitude});
+                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate { Latitude = last.Latitude, Longitude = last.Longitude });
             var stop = await stopQuery.ExecuteAsync();
             QueryPool.Drop(stopQuery);
             SetDestination(stop);
@@ -156,6 +155,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             get { return new DateTime(StartTime.Year, StartTime.Month, 1); }
         }
 
+        [DataMember]
         public double DestinationLongitude {
             get { return _destinationLongitude; }
             set {
@@ -222,6 +222,21 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Id);
                 _id = value;
                 RaisePropertyChanged(() => Id);
+            }
+        }
+
+        [DataMember]
+        [Column(CanBeNull = false)]
+        public Guid UniqueId {
+            get { return _uniqueId; }
+            set {
+                if (_uniqueId == value) {
+                    return;
+                }
+
+                RaisePropertyChanging(() => UniqueId);
+                _uniqueId = value;
+                RaisePropertyChanged(() => UniqueId);
             }
         }
 
@@ -396,7 +411,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public IEnumerable<TourType> TourTypeSource {
-            get { return Enum.GetValues(typeof (TourType)).OfType<TourType>(); }
+            get { return Enum.GetValues(typeof(TourType)).OfType<TourType>(); }
         }
 
         public bool IsEditing {

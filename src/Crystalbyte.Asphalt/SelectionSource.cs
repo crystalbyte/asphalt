@@ -1,6 +1,10 @@
 ﻿#region Using directives
 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 using Crystalbyte.Asphalt.Contexts;
 
 #endregion
@@ -9,26 +13,35 @@ namespace Crystalbyte.Asphalt {
     public abstract class SelectionSource<T> : NotificationObject where T : class {
         public event EventHandler SelectionChanged;
 
+        protected SelectionSource() {
+            Selections = new ObservableCollection<T>();
+            Selections.CollectionChanged += OnSelectionsCollectionChanged;
+        }
+
+        private void OnSelectionsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
+            OnSelectionChanged(EventArgs.Empty);
+        }
+
         public void OnSelectionChanged(EventArgs e) {
             var handler = SelectionChanged;
             if (handler != null)
                 handler(this, e);
         }
 
-        private T _selection;
-
         public T Selection {
-            get { return _selection; }
+            get { return Selections.FirstOrDefault(); }
             set {
-                if (_selection == value) {
+                if (Selection == value && Selections.Count == 1) {
                     return;
                 }
 
                 RaisePropertyChanging(() => Selection);
-                _selection = value;
+                Selections.Clear();
+                Selections.Add(value);
                 RaisePropertyChanged(() => Selection);
-                OnSelectionChanged(EventArgs.Empty);
             }
         }
+
+        public ObservableCollection<T> Selections { get; private set; }
     }
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
 using Microsoft.Phone.Maps.Controls;
@@ -29,6 +30,19 @@ namespace Crystalbyte.Asphalt.Pages {
             TourMap.ZoomLevelChanged += OnTourMapZoomLevelChanged;
         }
 
+        protected override void OnKeyUp(KeyEventArgs e) {
+            if (e.Key == Key.Enter) {
+                HandleEnterKey();
+                e.Handled = true;
+            }
+
+            base.OnKeyUp(e);
+        }
+
+        private void HandleEnterKey() {
+            Focus();
+        }
+
         private void OnTourMapZoomLevelChanged(object sender, MapZoomLevelChangedEventArgs e) {
             if (_isZoomed)
                 return;
@@ -47,8 +61,10 @@ namespace Crystalbyte.Asphalt.Pages {
             get { return App.Composition.GetExport<TourSelectionSource>(); }
         }
 
+        public bool IsEditing { get; private set; }
+
         public Tour Tour {
-            get { return (Tour) DataContext; }
+            get { return (Tour)DataContext; }
             set { DataContext = value; }
         }
 
@@ -72,7 +88,7 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             if (_isNewPageInstance && Tour == null) {
-                Tour = (Tour) State[TourStateKey];
+                Tour = (Tour)State[TourStateKey];
             }
 
             Tour.ValidateAll();
@@ -82,8 +98,7 @@ namespace Crystalbyte.Asphalt.Pages {
             // We can't launch multiple queries and have to wait for previous one's to complete.
             if (Tour.IsQuerying) {
                 Tour.CivicAddressesResolved += OnTourCivicAddressesResolved;
-            }
-            else {
+            } else {
                 RequestRoute();
             }
 
@@ -147,8 +162,18 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void OnTourTypeSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var picker = (ListPicker) sender;
-            Tour.Type = (TourType) picker.SelectedItem;
+            var picker = (ListPicker)sender;
+            Tour.Type = (TourType)picker.SelectedItem;
+        }
+
+        private void OnReasonInputFormGotFocus(object sender, RoutedEventArgs e) {
+            IsEditing = true;
+            ApplicationBar.IsVisible = false;
+        }
+
+        private void OnReasonInputFormLostFocus(object sender, RoutedEventArgs e) {
+            IsEditing = false;
+            ApplicationBar.IsVisible = true;
         }
     }
 }

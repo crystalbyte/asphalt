@@ -97,29 +97,47 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete route?.
+        /// </summary>
+        public static string DeleteRouteConfirmCaption {
+            get {
+                return ResourceManager.GetString("DeleteRouteConfirmCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This action cannot be undone..
+        /// </summary>
+        public static string DeleteRouteConfirmMessage {
+            get {
+                return ResourceManager.GetString("DeleteRouteConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destination.
         /// </summary>
-        public static string DestinationLabelText {
+        public static string DestinationLabel {
             get {
-                return ResourceManager.GetString("DestinationLabelText", resourceCulture);
+                return ResourceManager.GetString("DestinationLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Distance.
         /// </summary>
-        public static string DistanceLabelText {
+        public static string DistanceLabel {
             get {
-                return ResourceManager.GetString("DistanceLabelText", resourceCulture);
+                return ResourceManager.GetString("DistanceLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Estimated current mileage.
         /// </summary>
-        public static string EstimatedMileageLabelText {
+        public static string EstimatedMileageLabel {
             get {
-                return ResourceManager.GetString("EstimatedMileageLabelText", resourceCulture);
+                return ResourceManager.GetString("EstimatedMileageLabel", resourceCulture);
             }
         }
         
@@ -129,6 +147,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string EstimatingRoute {
             get {
                 return ResourceManager.GetString("EstimatingRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to export.
+        /// </summary>
+        public static string ExportButtonText {
+            get {
+                return ResourceManager.GetString("ExportButtonText", resourceCulture);
             }
         }
         
@@ -196,20 +223,38 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The app will automatically start and stop recordings for new routes based on you traveling speed..
+        /// </summary>
+        public static string MovementDetectionDescription {
+            get {
+                return ResourceManager.GetString("MovementDetectionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automated movement detection.
+        /// </summary>
+        public static string MovementDetectionLabel {
+            get {
+                return ResourceManager.GetString("MovementDetectionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Origin.
         /// </summary>
-        public static string OriginLabelText {
+        public static string OriginLabel {
             get {
-                return ResourceManager.GetString("OriginLabelText", resourceCulture);
+                return ResourceManager.GetString("OriginLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Reason.
         /// </summary>
-        public static string ReasonLabelText {
+        public static string ReasonLabel {
             get {
-                return ResourceManager.GetString("ReasonLabelText", resourceCulture);
+                return ResourceManager.GetString("ReasonLabel", resourceCulture);
             }
         }
         
@@ -270,9 +315,9 @@ namespace Crystalbyte.Asphalt.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Estimated Route.
         /// </summary>
-        public static string RouteLabelText {
+        public static string RouteLabel {
             get {
-                return ResourceManager.GetString("RouteLabelText", resourceCulture);
+                return ResourceManager.GetString("RouteLabel", resourceCulture);
             }
         }
         
@@ -297,27 +342,18 @@ namespace Crystalbyte.Asphalt.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Begin.
         /// </summary>
-        public static string StartTimeLabelText {
+        public static string StartTimeLabel {
             get {
-                return ResourceManager.GetString("StartTimeLabelText", resourceCulture);
+                return ResourceManager.GetString("StartTimeLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to End.
         /// </summary>
-        public static string StopTimeLabelText {
+        public static string StopTimeLabel {
             get {
-                return ResourceManager.GetString("StopTimeLabelText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tap to change.
-        /// </summary>
-        public static string TapToChangeText {
-            get {
-                return ResourceManager.GetString("TapToChangeText", resourceCulture);
+                return ResourceManager.GetString("StopTimeLabel", resourceCulture);
             }
         }
         
@@ -351,9 +387,9 @@ namespace Crystalbyte.Asphalt.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
-        public static string TourTypeLabelText {
+        public static string TourTypeLabel {
             get {
-                return ResourceManager.GetString("TourTypeLabelText", resourceCulture);
+                return ResourceManager.GetString("TourTypeLabel", resourceCulture);
             }
         }
         
@@ -367,7 +403,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the preferred unit of length for displaying distances.
+        ///   Looks up a localized string similar to Sets the preferred unit of length for export and visual output..
         /// </summary>
         public static string UnitOfLengthDescriptionText {
             get {
