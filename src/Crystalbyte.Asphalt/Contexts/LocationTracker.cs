@@ -18,14 +18,13 @@ namespace Crystalbyte.Asphalt.Contexts {
     public sealed class LocationTracker : NotificationObject {
         private double _currentLatitude;
         private double _currentLongitude;
-        private bool _isTracking;
         private double _currentSpeed;
+        private bool _isTracking;
 
         private static readonly AngleFormatter AngleFormatter = new AngleFormatter();
 
         private const double SpeedThresholdInKilometersPerSecond = 8.3;
         private const double TimeThresholdInMinutes = 2;
-
 
         public LocationTracker() {
             App.GeolocatorTombstoned += OnGeolocatorTombstoned;
@@ -37,8 +36,10 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
+        #region Imports
+
         [Import]
-        public Navigation Navigation { get; set; }
+        public Navigator Navigator { get; set; }
 
         [Import]
         public AppContext AppContext { get; set; }
@@ -58,11 +59,21 @@ namespace Crystalbyte.Asphalt.Contexts {
         [Import]
         public StopTrackingCommand StopTrackingCommand { get; set; }
 
+        #endregion
+
         public Tour CurrentTour { get; private set; }
         public Geoposition LastPosition { get; private set; }
         public Geoposition CurrentPosition { get; private set; }
         public Geoposition AnchorPosition { get; private set; }
         public bool IsLaunchedManually { get; private set; }
+
+        public event EventHandler TourStored;
+
+        public void OnTourStored(EventArgs e) {
+            var handler = TourStored;
+            if (handler != null)
+                handler(this, e);
+        }
 
         public event EventHandler Updated;
 
@@ -113,8 +124,16 @@ namespace Crystalbyte.Asphalt.Contexts {
                 return;
             }
 
+            var speedInMs = CalculateSpeed();
+            var sane = PerformSanityCheck(speedInMs);
+            if (!sane) {
+                LastPosition = position;
+                return;
+            }
+
             if (!App.IsRunningInBackground) {
-                CurrentSpeed = Speed.GetKmFromMs(CalculateSpeed());
+                SmartDispatcher.InvokeAsync(
+                    () => CurrentSpeed = Speed.GetKmFromMs(speedInMs));
             }
 
             if (IsTracking) {
@@ -137,6 +156,10 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
 
             LastPosition = position;
+        }
+
+        private static bool PerformSanityCheck(double speedInMs) {
+            return speedInMs < 70.0d && speedInMs >= 0.0d;
         }
 
         private void StartTracking() {
@@ -196,6 +219,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             Debug.WriteLine("Changes successfully submitted.");
 
             ResetState();
+            OnTourStored(EventArgs.Empty);
             NotifyStopTracking();
 
             if (tour.Positions.Count > 0) {
@@ -257,9 +281,11 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             if (App.IsRunningInBackground)
                 return;
-            
-            CurrentLatitude = CurrentPosition.Coordinate.Latitude;
-            CurrentLongitude = CurrentPosition.Coordinate.Longitude;
+
+            SmartDispatcher.InvokeAsync(() => {
+                CurrentLatitude = CurrentPosition.Coordinate.Latitude;
+                CurrentLongitude = CurrentPosition.Coordinate.Longitude;
+            });
         }
 
         private double CalculateSpeed() {

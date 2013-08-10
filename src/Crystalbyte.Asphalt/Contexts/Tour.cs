@@ -17,6 +17,7 @@ using Microsoft.Phone.Maps.Services;
 #endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
+
     [DataContract, Table]
     [DebuggerDisplay("Id = {Id}")]
     public sealed class Tour : BindingModelBase<Tour> {
@@ -37,6 +38,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         private bool _isQuerying;
         private double _distance;
         private Guid _uniqueId;
+        private int? _vehicleId;
 
         public Tour() {
             Construct();
@@ -64,8 +66,6 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private void Construct() {
-            LocalStorage = App.Composition.GetExport<LocalStorage>();
-            Channels = App.Composition.GetExport<Channels>();
             Positions = new ObservableCollection<Position>();
             Positions.CollectionChanged += OnPositionCollectionChanged;
         }
@@ -85,11 +85,17 @@ namespace Crystalbyte.Asphalt.Contexts {
             DestinationLongitude = last.Longitude;
         }
 
-        // [Import]
-        public LocalStorage LocalStorage { get; set; }
+        public LocalStorage LocalStorage {
+            get { return App.Composition.GetExport<LocalStorage>(); }
+        }
 
-        // [Import]
-        public Channels Channels { get; set; }
+        public Channels Channels {
+            get { return App.Composition.GetExport<Channels>(); }
+        }
+
+        public AppContext AppContext {
+            get { return App.Composition.GetExport<AppContext>(); }
+        }
 
         public void ResolveCivicAddresses() {
             // All queries must originate from the dispatcher thread, therefor we need to invoke.
@@ -103,6 +109,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             var startQuery =
                 QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate { Latitude = first.Latitude, Longitude = first.Longitude });
             var start = await startQuery.ExecuteAsync();
+
             QueryPool.Drop(startQuery);
             SetOrigin(start);
 
@@ -110,6 +117,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             var stopQuery =
                 QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate { Latitude = last.Latitude, Longitude = last.Longitude });
             var stop = await stopQuery.ExecuteAsync();
+
             QueryPool.Drop(stopQuery);
             SetDestination(stop);
 
@@ -286,7 +294,13 @@ namespace Crystalbyte.Asphalt.Contexts {
             OnPositionsRestored(EventArgs.Empty);
         }
 
-        public ObservableCollection<Position> Positions { get; private set; }
+        public ObservableCollection<Position> Positions {
+            get; private set;
+        }
+
+        public ObservableCollection<Vehicle> Vehicles {
+            get { return AppContext.Vehicles; }
+        }
 
         [DataMember, Column(CanBeNull = false)]
         public bool IsExported {
@@ -313,6 +327,20 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Origin);
                 _origin = value;
                 RaisePropertyChanged(() => Origin);
+            }
+        }
+
+        [DataMember, Column(CanBeNull = true)]
+        public int? VehicleId {
+            get { return _vehicleId; }
+            set {
+                if (_vehicleId == value) {
+                    return;
+                }
+
+                RaisePropertyChanging(() => VehicleId);
+                _vehicleId = value;
+                RaisePropertyChanged(() => VehicleId);
             }
         }
 

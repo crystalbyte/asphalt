@@ -18,6 +18,12 @@ using Windows.Devices.Geolocation;
 
 namespace Crystalbyte.Asphalt {
     public partial class App {
+
+        /// <summary>
+        /// The accuracy threshold of a location query in meters.
+        /// </summary>
+        private const double AccuracyThreshold = 60.0d;
+
         /// <summary>
         ///   Gets the main context object.
         /// </summary>
@@ -112,7 +118,13 @@ namespace Crystalbyte.Asphalt {
         }
 
         private static void OnGeolocatorPositionChanged(Geolocator sender, PositionChangedEventArgs args) {
-            SmartDispatcher.InvokeAsync(() => Context.LocationTracker.Update(args.Position));
+            if (args.Position.Coordinate.Accuracy < AccuracyThreshold) {
+                //SmartDispatcher.InvokeAsync(() => Context.LocationTracker.Update(args.Position));
+                Context.LocationTracker.Update(args.Position);
+                return;
+            }
+
+            Debug.WriteLine("Skipped update due to inaccurate reading ({0}).", args.Position.Coordinate.Accuracy);
         }
 
         private static void ComposeApplication() {

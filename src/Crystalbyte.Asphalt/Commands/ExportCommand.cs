@@ -1,12 +1,7 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Linq;
 using Microsoft.Phone.Shell;
 using System;
-using System.Collections.Generic;
 using System.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Crystalbyte.Asphalt.Pages;
 using Crystalbyte.Asphalt.Resources;
 
@@ -17,7 +12,10 @@ namespace Crystalbyte.Asphalt.Commands {
     public sealed class ExportCommand : IAppBarButtonCommand {
 
         [Import]
-        public Navigation Navigation { get; set; }
+        public Navigator Navigator { get; set; }
+
+        [Import]
+        public TourSelectionSource TourSelectionSource { get; set; }
 
         public ExportCommand() {
             Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Upload.png", UriKind.Relative)) {
@@ -30,19 +28,20 @@ namespace Crystalbyte.Asphalt.Commands {
 
         public bool IsApplicable {
             get {
-                var detailsPage = ((Frame)Application.Current.RootVisual).Content as TourDetailsPage;
-                var landingPage = ((Frame)Application.Current.RootVisual).Content as LandingPage;
-
+                var detailsPage = Navigator.GetCurrentPage<TourDetailsPage>();
                 if (detailsPage != null) {
                     return !detailsPage.IsEditing;
                 }
 
-                return landingPage != null;
+                var landingPage = Navigator.GetCurrentPage<LandingPage>();
+                return landingPage != null 
+                    && TourSelectionSource.Selections.Any() 
+                    && landingPage.PanoramaIndex == 1;
             }
         }
 
         public int Position {
-            get { return 1; }
+            get { return 3; }
         }
 
         public bool CanExecute(object parameter) {
@@ -58,9 +57,7 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public void Execute(object parameter) {
-            Navigation.Service.Navigate(new Uri(
-                string.Format("/Pages/{0}.xaml", typeof(ExportPage).Name),
-                UriKind.Relative));
+            Navigator.Navigate<ExportPage>();
         }
     }
 }

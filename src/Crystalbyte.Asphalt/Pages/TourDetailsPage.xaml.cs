@@ -137,8 +137,8 @@ namespace Crystalbyte.Asphalt.Pages {
                 _routeQueryCompleted = true;
             }
             catch (COMException ex) {
-                const string message = "Unable to display route.";
-                MessageBox.Show(message, ex.Message, MessageBoxButton.OK);
+                const string caption = "Unable to display route.";
+                MessageBox.Show(ex.Message, caption, MessageBoxButton.OK);
             }
             finally {
                 QueryPool.Drop(query);
@@ -174,6 +174,11 @@ namespace Crystalbyte.Asphalt.Pages {
         private void OnReasonInputFormLostFocus(object sender, RoutedEventArgs e) {
             IsEditing = false;
             ApplicationBar.IsVisible = true;
+        }
+
+        private void OnVehicleSelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var picker = (ListPicker)sender;
+            Tour.VehicleId = ((Vehicle)picker.SelectedItem).Id;
         }
     }
 }

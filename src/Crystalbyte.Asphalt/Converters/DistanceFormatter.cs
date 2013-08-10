@@ -14,7 +14,7 @@ namespace Crystalbyte.Asphalt.Converters {
             distance = Math.Round(distance, 1);
 
             return distance < 1
-                       ? string.Format("{0} {1}", (distance*1000), "m")
+                       ? string.Format("{0} {1}", (distance * 1000), "m")
                        : string.Format("{0} {1}", (distance), "km");
         }
 

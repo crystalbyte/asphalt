@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
 using Crystalbyte.Asphalt.Data;
+using Crystalbyte.Asphalt.Commands;
 
 #endregion
 
@@ -12,6 +13,7 @@ namespace Crystalbyte.Asphalt.Contexts {
     [Export, Shared]
     public sealed class AppContext : NotificationObject {
         private bool _isSelectionEnabled;
+        private bool _isMovementDetectionEnabled;
 
         [Import]
         public LocalStorage LocalStorage { get; set; }
@@ -25,9 +27,39 @@ namespace Crystalbyte.Asphalt.Contexts {
         [Import]
         public Channels Channels { get; set; }
 
+        [Import]
+        public DeleteTourCommand DeleteTourCommand { get; set; }
+
         public AppContext() {
             Tours = new ObservableCollection<Tour>();
             Tours.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedTours);
+
+            Vehicles = new ObservableCollection<Vehicle>();
+        }
+
+        [OnImportsSatisfied]
+        public void OnImportsSatisfied() {
+            LocationTracker.TourStored += (sender, e) => LoadData();
+            DeleteTourCommand.DeletionCompleted += (sender, e) => LoadData();
+            AppSettings.IsMovementDetectionEnabledChanged += (sender, e) => 
+                NotifyIsMovementDetectionEnabledChanged();
+        }
+
+        public void NotifyIsMovementDetectionEnabledChanged() {
+            IsMovementDetectionEnabled = AppSettings.IsMovementDetectionEnabled;
+        }
+
+        public bool IsMovementDetectionEnabled {
+            get { return _isMovementDetectionEnabled; }
+            set {
+                if (_isMovementDetectionEnabled == value) {
+                    return;
+                }
+
+                RaisePropertyChanging(() => IsMovementDetectionEnabled);
+                _isMovementDetectionEnabled = value;
+                RaisePropertyChanged(() => IsMovementDetectionEnabled);
+            }
         }
 
         public bool IsSelectionEnabled {
@@ -52,9 +84,14 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        ///   A collection of recent tours.
+        ///   A collection of all tours.
         /// </summary>
         public ObservableCollection<Tour> Tours { get; private set; }
+
+        /// <summary>
+        ///   A collection of all vehicles.
+        /// </summary>
+        public ObservableCollection<Vehicle> Vehicles { get; private set; }
 
         /// <summary>
         ///   A collection of recent tours grouped by date.
@@ -78,7 +115,6 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// </summary>
         public async void LoadData() {
             Tours.Clear();
-
             var tours = await Channels.Database.Enqueue(
                 () => LocalStorage.DataContext.Tours
                           .Select(x => x)
@@ -86,6 +122,14 @@ namespace Crystalbyte.Asphalt.Contexts {
                           .ToArray());
 
             Tours.AddRange(tours);
+
+            Vehicles.Clear();
+            var vehicles = await Channels.Database.Enqueue(
+                () => LocalStorage.DataContext.Vehicles
+                          .Select(x => x)
+                          .ToArray());
+
+            Vehicles.AddRange(vehicles);
 
             IsDataLoaded = true;
         }

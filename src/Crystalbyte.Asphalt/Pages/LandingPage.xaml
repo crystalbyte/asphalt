@@ -46,135 +46,191 @@
         -->
 
         <!--  Panorama control  -->
-        <phone:Panorama Title="{Binding LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Grid.Row="1">
+        <Border BorderBrush="{Binding IsMovementDetectionEnabled, Mode=OneWay, Converter={StaticResource BooleanGreenRedConverter}}" BorderThickness="0,1,0,0">
+            <phone:Panorama Title="{Binding LocalizedResources.ApplicationTitle,
+                                            Source={StaticResource LocalizedStrings}}"
+                            Grid.Row="1"
+                            SelectionChanged="OnPanoramaSelectionChanged">
 
-            <phone:Panorama.Background>
-                <ImageBrush ImageSource="/Crystalbyte.Asphalt.App;component/Assets/Background.jpg" />
-            </phone:Panorama.Background>
+                <phone:Panorama.Background>
+                    <ImageBrush ImageSource="/Crystalbyte.Asphalt.App;component/Assets/BackgroundDark.jpg" />
+                </phone:Panorama.Background>
 
-            <!--  Panorama item one  -->
-            <phone:PanoramaItem Header="{Binding LocalizedResources.TrackingPanoramaItemTitle, Source={StaticResource LocalizedStrings}}">
-                <!--  Single line list with text wrapping  -->
-                <Border DataContext="{Binding LocationTracker}">
-                    <ui:DockPanel LastChildFill="True">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Margin="0" Orientation="Horizontal">
-                                <Button Margin="12,0,0,0"
-                                        Command="{Binding StartTrackingCommand}"
-                                        Style="{StaticResource PlayButtonStyle}"
-                                        Visibility="{Binding IsTracking,
-                                                             Converter={StaticResource BooleanToVisibilityConverter},
-                                                             ConverterParameter=!}"
-                                        toolkit:TiltEffect.IsTiltEnabled="True">
-                                    <StackPanel Margin="2,-6,0,0">
-                                        <TextBlock Style="{StaticResource PhoneTextLargeStyle}">Start</TextBlock>
-                                        <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="Start recording a new tour" />
-                                    </StackPanel>
-                                </Button>
-                                <Button Margin="12,0,0,0"
-                                        Command="{Binding StopTrackingCommand}"
-                                        Style="{StaticResource StopButtonStyle}"
-                                        Visibility="{Binding IsTracking,
-                                                             Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        toolkit:TiltEffect.IsTiltEnabled="True">
-                                    <StackPanel Margin="2,-6,0,0">
-                                        <TextBlock Style="{StaticResource PhoneTextLargeStyle}">Stop</TextBlock>
-                                        <TextBlock Style="{StaticResource PhoneTextSmallStyle}">Terminate current recording.</TextBlock>
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
-                        </StackPanel>
-                    </ui:DockPanel>
-                </Border>
-            </phone:PanoramaItem>
-            <phone:PanoramaItem Header="{Binding LocalizedResources.ToursPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
-                <!--  Single line list with text wrapping  -->
-                <toolkit:LongListMultiSelector Margin="-12,0,0,0"
-                                               IsGroupingEnabled="True"
-                                               IsSelectionEnabled="{Binding IsSelectionEnabled,
-                                                                            Mode=TwoWay}"
-                                               ItemsSource="{Binding GroupedTours,
-                                                                     Mode=OneWay}"
-                                               SelectionChanged="OnToursSelectionChanged"
-                                               Tap="OnTourTapped">
-                    <toolkit:LongListMultiSelector.JumpListStyle>
-                        <Style TargetType="toolkit:LongListMultiSelector">
-                            <Setter Property="Margin" Value="12,12,0,0" />
-                            <Setter Property="ItemTemplate">
-                                <Setter.Value>
-                                    <DataTemplate>
-                                        <Border Width="470"
-                                                Height="70"
-                                                Margin="6"
-                                                Background="{StaticResource PhoneAccentBrush}"
-                                                d:DataContext="{d:DesignInstance Type=contexts:TourGroup}">
-                                            <TextBlock VerticalAlignment="Bottom"
-                                                       FontFamily="{StaticResource PhoneFontFamilySemiBold}"
-                                                       FontSize="28"
-                                                       Padding="2"
-                                                       Text="{Binding Month}" />
-                                        </Border>
-                                    </DataTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </toolkit:LongListMultiSelector.JumpListStyle>
-                    <toolkit:LongListMultiSelector.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="-12,0,22,22"
-                                  d:DataContext="{d:DesignInstance Type=contexts:Tour}"
-                                  toolkit:TiltEffect.IsTiltEnabled="True">
-                                <StackPanel>
-                                    <StackPanel Orientation="Vertical">
-                                        <TextBlock FontSize="{StaticResource PhoneFontSizeNormal}"
-                                                   Style="{StaticResource PhoneTextLargeStyle}"
-                                                   Text="{Binding Destination,
-                                                                  Converter={StaticResource NullTextConverter},
-                                                                  ConverterParameter=LoadingText}"
-                                                   TextWrapping="Wrap" />
-                                    </StackPanel>
-                                    <TextBlock FontSize="{StaticResource PhoneFontSizeSmall}"
-                                               Style="{StaticResource PhoneTextAccentStyle}"
-                                               Text="{Binding Reason,
-                                                              Mode=OneWay,
-                                                              Converter={StaticResource NullTextConverter},
-                                                              ConverterParameter=ReasonNotSpecified}"
-                                               TextWrapping="Wrap" />
-                                    <TextBlock FontSize="{StaticResource PhoneFontSizeSmall}"
-                                               Style="{StaticResource PhoneTextSmallStyle}"
-                                               Text="{Binding StartTime,
-                                                              StringFormat=R}"
-                                               TextWrapping="Wrap" />
-                                    <Border Height="10">
-                                        <ProgressBar IsIndeterminate="True" Visibility="{Binding IsQuerying, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <!--  Panorama item one  -->
+                <phone:PanoramaItem Header="{Binding LocalizedResources.TrackingPanoramaItemTitle, Source={StaticResource LocalizedStrings}}">
+                    <!--  Single line list with text wrapping  -->
+                    <Border>
+                        <ui:DockPanel LastChildFill="True">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Margin="0,22,0,0"
+                                            DataContext="{Binding LocationTracker}"
+                                            Orientation="Horizontal">
+                                    <Border>
+                                        <Button Margin="12,0,0,0"
+                                                Command="{Binding StartTrackingCommand}"
+                                                Style="{StaticResource PlayButtonStyle}"
+                                                Visibility="{Binding IsTracking,
+                                                                     Converter={StaticResource BooleanToVisibilityConverter},
+                                                                     ConverterParameter=!}"
+                                                toolkit:TiltEffect.IsTiltEnabled="True">
+                                            <StackPanel Margin="2,-6,0,0">
+                                                <TextBlock Style="{StaticResource PhoneTextLargeStyle}">Start</TextBlock>
+                                                <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="Start recording a new tour" />
+                                            </StackPanel>
+                                        </Button>
                                     </Border>
+                                    <Button Margin="12,0,0,0"
+                                            Command="{Binding StopTrackingCommand}"
+                                            Style="{StaticResource StopButtonStyle}"
+                                            Visibility="{Binding IsTracking,
+                                                                 Converter={StaticResource BooleanToVisibilityConverter}}"
+                                            toolkit:TiltEffect.IsTiltEnabled="True">
+                                        <StackPanel Margin="2,-6,0,0">
+                                            <TextBlock Style="{StaticResource PhoneTextLargeStyle}">Stop</TextBlock>
+                                            <TextBlock Style="{StaticResource PhoneTextSmallStyle}">Terminate current recording.</TextBlock>
+                                        </StackPanel>
+                                    </Button>
                                 </StackPanel>
-                                <TextBlock Margin="0"
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Top"
-                                           FontSize="{StaticResource PhoneFontSizeSmall}"
-                                           Padding="0"
-                                           Style="{StaticResource PhoneTextNormalStyle}"
-                                           Text="{Binding Distance,
-                                                          Converter={StaticResource DistanceFormatter}}"
-                                           TextWrapping="Wrap" />
-                                <Rectangle HorizontalAlignment="Stretch"
-                                           VerticalAlignment="Stretch"
-                                           Fill="Transparent"
-                                           Stroke="Transparent">
-                                    <toolkit:ContextMenuService.ContextMenu>
-                                        <toolkit:ContextMenu>
-                                            <toolkit:MenuItem Click="OnDeleteTourMenuItemClicked" Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
-                                        </toolkit:ContextMenu>
-                                    </toolkit:ContextMenuService.ContextMenu>
-                                </Rectangle>
-
-                            </Grid>
-                        </DataTemplate>
-                    </toolkit:LongListMultiSelector.ItemTemplate>
-                </toolkit:LongListMultiSelector>
-            </phone:PanoramaItem>
-        </phone:Panorama>
+                            </StackPanel>
+                        </ui:DockPanel>
+                    </Border>
+                </phone:PanoramaItem>
+                <phone:PanoramaItem Header="{Binding LocalizedResources.ToursPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
+                    <!--  Single line list with text wrapping  -->
+                    <toolkit:LongListMultiSelector Margin="-12,0,0,0"
+                                                   IsGroupingEnabled="True"
+                                                   IsSelectionEnabled="{Binding IsSelectionEnabled,
+                                                                                Mode=TwoWay}"
+                                                   ItemsSource="{Binding GroupedTours,
+                                                                         Mode=OneWay}"
+                                                   ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                                   SelectionChanged="OnToursSelectionChanged"
+                                                   Tap="OnTourTapped">
+                        <toolkit:LongListMultiSelector.JumpListStyle>
+                            <Style TargetType="toolkit:LongListMultiSelector">
+                                <Setter Property="Margin" Value="12,12,0,0" />
+                                <Setter Property="ItemTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <Border Width="470"
+                                                    Height="70"
+                                                    Margin="6"
+                                                    Background="{StaticResource PhoneAccentBrush}"
+                                                    d:DataContext="{d:DesignInstance Type=contexts:TourGroup}">
+                                                <TextBlock VerticalAlignment="Bottom"
+                                                           FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                                           FontSize="28"
+                                                           Padding="2"
+                                                           Text="{Binding Month}" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </toolkit:LongListMultiSelector.JumpListStyle>
+                        <toolkit:LongListMultiSelector.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="-12,0,22,22" d:DataContext="{d:DesignInstance Type=contexts:Tour}">
+                                    <Grid Margin="0,4,0,0" toolkit:TiltEffect.IsTiltEnabled="True">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                       FontSize="{StaticResource PhoneFontSizeMedium}"
+                                                       Style="{StaticResource PhoneTextLargeStyle}"
+                                                       Text="{Binding Destination,
+                                                                      Converter={StaticResource NullTextConverter},
+                                                                      ConverterParameter=LoadingText}"
+                                                       TextTrimming="WordEllipsis" />
+                                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                                       FontSize="{StaticResource PhoneFontSizeSmall}"
+                                                       Style="{StaticResource PhoneTextAccentStyle}"
+                                                       Text="{Binding Reason,
+                                                                      Mode=OneWay,
+                                                                      Converter={StaticResource NullTextConverter},
+                                                                      ConverterParameter=ReasonNotSpecified}"
+                                                       TextTrimming="WordEllipsis" />
+                                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                       FontSize="{StaticResource PhoneFontSizeSmall}"
+                                                       Style="{StaticResource PhoneTextSmallStyle}"
+                                                       Text="{Binding StartTime,
+                                                                      StringFormat=R}"
+                                                       TextTrimming="WordEllipsis" />
+                                            <Border Height="10">
+                                                <ProgressBar IsIndeterminate="True" Visibility="{Binding IsQuerying, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            </Border>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Top"
+                                                   FontSize="{StaticResource PhoneFontSizeSmall}"
+                                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                                   Text="{Binding Distance,
+                                                                  Converter={StaticResource DistanceFormatter}}"
+                                                   TextWrapping="Wrap" />
+                                        <Rectangle HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Stretch"
+                                                   Fill="Transparent"
+                                                   Stroke="Transparent">
+                                            <toolkit:ContextMenuService.ContextMenu>
+                                                <toolkit:ContextMenu>
+                                                    <toolkit:MenuItem Click="OnDeleteTourMenuItemClicked" Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
+                                                </toolkit:ContextMenu>
+                                            </toolkit:ContextMenuService.ContextMenu>
+                                        </Rectangle>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </toolkit:LongListMultiSelector.ItemTemplate>
+                    </toolkit:LongListMultiSelector>
+                </phone:PanoramaItem>
+                <phone:PanoramaItem Header="{Binding LocalizedResources.VehiclesPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
+                    <phone:LongListSelector ItemsSource="{Binding Vehicles}">
+                        <phone:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,6"
+                                            Orientation="Horizontal"
+                                            d:DataContext="{d:DesignInstance Type=contexts:Vehicle}">
+                                    <Border Style="{StaticResource DefaultTile128x128}">
+                                        <Grid>
+                                            <Border BorderBrush="{StaticResource PhoneAccentBrush}" BorderThickness="1">
+                                                <Image HorizontalAlignment="Stretch"
+                                                       VerticalAlignment="Stretch"
+                                                       Source="{Binding Image}"
+                                                       Visibility="{Binding HasImage,
+                                                                            Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            </Border>
+                                            <Grid Background="{StaticResource PhoneAccentBrush}" Visibility="{Binding HasImage, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=!}">
+                                                <TextBlock Margin="10"
+                                                           HorizontalAlignment="Left"
+                                                           VerticalAlignment="Bottom"
+                                                           FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                                                           Style="{StaticResource PhoneTextNormalStyle}"
+                                                           Text="{Binding LocalizedResources.AddVehiclePhotoText,
+                                                                          Source={StaticResource LocalizedStrings}}"
+                                                           TextWrapping="Wrap" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                    <StackPanel Margin="12,0,0,0">
+                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                   FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                                   Text="{Binding LicencePlate}" />
+                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                   FontSize="{StaticResource PhoneFontSizeSmall}"
+                                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                                   Text="{Binding Notes}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </phone:LongListSelector.ItemTemplate>
+                    </phone:LongListSelector>
+                </phone:PanoramaItem>
+            </phone:Panorama>
+        </Border>
 
         <!--
             Uncomment to see an alignment grid to help ensure your controls are

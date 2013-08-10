@@ -25,7 +25,7 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         [Import]
-        public Navigation Navigation { get; set; }
+        public Navigator Navigator { get; set; }
 
         [Import]
         public AppSettings AppSettings { get; set; }
@@ -37,8 +37,7 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public void Execute(object parameter) {
-            Navigation.Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof (SettingsPage).Name),
-                                                UriKind.Relative));
+            Navigator.Navigate<SettingsPage>();
         }
 
         public event EventHandler CanExecuteChanged;
@@ -52,7 +51,7 @@ namespace Crystalbyte.Asphalt.Commands {
         public ApplicationBarMenuItem MenuItem { get; private set; }
 
         public bool IsApplicable {
-            get { return ((Frame) Application.Current.RootVisual).Content.GetType() == typeof (LandingPage); }
+            get { return Navigator.IsCurrentPageOfType<LandingPage>(); }
         }
 
         public int Position {

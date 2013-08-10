@@ -229,10 +229,10 @@
     <value>A terminated route cannot be resumed.</value>
   </data>
   <data name="DeleteRouteConfirmCaption" xml:space="preserve">
-    <value>Delete route?</value>
+    <value>Delete tour?</value>
   </data>
   <data name="DeleteRouteConfirmMessage" xml:space="preserve">
-    <value>This action cannot be undone.</value>
+    <value>A deleted tour cannot be recovered.</value>
   </data>
   <data name="ExportButtonText" xml:space="preserve">
     <value>export</value>
@@ -242,5 +242,38 @@
   </data>
   <data name="MovementDetectionLabel" xml:space="preserve">
     <value>Automated movement detection</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="SpeedLabel" xml:space="preserve">
+    <value>Speed</value>
+  </data>
+  <data name="DeleteButtonText" xml:space="preserve">
+    <value>delete</value>
+  </data>
+  <data name="SelectionButtonText" xml:space="preserve">
+    <value>select</value>
+  </data>
+  <data name="AddVehicleButtonText" xml:space="preserve">
+    <value>add</value>
+  </data>
+  <data name="AddVehiclePageTitle" xml:space="preserve">
+    <value>add vehicle</value>
+  </data>
+  <data name="AddVehiclePhotoText" xml:space="preserve">
+    <value>add photo</value>
+  </data>
+  <data name="InitialMileageNotNullOrEmpty" xml:space="preserve">
+    <value>Mileage must not be empty.</value>
+  </data>
+  <data name="VehiclesPanoramaPageHeaderText" xml:space="preserve">
+    <value>vehicles</value>
+  </data>
+  <data name="VehicleLabel" xml:space="preserve">
+    <value>Vehicle</value>
   </data>
 </root>

@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Crystalbyte.Asphalt.Commands;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 #endregion
 

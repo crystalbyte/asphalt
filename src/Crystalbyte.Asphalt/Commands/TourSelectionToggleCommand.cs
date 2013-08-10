@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Pages;
+using Crystalbyte.Asphalt.Resources;
 using Microsoft.Phone.Shell;
+using System;
 using System.Composition;
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
     [Export(typeof(IAppBarButtonCommand))]
-    public sealed class NavigateBackCommand : IAppBarButtonCommand {
+    public sealed class TourSelectionToggleCommand : IAppBarButtonCommand {
 
         [Import]
-        public Navigator Navigator { get; set; }
+        public AppContext AppContext { get; set; }
 
-        public NavigateBackCommand() {
-            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Back.png", UriKind.Relative)) {
-                Text = "back"
+        public TourSelectionToggleCommand() {
+            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Manage.png", UriKind.Relative)) {
+                Text = AppResources.SelectionButtonText
             };
             Button.Click += (sender, e) => Execute(null);
         }
@@ -27,7 +25,10 @@ namespace Crystalbyte.Asphalt.Commands {
         public ApplicationBarIconButton Button { get; private set; }
 
         public bool IsApplicable {
-            get { return false; }
+            get {
+                var landingPage = ((Frame)Application.Current.RootVisual).Content as LandingPage;
+                return landingPage != null && landingPage.PanoramaIndex == 1;
+            }
         }
 
         public int Position {
@@ -35,7 +36,7 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public bool CanExecute(object parameter) {
-            return Navigator.Service.CanGoBack;
+            return true;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -47,7 +48,7 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public void Execute(object parameter) {
-            Navigator.Service.GoBack();
+            AppContext.IsSelectionEnabled = !AppContext.IsSelectionEnabled;
         }
     }
 }

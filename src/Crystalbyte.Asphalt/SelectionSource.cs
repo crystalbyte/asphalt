@@ -37,7 +37,9 @@ namespace Crystalbyte.Asphalt {
 
                 RaisePropertyChanging(() => Selection);
                 Selections.Clear();
-                Selections.Add(value);
+                if (value != null) {
+                    Selections.Add(value);    
+                }
                 RaisePropertyChanged(() => Selection);
             }
         }

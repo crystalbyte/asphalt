@@ -61,6 +61,33 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to add.
+        /// </summary>
+        public static string AddVehicleButtonText {
+            get {
+                return ResourceManager.GetString("AddVehicleButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add vehicle.
+        /// </summary>
+        public static string AddVehiclePageTitle {
+            get {
+                return ResourceManager.GetString("AddVehiclePageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add photo.
+        /// </summary>
+        public static string AddVehiclePhotoText {
+            get {
+                return ResourceManager.GetString("AddVehiclePhotoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to asphalt.
         /// </summary>
         public static string ApplicationTitle {
@@ -88,6 +115,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to delete.
+        /// </summary>
+        public static string DeleteButtonText {
+            get {
+                return ResourceManager.GetString("DeleteButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string DeleteMenuHeader {
@@ -97,7 +133,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete route?.
+        ///   Looks up a localized string similar to Delete tour?.
         /// </summary>
         public static string DeleteRouteConfirmCaption {
             get {
@@ -106,7 +142,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This action cannot be undone..
+        ///   Looks up a localized string similar to A deleted tour cannot be recovered..
         /// </summary>
         public static string DeleteRouteConfirmMessage {
             get {
@@ -124,11 +160,29 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        public static string Disabled {
+            get {
+                return ResourceManager.GetString("Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Distance.
         /// </summary>
         public static string DistanceLabel {
             get {
                 return ResourceManager.GetString("DistanceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        public static string Enabled {
+            get {
+                return ResourceManager.GetString("Enabled", resourceCulture);
             }
         }
         
@@ -165,6 +219,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string ExpressionNoMember {
             get {
                 return ResourceManager.GetString("ExpressionNoMember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mileage must not be empty..
+        /// </summary>
+        public static string InitialMileageNotNullOrEmpty {
+            get {
+                return ResourceManager.GetString("InitialMileageNotNullOrEmpty", resourceCulture);
             }
         }
         
@@ -322,6 +385,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to select.
+        /// </summary>
+        public static string SelectionButtonText {
+            get {
+                return ResourceManager.GetString("SelectionButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string SettingsMenuItemText {
@@ -336,6 +408,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string SettingsPageTitle {
             get {
                 return ResourceManager.GetString("SettingsPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speed.
+        /// </summary>
+        public static string SpeedLabel {
+            get {
+                return ResourceManager.GetString("SpeedLabel", resourceCulture);
             }
         }
         
@@ -417,6 +498,24 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string UnitOfLengthSettingsText {
             get {
                 return ResourceManager.GetString("UnitOfLengthSettingsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle.
+        /// </summary>
+        public static string VehicleLabel {
+            get {
+                return ResourceManager.GetString("VehicleLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vehicles.
+        /// </summary>
+        public static string VehiclesPanoramaPageHeaderText {
+            get {
+                return ResourceManager.GetString("VehiclesPanoramaPageHeaderText", resourceCulture);
             }
         }
     }

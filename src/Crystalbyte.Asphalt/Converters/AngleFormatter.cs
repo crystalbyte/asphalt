@@ -26,9 +26,7 @@ namespace Crystalbyte.Asphalt.Converters {
             var direction = value < 0 ? "S" : "N";
 
             value = Math.Abs(value);
-
             var degrees = Math.Truncate(value);
-
             value = (value - degrees)*60; //not Value = (Value - degrees) / 60;
 
             var minutes = Math.Truncate(value);
@@ -41,9 +39,7 @@ namespace Crystalbyte.Asphalt.Converters {
             var direction = value < 0 ? "W" : "E";
 
             value = Math.Abs(value);
-
             var degrees = Math.Truncate(value);
-
             value = (value - degrees)*60; //not Value = (Value - degrees) / 60;
 
             var minutes = Math.Truncate(value);

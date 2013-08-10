@@ -82,6 +82,11 @@
             </Setter>
         </Style>
 
+        <Style x:Key="DefaultTile128x128" TargetType="Border">
+            <Setter Property="Width" Value="128" />
+            <Setter Property="Height" Value="128" />
+        </Style>
+
         <Style x:Key="WarningTextStyle"
                BasedOn="{StaticResource PhoneTextNormalStyle}"
                TargetType="TextBlock">
@@ -155,6 +160,15 @@
         <converters:AngleFormatter x:Key="AngleFormatter" />
         <converters:NullTextConverter x:Key="NullTextConverter" />
         <converters:UnitOfLengthFormatter x:Key="UnitOfLengthFormatter" />
+        <converters:BooleanToBrushConverter x:Key="BooleanGreenRedConverter"
+                                            BrushForFalse="Red"
+                                            BrushForTrue="Green" />
+        <converters:BooleanToTextConverter x:Key="BooleanEnabledDisabledConverter"
+                                           TextForFalse="{Binding LocalizedResources.Disabled,
+                                                                  Source={StaticResource LocalizedStrings}}"
+                                           TextForTrue="{Binding LocalizedResources.Enabled,
+                                                                 Source={StaticResource LocalizedStrings}}" />
+        <converters:TourTypeToColorConverter x:Key="TourTypeToColorConverter" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

@@ -1,4 +1,9 @@
+Logbook guidelines Germany
 http://www.steuerberaten.de/tag/fahrtenbuch/
 
+Location tracking WP8
 http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj662935(v=vs.105).aspx
 http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj247548(v=vs.105).aspx
+
+Logbook iOS
+https://itunes.apple.com/de/app/fahrtenbuch/id286070473?mt=8

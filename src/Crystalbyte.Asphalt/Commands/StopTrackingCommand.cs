@@ -12,6 +12,7 @@ using Crystalbyte.Asphalt.Resources;
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
     public sealed class StopTrackingCommand : ICommand {
+
         [Import]
         public LocationTracker LocationTracker { get; set; }
 
@@ -30,6 +31,7 @@ namespace Crystalbyte.Asphalt.Commands {
             if (result.HasFlag(MessageBoxResult.Cancel)) {
                 return;
             }
+
             LocationTracker.StopTrackingManually();
             AppContext.LoadData();
         }

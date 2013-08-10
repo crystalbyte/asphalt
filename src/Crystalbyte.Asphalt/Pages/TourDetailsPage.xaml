@@ -32,10 +32,8 @@
         </StackPanel>
 
         <Grid x:Name="ContentPanel" Grid.Row="1">
-
             <ScrollViewer>
                 <ui:DockPanel>
-
                     <!--  Route  -->
                     <TextBlock Foreground="{StaticResource PhoneAccentBrush}"
                                Style="{StaticResource PhoneTextSmallStyle}"
@@ -69,8 +67,29 @@
                         </Grid>
                     </Border>
 
-                    <!--  Type  -->
+                    <!--  Vehicle  -->
                     <TextBlock Foreground="{StaticResource PhoneAccentBrush}"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.VehicleLabel,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+
+                    <toolkit:ListPicker Margin="12,-1,12,0"
+                                        HorizontalAlignment="Stretch"
+                                        ItemsSource="{Binding Vehicles}"
+                                        SelectionChanged="OnVehicleSelectionChanged"
+                                        ui:DockPanel.Dock="Top">
+                        <toolkit:ListPicker.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" d:DataContext="{d:DesignInstance Type=contexts:Vehicle}">
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding LicencePlate}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </toolkit:ListPicker.ItemTemplate>
+                    </toolkit:ListPicker>
+
+                    <!--  Type  -->
+                    <TextBlock Margin="12,12,0,0" Foreground="{StaticResource PhoneAccentBrush}"
                                Style="{StaticResource PhoneTextSmallStyle}"
                                Text="{Binding LocalizedResources.TourTypeLabel,
                                               Source={StaticResource LocalizedStrings}}"
