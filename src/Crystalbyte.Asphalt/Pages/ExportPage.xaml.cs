@@ -8,7 +8,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
 namespace Crystalbyte.Asphalt.Pages {
-    public partial class ExportPage : PhoneApplicationPage {
+    public partial class ExportPage {
         public ExportPage() {
             InitializeComponent();
         }

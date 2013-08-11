@@ -166,8 +166,8 @@
     <value>tracking</value>
     <comment>LandingPage.xaml</comment>
   </data>
-  <data name="EstimatedMileageLabel" xml:space="preserve">
-    <value>Estimated current mileage</value>
+  <data name="MileageLabel" xml:space="preserve">
+    <value>Mileage</value>
   </data>
   <data name="DestinationLabel" xml:space="preserve">
     <value>Destination</value>
@@ -275,5 +275,17 @@
   </data>
   <data name="VehicleLabel" xml:space="preserve">
     <value>Vehicle</value>
+  </data>
+  <data name="ExportPageTitle" xml:space="preserve">
+    <value>export</value>
+  </data>
+  <data name="DriversPanoramaPageHeaderText" xml:space="preserve">
+    <value>drivers</value>
+  </data>
+  <data name="NoVehiclePhotoText" xml:space="preserve">
+    <value>no photo</value>
+  </data>
+  <data name="EditVehicleButtonText" xml:space="preserve">
+    <value>edit</value>
   </data>
 </root>

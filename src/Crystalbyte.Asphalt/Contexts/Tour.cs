@@ -29,7 +29,6 @@ namespace Crystalbyte.Asphalt.Contexts {
         private string _destination;
         private TourType _type;
         private string _origin;
-        private bool _isEditing;
         private bool _isExported;
         private double _originLatitude;
         private double _originLongitude;
@@ -38,7 +37,8 @@ namespace Crystalbyte.Asphalt.Contexts {
         private bool _isQuerying;
         private double _distance;
         private Guid _uniqueId;
-        private int? _vehicleId;
+        private int _vehicleId;
+        private double _initialMileage;
 
         public Tour() {
             Construct();
@@ -290,12 +290,14 @@ namespace Crystalbyte.Asphalt.Contexts {
                           .OrderBy(x => x.TimeStamp)
                           .ToArray());
 
+            Positions.Clear();
             Positions.AddRange(positions);
             OnPositionsRestored(EventArgs.Empty);
         }
 
         public ObservableCollection<Position> Positions {
-            get; private set;
+            get;
+            private set;
         }
 
         public ObservableCollection<Vehicle> Vehicles {
@@ -330,8 +332,8 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [DataMember, Column(CanBeNull = true)]
-        public int? VehicleId {
+        [DataMember, Column(CanBeNull = false)]
+        public int VehicleId {
             get { return _vehicleId; }
             set {
                 if (_vehicleId == value) {
@@ -368,13 +370,15 @@ namespace Crystalbyte.Asphalt.Contexts {
                 }
 
                 RaisePropertyChanging(() => Destination);
+                RaisePropertyChanging(() => DestinationShort);
                 _destination = value;
                 RaisePropertyChanged(() => Destination);
+                RaisePropertyChanged(() => DestinationShort);
             }
         }
 
         /// <summary>
-        ///   Gets or sets the accumulated distance for all recorded waypoints.
+        /// Gets or sets the accumulated distance of all recorded waypoints.
         /// </summary>
         [DataMember, Column(CanBeNull = false)]
         public double Distance {
@@ -387,6 +391,34 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Distance);
                 _distance = value;
                 RaisePropertyChanged(() => Distance);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the inital mileage of the car on tour start.
+        /// </summary>
+        [DataMember, Column(CanBeNull = false)]
+        public double InitialMileage {
+            get { return _initialMileage; }
+            set {
+                if (Math.Abs(_initialMileage - value) < double.Epsilon) {
+                    return;
+                }
+
+                RaisePropertyChanging(() => InitialMileage);
+                _initialMileage = value;
+                RaisePropertyChanged(() => InitialMileage);
+            }
+        }
+
+        /// <summary>
+        /// Gets the destination street and house number.
+        /// </summary>
+        public string DestinationShort {
+            get {
+                return string.IsNullOrWhiteSpace(Destination)
+                    ? string.Empty
+                    : Destination.Split(',').FirstOrDefault();
             }
         }
 
@@ -434,24 +466,19 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
+        public Vehicle ActiveVehicle {
+            get {
+                return App.Context.Vehicles.FirstOrDefault(x => x.Id == VehicleId);
+            }
+        }
+
         private void CommitChanges() {
-            Channels.Database.Enqueue(() => LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+            Channels.Database.Enqueue(() =>
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
         }
 
         public IEnumerable<TourType> TourTypeSource {
             get { return Enum.GetValues(typeof(TourType)).OfType<TourType>(); }
-        }
-
-        public bool IsEditing {
-            get { return _isEditing; }
-            set {
-                if (_isEditing == value) {
-                    return;
-                }
-                RaisePropertyChanging(() => IsEditing);
-                _isEditing = value;
-                RaisePropertyChanged(() => IsEditing);
-            }
         }
 
         public Route CachedRoute { get; set; }

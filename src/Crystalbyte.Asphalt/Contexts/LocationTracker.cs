@@ -4,6 +4,7 @@ using System;
 using System.Composition;
 using System.Data.Linq;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using Crystalbyte.Asphalt.Commands;
 using Crystalbyte.Asphalt.Converters;
@@ -60,6 +61,17 @@ namespace Crystalbyte.Asphalt.Contexts {
         public StopTrackingCommand StopTrackingCommand { get; set; }
 
         #endregion
+
+        [OnImportsSatisfied]
+        public void OnImportsSatisfied() {
+            AppSettings.IsMovementDetectionEnabledChanged += AppSettingsOnIsMovementDetectionEnabledChanged;
+        }
+
+        private void AppSettingsOnIsMovementDetectionEnabledChanged(object sender, EventArgs eventArgs) {
+            if (!IsTracking) {
+                ResetState();
+            }
+        }
 
         public Tour CurrentTour { get; private set; }
         public Geoposition LastPosition { get; private set; }
@@ -132,8 +144,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
 
             if (!App.IsRunningInBackground) {
-                SmartDispatcher.InvokeAsync(
-                    () => CurrentSpeed = Speed.GetKmFromMs(speedInMs));
+                CurrentSpeed = Speed.GetKmFromMs(speedInMs);
             }
 
             if (IsTracking) {
@@ -171,7 +182,8 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
 
             CurrentTour = new Tour {
-                StartTime = DateTime.Now
+                StartTime = DateTime.Now,
+                VehicleId = AppContext.Vehicles.First(x => x.IsSelected).Id
             };
 
             Debug.WriteLine("Submitting tour (Id = {0}) ...", CurrentTour.Id);
@@ -218,7 +230,6 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             Debug.WriteLine("Changes successfully submitted.");
 
-            ResetState();
             OnTourStored(EventArgs.Empty);
             NotifyStopTracking();
 
@@ -283,6 +294,11 @@ namespace Crystalbyte.Asphalt.Contexts {
                 return;
 
             SmartDispatcher.InvokeAsync(() => {
+                var current = CurrentPosition;
+                if (current == null) {
+                    return;
+                }
+
                 CurrentLatitude = CurrentPosition.Coordinate.Latitude;
                 CurrentLongitude = CurrentPosition.Coordinate.Longitude;
             });

@@ -79,11 +79,11 @@ namespace Crystalbyte.Asphalt {
             Current.Host.Settings.EnableFrameRateCounter = true;
 
             // Show the areas of the app that are being redrawn in each frame.
-            //Application.Current.Host.Settings.EnableRedrawRegions = true;
+            //Current.Host.Settings.EnableRedrawRegions = true;
 
             // Enable non-production analysis visualization mode,
             // which shows areas of a page that are handed off to GPU with a colored overlay.
-            //Application.Current.Host.Settings.EnableCacheVisualization = true;
+            //Current.Host.Settings.EnableCacheVisualization = true;
 
             // Prevent the screen from turning off while under the debugger by disabling
             // the application's idle detection.
@@ -119,8 +119,7 @@ namespace Crystalbyte.Asphalt {
 
         private static void OnGeolocatorPositionChanged(Geolocator sender, PositionChangedEventArgs args) {
             if (args.Position.Coordinate.Accuracy < AccuracyThreshold) {
-                //SmartDispatcher.InvokeAsync(() => Context.LocationTracker.Update(args.Position));
-                Context.LocationTracker.Update(args.Position);
+                SmartDispatcher.InvokeAsync(() => Context.LocationTracker.Update(args.Position));
                 return;
             }
 
@@ -142,7 +141,7 @@ namespace Crystalbyte.Asphalt {
             Debug.WriteLine("Geolocator initializing ...");
             Geolocator = new Geolocator {
                 DesiredAccuracy = PositionAccuracy.High,
-                ReportInterval = 7500
+                ReportInterval = 1500
             };
             Geolocator.PositionChanged += OnGeolocatorPositionChanged;
             Debug.WriteLine("Geolocator initialized.");

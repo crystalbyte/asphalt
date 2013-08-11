@@ -178,20 +178,29 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to drivers.
+        /// </summary>
+        public static string DriversPanoramaPageHeaderText {
+            get {
+                return ResourceManager.GetString("DriversPanoramaPageHeaderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to edit.
+        /// </summary>
+        public static string EditVehicleButtonText {
+            get {
+                return ResourceManager.GetString("EditVehicleButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enabled.
         /// </summary>
         public static string Enabled {
             get {
                 return ResourceManager.GetString("Enabled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Estimated current mileage.
-        /// </summary>
-        public static string EstimatedMileageLabel {
-            get {
-                return ResourceManager.GetString("EstimatedMileageLabel", resourceCulture);
             }
         }
         
@@ -210,6 +219,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string ExportButtonText {
             get {
                 return ResourceManager.GetString("ExportButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to export.
+        /// </summary>
+        public static string ExportPageTitle {
+            get {
+                return ResourceManager.GetString("ExportPageTitle", resourceCulture);
             }
         }
         
@@ -286,6 +304,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mileage.
+        /// </summary>
+        public static string MileageLabel {
+            get {
+                return ResourceManager.GetString("MileageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The app will automatically start and stop recordings for new routes based on you traveling speed..
         /// </summary>
         public static string MovementDetectionDescription {
@@ -300,6 +327,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string MovementDetectionLabel {
             get {
                 return ResourceManager.GetString("MovementDetectionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to no photo.
+        /// </summary>
+        public static string NoVehiclePhotoText {
+            get {
+                return ResourceManager.GetString("NoVehiclePhotoText", resourceCulture);
             }
         }
         

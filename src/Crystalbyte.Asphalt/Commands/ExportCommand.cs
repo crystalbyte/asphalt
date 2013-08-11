@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Crystalbyte.Asphalt.Contexts;
 using Microsoft.Phone.Shell;
 using System;
 using System.Composition;
@@ -15,6 +16,9 @@ namespace Crystalbyte.Asphalt.Commands {
         public Navigator Navigator { get; set; }
 
         [Import]
+        public AppContext AppContext { get; set; }
+
+        [Import]
         public TourSelectionSource TourSelectionSource { get; set; }
 
         public ExportCommand() {
@@ -28,6 +32,12 @@ namespace Crystalbyte.Asphalt.Commands {
 
         public bool IsApplicable {
             get {
+
+                // Don't display export button if there is nothing to export.
+                if (AppContext.IsDataLoaded && AppContext.Tours.Count == 0) {
+                    return false;
+                }
+
                 var detailsPage = Navigator.GetCurrentPage<TourDetailsPage>();
                 if (detailsPage != null) {
                     return !detailsPage.IsEditing;
@@ -35,7 +45,6 @@ namespace Crystalbyte.Asphalt.Commands {
 
                 var landingPage = Navigator.GetCurrentPage<LandingPage>();
                 return landingPage != null 
-                    && TourSelectionSource.Selections.Any() 
                     && landingPage.PanoramaIndex == 1;
             }
         }

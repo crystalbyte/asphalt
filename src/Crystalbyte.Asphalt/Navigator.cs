@@ -23,8 +23,8 @@ namespace Crystalbyte.Asphalt {
             return ((Frame)Application.Current.RootVisual).Content.GetType() == typeof(T);
         }
 
-        public void Navigate<T>() where T : PhoneApplicationPage {
-            Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(T).Name),
+        public void Navigate<T>(string query = "") where T : PhoneApplicationPage {
+            Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml?param={1}", typeof(T).Name, query),
                                                 UriKind.Relative));
         }
 

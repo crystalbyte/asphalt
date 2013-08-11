@@ -98,7 +98,9 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void OnCheckButtonClicked(object sender, EventArgs e) {
-            LocalStorage.DataContext.Vehicles.InsertOnSubmit(Vehicle);
+            if (Vehicle.Id == 0) {
+                LocalStorage.DataContext.Vehicles.InsertOnSubmit(Vehicle);
+            }
             LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
 
             App.Context.InvalidateData();
@@ -109,7 +111,7 @@ namespace Crystalbyte.Asphalt.Pages {
             NavigationService.GoBack();
         }
 
-        private void OnStackPanelTap(object sender, System.Windows.Input.GestureEventArgs e) {
+        private void OnStackPanelTap(object sender, GestureEventArgs e) {
             SelectImage();
         }
 
@@ -139,6 +141,11 @@ namespace Crystalbyte.Asphalt.Pages {
         private void OnNotesTextChanged(object sender, TextChangedEventArgs e) {
             var textbox = (TextBox)sender;
             Vehicle.Notes = textbox.Text;
+        }
+
+        private void OnLicencePlateTextChanged(object sender, TextChangedEventArgs e) {
+            var textbox = (TextBox)sender;
+            Vehicle.LicencePlate = textbox.Text;
         }
     }
 }

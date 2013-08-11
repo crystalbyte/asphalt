@@ -41,22 +41,18 @@ namespace Crystalbyte.Asphalt.Pages {
 
         public int PanoramaIndex { get; set; }
 
-        // [Import]
         public ICommand DeleteTourCommand {
             get { return App.Composition.GetExport<DeleteTourCommand>(); }
         }
 
-        // [Import]
         public Channels Channels {
             get { return App.Composition.GetExport<Channels>(); }
         }
 
-        // [Import]
         public LocalStorage LocalStorage {
             get { return App.Composition.GetExport<LocalStorage>(); }
         }
 
-        // [Import]
         public TourSelectionSource TourSelectionSource {
             get { return App.Composition.GetExport<TourSelectionSource>(); }
         }
@@ -83,7 +79,7 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void OnDeleteTourMenuItemClicked(object sender, RoutedEventArgs e) {
-            TourSelectionSource.Selection = ((MenuItem) sender).DataContext as Tour;
+            TourSelectionSource.Selection = ((MenuItem)sender).DataContext as Tour;
             DeleteTourCommand.Execute(null);
         }
 
@@ -94,7 +90,7 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             Tour tour;
-            var success = TryFindTour(e.OriginalSource as DependencyObject, out tour);
+            var success = TryFindDataContext(e.OriginalSource as DependencyObject, out tour);
             if (success) {
                 HandleTourTap(tour);
             }
@@ -107,8 +103,8 @@ namespace Crystalbyte.Asphalt.Pages {
         /// <param name="originalSource"> The original source that registered the tap. </param>
         /// <param name="tour"> The tour context if found. </param>
         /// <returns> True on success, else false. </returns>
-        private static bool TryFindTour(DependencyObject originalSource, out Tour tour) {
-            LongListMultiSelectorItem parent = null;
+        private static bool TryFindDataContext<T>(DependencyObject originalSource, out T tour) where T : NotificationObject {
+            ContentControl parent = null;
             var current = originalSource;
             while (true) {
                 if (current == null) {
@@ -126,18 +122,18 @@ namespace Crystalbyte.Asphalt.Pages {
                 return false;
             }
 
-            tour = (Tour) parent.DataContext;
+            tour = (T)parent.DataContext;
             return true;
         }
 
         private void HandleTourTap(Tour tour) {
             TourSelectionSource.Selection = tour;
-            NavigationService.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof (TourDetailsPage).Name),
+            NavigationService.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(TourDetailsPage).Name),
                                                UriKind.Relative));
         }
 
         private void OnToursSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var selector = (LongListMultiSelector) sender;
+            var selector = (LongListMultiSelector)sender;
 
             var selections = TourSelectionSource.Selections;
             var prevCount = selections.Count;
@@ -156,14 +152,28 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         public void OnPanoramaSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var panorama = (Panorama) sender;
+            var panorama = (Panorama)sender;
 
             var first = e.AddedItems.Cast<PanoramaItem>().FirstOrDefault();
             if (first != null) {
-                PanoramaIndex = panorama.Items.IndexOf(first);    
+                PanoramaIndex = panorama.Items.IndexOf(first);
             }
 
             this.UpdateApplicationBar();
+        }
+
+        private static void HandleVehicleTap(Vehicle vehicle) {
+            vehicle.SelectionTime = DateTime.Now;
+            App.Context.Vehicles.ForEach(x => x.InvalidateSelection());
+        }
+
+        private void OnVehicleSelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var vehicle = e.AddedItems.Cast<Vehicle>().FirstOrDefault();
+            if (vehicle == null) {
+                return;
+            }
+
+            HandleVehicleTap(vehicle);
         }
     }
 }

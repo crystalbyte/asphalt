@@ -55,7 +55,7 @@ namespace Crystalbyte.Asphalt.Commands {
 
         public void Execute(object parameter) {
             VehicleSelector.Selection = new Vehicle();
-            Navigator.Navigate<VehicleCompositionPage>();
+            Navigator.Navigate<VehicleCompositionPage>("new");
         }
     }
 }

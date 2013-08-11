@@ -21,8 +21,13 @@ namespace Crystalbyte.Asphalt.Data {
         public Table<Tour> Tours;
 
         /// <summary>
-        ///   The LINQ to SQL tour table. This property is auto populated.
+        ///   The LINQ to SQL vehicle table. This property is auto populated.
         /// </summary>
         public Table<Vehicle> Vehicles;
+
+        /// <summary>
+        ///   The LINQ to SQL driver table. This property is auto populated.
+        /// </summary>
+        public Table<Driver> Drivers;
     }
 }

@@ -18,7 +18,7 @@
                             mc:Ignorable="d">
 
     <!--  LayoutRoot is the root grid where all page content is placed  -->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -108,7 +108,7 @@
                                                    Tap="OnTourTapped">
                         <toolkit:LongListMultiSelector.JumpListStyle>
                             <Style TargetType="toolkit:LongListMultiSelector">
-                                <Setter Property="Margin" Value="12,12,0,0" />
+                                <Setter Property="Margin" Value="0,12,0,0" />
                                 <Setter Property="ItemTemplate">
                                     <Setter.Value>
                                         <DataTemplate>
@@ -130,22 +130,22 @@
                         </toolkit:LongListMultiSelector.JumpListStyle>
                         <toolkit:LongListMultiSelector.ItemTemplate>
                             <DataTemplate>
-                                <Border Margin="-12,0,22,22" d:DataContext="{d:DesignInstance Type=contexts:Tour}">
-                                    <Grid Margin="0,4,0,0" toolkit:TiltEffect.IsTiltEnabled="True">
+                                <Border Margin="-12,-8,24,0" d:DataContext="{d:DesignInstance Type=contexts:Tour}">
+                                    <Grid toolkit:TiltEffect.IsTiltEnabled="True">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
+                                        <StackPanel Grid.Column="0" VerticalAlignment="Top">
                                             <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                                       FontSize="{StaticResource PhoneFontSizeMedium}"
+                                                       FontSize="{StaticResource PhoneFontSizeLarge}"
                                                        Style="{StaticResource PhoneTextLargeStyle}"
-                                                       Text="{Binding Destination,
+                                                       Text="{Binding DestinationShort,
                                                                       Converter={StaticResource NullTextConverter},
                                                                       ConverterParameter=LoadingText}"
                                                        TextTrimming="WordEllipsis" />
                                             <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiBold}"
-                                                       FontSize="{StaticResource PhoneFontSizeSmall}"
+                                                       FontSize="{StaticResource PhoneFontSizeNormal}"
                                                        Style="{StaticResource PhoneTextAccentStyle}"
                                                        Text="{Binding Reason,
                                                                       Mode=OneWay,
@@ -163,6 +163,7 @@
                                             </Border>
                                         </StackPanel>
                                         <TextBlock Grid.Column="1"
+                                                   Margin="0,9,0,0"
                                                    HorizontalAlignment="Right"
                                                    VerticalAlignment="Top"
                                                    FontSize="{StaticResource PhoneFontSizeSmall}"
@@ -187,21 +188,90 @@
                     </toolkit:LongListMultiSelector>
                 </phone:PanoramaItem>
                 <phone:PanoramaItem Header="{Binding LocalizedResources.VehiclesPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
-                    <phone:LongListSelector ItemsSource="{Binding Vehicles}">
+                    <phone:LongListSelector ItemsSource="{Binding Vehicles}" SelectionChanged="OnVehicleSelectionChanged">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="0,0,0,6"
                                             Orientation="Horizontal"
-                                            d:DataContext="{d:DesignInstance Type=contexts:Vehicle}">
+                                            d:DataContext="{d:DesignInstance Type=contexts:Vehicle}"
+                                            toolkit:TiltEffect.IsTiltEnabled="True">
                                     <Border Style="{StaticResource DefaultTile128x128}">
                                         <Grid>
-                                            <Border BorderBrush="{StaticResource PhoneAccentBrush}" BorderThickness="1">
-                                                <Image HorizontalAlignment="Stretch"
-                                                       VerticalAlignment="Stretch"
-                                                       Source="{Binding Image}"
-                                                       Visibility="{Binding HasImage,
-                                                                            Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <Image HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Stretch"
+                                                   Source="{Binding Image}"
+                                                   Visibility="{Binding HasImage,
+                                                                        Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <Grid Background="{StaticResource PhoneBackgroundBrush}" Visibility="{Binding HasImage, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=!}">
+                                                <TextBlock Margin="10"
+                                                           HorizontalAlignment="Left"
+                                                           VerticalAlignment="Bottom"
+                                                           FontSize="{StaticResource PhoneFontSizeLarge}"
+                                                           Style="{StaticResource PhoneTextNormalStyle}"
+                                                           Text="{Binding LocalizedResources.NoVehiclePhotoText,
+                                                                          Source={StaticResource LocalizedStrings}}"
+                                                           TextWrapping="Wrap" />
+                                            </Grid>
+                                            <Border HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"
+                                                    BorderBrush="{StaticResource PhoneAccentBrush}"
+                                                    BorderThickness="6"
+                                                    Visibility="{Binding IsSelected,
+                                                                         Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Grid>
+                                                    <Polygon Fill="{StaticResource PhoneAccentBrush}"
+                                                             Points="60,0 128,0 128,65"
+                                                             Stroke="{StaticResource PhoneAccentBrush}" />
+                                                    <Border Width="100"
+                                                            Height="100"
+                                                            Margin="-4"
+                                                            HorizontalAlignment="Right"
+                                                            VerticalAlignment="Top">
+                                                        <Polyline Points="30,50 50,70 80,20"
+                                                                  Stroke="White"
+                                                                  StrokeThickness="10">
+                                                            <Polyline.RenderTransform>
+                                                                <ScaleTransform CenterX="100"
+                                                                                CenterY="0"
+                                                                                ScaleX="0.4"
+                                                                                ScaleY="0.4" />
+                                                            </Polyline.RenderTransform>
+                                                        </Polyline>
+                                                    </Border>
+
+                                                </Grid>
                                             </Border>
+                                        </Grid>
+                                    </Border>
+                                    <StackPanel Margin="12,0,0,0">
+                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                   FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                                   Text="{Binding LicencePlate}" />
+                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                   FontSize="{StaticResource PhoneFontSizeSmall}"
+                                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                                   Text="{Binding Notes}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </phone:LongListSelector.ItemTemplate>
+                    </phone:LongListSelector>
+                </phone:PanoramaItem>
+                <phone:PanoramaItem Header="{Binding LocalizedResources.DriversPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
+                    <phone:LongListSelector ItemsSource="{Binding Drivers}">
+                        <phone:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,6"
+                                            Orientation="Horizontal"
+                                            d:DataContext="{d:DesignInstance Type=contexts:Driver}">
+                                    <Border Style="{StaticResource DefaultTile128x128}">
+                                        <Grid>
+                                            <Image HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Stretch"
+                                                   Source="{Binding Image}"
+                                                   Visibility="{Binding HasImage,
+                                                                        Converter={StaticResource BooleanToVisibilityConverter}}" />
                                             <Grid Background="{StaticResource PhoneAccentBrush}" Visibility="{Binding HasImage, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=!}">
                                                 <TextBlock Margin="10"
                                                            HorizontalAlignment="Left"
@@ -253,7 +323,7 @@
 
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar />
+        <shell:ApplicationBar IsVisible="False" />
     </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

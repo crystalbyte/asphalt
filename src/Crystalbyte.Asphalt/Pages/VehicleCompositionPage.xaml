@@ -20,9 +20,6 @@
 
     <!--  LayoutRoot is the root grid where all page content is placed  -->
     <Grid x:Name="LayoutRoot">
-        <Grid.Background>
-            <ImageBrush ImageSource="/Assets/VehicleBackground.jpg" />
-        </Grid.Background>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -76,13 +73,15 @@
                                             Mode=TwoWay,
                                             ValidatesOnNotifyDataErrors=True,
                                             NotifyOnValidationError=True}"
+                             TextChanged="OnLicencePlateTextChanged"
                              ui:DockPanel.Dock="Top" />
                     <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="Initial Mileage"
+                               Text="{Binding LocalizedResources.MileageLabel,
+                                              Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <TextBox InputScope="Number"
                              MaxLength="8"
-                             Text="{Binding InitialMileage,
+                             Text="{Binding Mileage,
                                             Mode=TwoWay,
                                             ValidatesOnNotifyDataErrors=True,
                                             NotifyOnValidationError=True}"

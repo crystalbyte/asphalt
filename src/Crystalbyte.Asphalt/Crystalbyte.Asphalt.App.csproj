@@ -97,6 +97,7 @@
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Commands\AddVehicleCommand.cs" />
     <Compile Include="Commands\DeleteTourCommand.cs" />
+    <Compile Include="Commands\EditVehicleCommand.cs" />
     <Compile Include="Commands\ExportCommand.cs" />
     <Compile Include="Commands\NavigateBackCommand.cs" />
     <Compile Include="Commands\StopTrackingCommand.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="ConcurrentQueue.cs" />
     <Compile Include="Contexts\AppSettings.cs" />
     <Compile Include="Contexts\BindingModelBase.cs" />
+    <Compile Include="Contexts\Driver.cs" />
     <Compile Include="Contexts\Position.cs" />
     <Compile Include="Contexts\LocationTracker.cs" />
     <Compile Include="Contexts\Vehicle.cs" />
@@ -213,6 +215,7 @@
     <Resource Include="Assets\Background.jpg" />
     <Content Include="Assets\ApplicationBar\Back.png" />
     <Content Include="Assets\ApplicationBar\Delete.png" />
+    <Content Include="Assets\ApplicationBar\Edit.png" />
     <Content Include="Assets\ApplicationBar\Manage.png" />
     <Content Include="Assets\ApplicationBar\Save.png" />
     <Content Include="Assets\ApplicationBar\Stop.png" />

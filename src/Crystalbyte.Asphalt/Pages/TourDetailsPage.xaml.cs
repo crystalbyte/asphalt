@@ -178,7 +178,12 @@ namespace Crystalbyte.Asphalt.Pages {
 
         private void OnVehicleSelectionChanged(object sender, SelectionChangedEventArgs e) {
             var picker = (ListPicker)sender;
-            Tour.VehicleId = ((Vehicle)picker.SelectedItem).Id;
+            var item = (Vehicle) picker.SelectedItem;
+            if (item == null) {
+                return;
+            }
+
+            Tour.VehicleId = item.Id;
         }
     }
 }

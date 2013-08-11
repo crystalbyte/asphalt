@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Pages;
 using Microsoft.Phone.Shell;
@@ -17,6 +18,9 @@ namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
     [Export(typeof(IAppBarButtonCommand))]
     public sealed class DeleteTourCommand : IAppBarButtonCommand {
+
+        [Import]
+        public AppContext AppContext { get; set; }
 
         [Import]
         public TourSelectionSource TourSelectionSource { get; set; }
@@ -56,13 +60,19 @@ namespace Crystalbyte.Asphalt.Commands {
 
         public bool IsApplicable {
             get {
-                // Display on details page.
+
+                // Don't display delete button if there is nothing to delete.
+                if (AppContext.IsDataLoaded && AppContext.Tours.Count == 0) {
+                    return false;
+                }
+
+                // Display always on details page.
                 var detailsPage = Navigator.GetCurrentPage<TourDetailsPage>();
                 if (detailsPage != null) {
                     return true;
                 }
 
-                // Display on Landing page only with actiev selection.
+                // Display on Landing page only with an active selection.
                 var landingPage = Navigator.GetCurrentPage<LandingPage>();
                 if (landingPage != null) {
                     return TourSelectionSource.Selections.Any() && landingPage.PanoramaIndex == 1;

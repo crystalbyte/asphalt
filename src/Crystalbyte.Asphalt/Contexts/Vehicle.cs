@@ -1,6 +1,9 @@
 ﻿#region Using directives
 
+using System;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
+using System.Linq;
 using System.Windows.Media.Imaging;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
@@ -15,12 +18,13 @@ namespace Crystalbyte.Asphalt.Contexts {
     public sealed class Vehicle : BindingModelBase<Vehicle> {
 
         private int _id;
-        private int _initialMileage;
+        private double _mileage;
         private string _licencePlate;
         private string _notes;
         private string _imagePath;
         private ImageSource _image;
         private bool _hasImage;
+        private DateTime? _selectionTime;
 
         public Vehicle() {
             Construct();
@@ -29,6 +33,18 @@ namespace Crystalbyte.Asphalt.Contexts {
         [OnDeserialized]
         public void OnDeserialized(StreamingContext e) {
             Construct();
+        }
+
+        public Channels Channels {
+            get { return App.Composition.GetExport<Channels>(); }
+        }
+
+        public LocalStorage LocalStorage {
+            get { return App.Composition.GetExport<LocalStorage>(); }
+        }
+
+        public AppContext AppContext {
+            get { return App.Composition.GetExport<AppContext>(); }
         }
 
         private async void DeleteCurrentImageAsync() {
@@ -47,14 +63,19 @@ namespace Crystalbyte.Asphalt.Contexts {
             });
         }
 
+        public void CommitChanges() {
+            Channels.Database.Enqueue(() =>
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+        }
+
         private void Construct() {
             InitializeValidation();
             AddValidationFor(() => LicencePlate)
                 .When(x => string.IsNullOrWhiteSpace(x.LicencePlate))
                 .Show(AppResources.LicencePlateNotNullOrEmpty);
 
-            AddValidationFor(() => InitialMileage)
-                .When(x => x.InitialMileage < 0)
+            AddValidationFor(() => Mileage)
+                .When(x => x.Mileage < 0)
                 .Show(AppResources.InitialMileageNotNullOrEmpty);
         }
 
@@ -67,21 +88,6 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => HasImage);
                 _hasImage = value;
                 RaisePropertyChanged(() => HasImage);
-            }
-        }
-
-        [DataMember]
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity")]
-        public int Id {
-            get { return _id; }
-            set {
-                if (_id == value) {
-                    return;
-                }
-
-                RaisePropertyChanging(() => Id);
-                _id = value;
-                RaisePropertyChanged(() => Id);
             }
         }
 
@@ -100,7 +106,22 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [Column, DataMember]
+        [DataMember]
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity")]
+        public int Id {
+            get { return _id; }
+            set {
+                if (_id == value) {
+                    return;
+                }
+
+                RaisePropertyChanging(() => Id);
+                _id = value;
+                RaisePropertyChanged(() => Id);
+            }
+        }
+
+        [Column(UpdateCheck = UpdateCheck.Never), DataMember]
         public string ImagePath {
             get { return _imagePath; }
             set {
@@ -138,15 +159,16 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         [Column, DataMember]
-        public int InitialMileage {
-            get { return _initialMileage; }
+        public double Mileage {
+            get { return _mileage; }
             set {
-                if (_initialMileage == value) {
+                if (Math.Abs(_mileage - value) < double.Epsilon) {
                     return;
                 }
-                RaisePropertyChanging(() => InitialMileage);
-                _initialMileage = value;
-                RaisePropertyChanged(() => InitialMileage);
+                RaisePropertyChanging(() => Mileage);
+                _mileage = value;
+                RaisePropertyChanged(() => Mileage);
+                CommitChanges();
             }
         }
 
@@ -160,6 +182,32 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Notes);
                 _notes = value;
                 RaisePropertyChanged(() => Notes);
+            }
+        }
+
+        [Column, DataMember]
+        public DateTime? SelectionTime {
+            get { return _selectionTime; }
+            set {
+                if (_selectionTime == value) {
+                    return;
+                }
+
+                RaisePropertyChanging(() => SelectionTime);
+                _selectionTime = value;
+                RaisePropertyChanged(() => SelectionTime);
+                CommitChanges();
+            }
+        }
+
+        public void InvalidateSelection() {
+            RaisePropertyChanged(() => IsSelected);
+        }
+
+        public bool IsSelected {
+            get {
+                return AppContext.Vehicles
+                    .Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this;
             }
         }
     }

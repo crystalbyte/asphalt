@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
+using System.Threading.Tasks;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Commands;
 
@@ -35,14 +36,24 @@ namespace Crystalbyte.Asphalt.Contexts {
             Tours.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedTours);
 
             Vehicles = new ObservableCollection<Vehicle>();
+            Drivers = new ObservableCollection<Driver>();
         }
 
         [OnImportsSatisfied]
         public void OnImportsSatisfied() {
             LocationTracker.TourStored += (sender, e) => LoadData();
-            DeleteTourCommand.DeletionCompleted += (sender, e) => LoadData();
+            DeleteTourCommand.DeletionCompleted += OnTourDeletionCompleted;
+
+            // Attach monitorign event handler
             AppSettings.IsMovementDetectionEnabledChanged += (sender, e) => 
                 NotifyIsMovementDetectionEnabledChanged();
+
+            // Trigger initial update
+            NotifyIsMovementDetectionEnabledChanged();
+        }
+
+        private async void OnTourDeletionCompleted(object sender, EventArgs e) {
+            await LoadToursAsync();
         }
 
         public void NotifyIsMovementDetectionEnabledChanged() {
@@ -94,6 +105,11 @@ namespace Crystalbyte.Asphalt.Contexts {
         public ObservableCollection<Vehicle> Vehicles { get; private set; }
 
         /// <summary>
+        ///   A collection of all drivers.
+        /// </summary>
+        public ObservableCollection<Driver> Drivers { get; private set; }
+
+        /// <summary>
         ///   A collection of recent tours grouped by date.
         /// </summary>
         public object GroupedTours {
@@ -104,16 +120,39 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
+        /// <summary>
+        ///   Gets whether Tours and Vehicles are loaded.
+        /// </summary>
         public bool IsDataLoaded { get; private set; }
 
+        /// <summary>
+        ///   Invalidate all Tours and Vehicles are loaded.
+        /// </summary>
         public void InvalidateData() {
             IsDataLoaded = false;
         }
 
         /// <summary>
-        ///   Creates and adds a few ItemViewModel objects into the Items collection.
+        ///   Creates and .
         /// </summary>
         public async void LoadData() {
+            await LoadToursAsync();
+            await LoadVehiclesAsync();
+            await LoadDriversAsync();
+            IsDataLoaded = true;
+        }
+
+        private async Task LoadDriversAsync() {
+            Drivers.Clear();
+            var tours = await Channels.Database.Enqueue(
+                () => LocalStorage.DataContext.Drivers
+                          .Select(x => x)
+                          .ToArray());
+
+            Tours.AddRange(tours);
+        }
+
+        public async Task LoadToursAsync() {
             Tours.Clear();
             var tours = await Channels.Database.Enqueue(
                 () => LocalStorage.DataContext.Tours
@@ -122,7 +161,9 @@ namespace Crystalbyte.Asphalt.Contexts {
                           .ToArray());
 
             Tours.AddRange(tours);
+        }
 
+        public async Task LoadVehiclesAsync() {
             Vehicles.Clear();
             var vehicles = await Channels.Database.Enqueue(
                 () => LocalStorage.DataContext.Vehicles
@@ -130,8 +171,6 @@ namespace Crystalbyte.Asphalt.Contexts {
                           .ToArray());
 
             Vehicles.AddRange(vehicles);
-
-            IsDataLoaded = true;
         }
     }
 }
