@@ -24,10 +24,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         private string _imagePath;
         private ImageSource _image;
         private bool _hasImage;
-        private DateTime? _selectionTime;
+        private DateTime _selectionTime;
 
         public Vehicle() {
             Construct();
+
+            // Must be set to an SqlCe compatible range.
+            SelectionTime = DateTime.Now;
         }
 
         [OnDeserialized]
@@ -40,7 +43,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public LocalStorage LocalStorage {
-            get { return App.Composition.GetExport<LocalStorage>(); }
+            get { return App.Composition.GetExport<LocalStorage >(); }
         }
 
         public AppContext AppContext {
@@ -48,13 +51,11 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private async void DeleteCurrentImageAsync() {
-            var localStorage = App.Composition.GetExport<LocalStorage>();
-            await localStorage.DeleteImageAsync(ImagePath);
+            await LocalStorage.DeleteImageAsync(ImagePath);
         }
 
-        private async void LoadImageFromPath() {
-            var localStorage = App.Composition.GetExport<LocalStorage>();
-            var stream = await localStorage.GetImageStreamAsync(ImagePath);
+        public async void RestoreImageFromPath() {
+            var stream = await LocalStorage.GetImageStreamAsync(ImagePath);
 
             SmartDispatcher.InvokeAsync(() => {
                 var image = new BitmapImage();
@@ -140,7 +141,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 if (string.IsNullOrWhiteSpace(value)) {
                     Image = null;
                 } else {
-                    LoadImageFromPath();
+                    RestoreImageFromPath();
                 }
             }
         }
@@ -186,7 +187,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         [Column, DataMember]
-        public DateTime? SelectionTime {
+        public DateTime SelectionTime {
             get { return _selectionTime; }
             set {
                 if (_selectionTime == value) {

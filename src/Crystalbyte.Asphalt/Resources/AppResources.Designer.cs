@@ -61,6 +61,24 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to add photo.
+        /// </summary>
+        public static string AddDriverImageText {
+            get {
+                return ResourceManager.GetString("AddDriverImageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add driver.
+        /// </summary>
+        public static string AddDriverPageTitle {
+            get {
+                return ResourceManager.GetString("AddDriverPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to add.
         /// </summary>
         public static string AddVehicleButtonText {
@@ -106,6 +124,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cancel.
+        /// </summary>
+        public static string CancelButtonText {
+            get {
+                return ResourceManager.GetString("CancelButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter a new reason for the current tour..
         /// </summary>
         public static string ChangeReasonPopupText {
@@ -115,11 +142,38 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to confirm.
+        /// </summary>
+        public static string ConfirmButtonText {
+            get {
+                return ResourceManager.GetString("ConfirmButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to delete.
         /// </summary>
         public static string DeleteButtonText {
             get {
                 return ResourceManager.GetString("DeleteButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete driver?.
+        /// </summary>
+        public static string DeleteDriverConfirmCaption {
+            get {
+                return ResourceManager.GetString("DeleteDriverConfirmCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This action cannot be undone..
+        /// </summary>
+        public static string DeleteDriverConfirmMessage {
+            get {
+                return ResourceManager.GetString("DeleteDriverConfirmMessage", resourceCulture);
             }
         }
         
@@ -147,6 +201,24 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string DeleteRouteConfirmMessage {
             get {
                 return ResourceManager.GetString("DeleteRouteConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete vehicle?.
+        /// </summary>
+        public static string DeleteVehicleConfirmCaption {
+            get {
+                return ResourceManager.GetString("DeleteVehicleConfirmCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This action cannot be undone..
+        /// </summary>
+        public static string DeleteVehicleConfirmMessage {
+            get {
+                return ResourceManager.GetString("DeleteVehicleConfirmMessage", resourceCulture);
             }
         }
         
@@ -237,6 +309,24 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string ExpressionNoMember {
             get {
                 return ResourceManager.GetString("ExpressionNoMember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forename.
+        /// </summary>
+        public static string ForenameLabel {
+            get {
+                return ResourceManager.GetString("ForenameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The forname must not be empty..
+        /// </summary>
+        public static string ForenameNotNullOrEmpty {
+            get {
+                return ResourceManager.GetString("ForenameNotNullOrEmpty", resourceCulture);
             }
         }
         
@@ -471,6 +561,24 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string StopTimeLabel {
             get {
                 return ResourceManager.GetString("StopTimeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Surname.
+        /// </summary>
+        public static string SurnameLabel {
+            get {
+                return ResourceManager.GetString("SurnameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The surname must not be empty..
+        /// </summary>
+        public static string SurnameNotNullOrEmpty {
+            get {
+                return ResourceManager.GetString("SurnameNotNullOrEmpty", resourceCulture);
             }
         }
         

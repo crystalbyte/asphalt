@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Crystalbyte.Asphalt.Data;
@@ -21,11 +18,14 @@ namespace Crystalbyte.Asphalt.Contexts {
         private bool _hasImage;
         private string _forename;
         private string _surname;
-        private string _isActive;
         private string _isDefault;
+        private DateTime _selectionTime;
 
         public Driver() {
             Construct();
+
+            // Must be set to an SqlCe compatible range.
+            SelectionTime = DateTime.Now;
         }
 
         [OnDeserialized]
@@ -33,25 +33,35 @@ namespace Crystalbyte.Asphalt.Contexts {
             Construct();
         }
 
+        public Channels Channels {
+            get { return App.Composition.GetExport<Channels>(); }
+        }
+
+        public LocalStorage LocalStorage {
+            get { return App.Composition.GetExport<LocalStorage>(); }
+        }
+
+        public AppContext AppContext {
+            get { return App.Composition.GetExport<AppContext>(); }
+        }
+
         private void Construct() {
             InitializeValidation();
             AddValidationFor(() => Surname)
                 .When(x => string.IsNullOrWhiteSpace(x.Surname))
-                .Show(AppResources.LicencePlateNotNullOrEmpty);
+                .Show(AppResources.SurnameNotNullOrEmpty);
 
             AddValidationFor(() => Forename)
-                .When(x => string.IsNullOrWhiteSpace(Forename))
-                .Show(AppResources.InitialMileageNotNullOrEmpty);
+                .When(x => string.IsNullOrWhiteSpace(x.Forename))
+                .Show(AppResources.ForenameNotNullOrEmpty);
         }
 
         private async void DeleteCurrentImageAsync() {
-            var localStorage = App.Composition.GetExport<LocalStorage>();
-            await localStorage.DeleteImageAsync(ImagePath);
+            await LocalStorage.DeleteImageAsync(ImagePath);
         }
 
-        private async void LoadImageFromPath() {
-            var localStorage = App.Composition.GetExport<LocalStorage>();
-            var stream = await localStorage.GetImageStreamAsync(ImagePath);
+        public async void RestoreImageFromPath() {
+            var stream = await LocalStorage.GetImageStreamAsync(ImagePath);
 
             SmartDispatcher.InvokeAsync(() => {
                 var image = new BitmapImage();
@@ -121,7 +131,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 if (string.IsNullOrWhiteSpace(value)) {
                     Image = null;
                 } else {
-                    LoadImageFromPath();
+                    RestoreImageFromPath();
                 }
             }
         }
@@ -153,15 +163,17 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         [Column, DataMember]
-        public string IsActive {
-            get { return _isActive; }
+        public DateTime SelectionTime {
+            get { return _selectionTime; }
             set {
-                if (_isActive == value) {
+                if (_selectionTime == value) {
                     return;
                 }
-                RaisePropertyChanging(() => IsActive);
-                _isActive = value;
-                RaisePropertyChanged(() => IsActive);
+
+                RaisePropertyChanging(() => SelectionTime);
+                _selectionTime = value;
+                RaisePropertyChanged(() => SelectionTime);
+                CommitChanges();
             }
         }
 
@@ -175,6 +187,22 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => IsDefault);
                 _isDefault = value;
                 RaisePropertyChanged(() => IsDefault);
+            }
+        }
+
+        public void CommitChanges() {
+            Channels.Database.Enqueue(() =>
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+        }
+
+        public void InvalidateSelection() {
+            RaisePropertyChanged(() => IsSelected);
+        }
+
+        public bool IsSelected {
+            get {
+                return AppContext.Drivers
+                    .Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this;
             }
         }
     }

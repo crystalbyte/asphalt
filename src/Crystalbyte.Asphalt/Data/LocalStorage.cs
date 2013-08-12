@@ -8,8 +8,6 @@ using System.IO.IsolatedStorage;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Windows.Storage;
 
 #endregion
@@ -64,8 +62,6 @@ namespace Crystalbyte.Asphalt.Data {
 
             var store = IsolatedStorageFile.GetUserStoreForApplication();
             if (!store.FileExists(Path.Combine(local.Path, ImagePath, name))) {
-                // Image has been deleted
-                // TODO: replace for default image
                 return null;
             }
 

@@ -46,14 +46,14 @@
         -->
 
         <!--  Panorama control  -->
-        <Border BorderBrush="{Binding IsMovementDetectionEnabled, Mode=OneWay, Converter={StaticResource BooleanGreenRedConverter}}" BorderThickness="0,1,0,0">
+        <Border BorderBrush="{Binding IsMovementDetectionEnabled, Mode=OneWay, Converter={StaticResource BooleanGreenRedConverter}}" BorderThickness="0,0,0,0">
             <phone:Panorama Title="{Binding LocalizedResources.ApplicationTitle,
                                             Source={StaticResource LocalizedStrings}}"
                             Grid.Row="1"
                             SelectionChanged="OnPanoramaSelectionChanged">
 
                 <phone:Panorama.Background>
-                    <ImageBrush ImageSource="/Crystalbyte.Asphalt.App;component/Assets/BackgroundDark.jpg" />
+                    <ImageBrush ImageSource="/Crystalbyte.Asphalt.App;component/Assets/Background.jpg" />
                 </phone:Panorama.Background>
 
                 <!--  Panorama item one  -->
@@ -191,110 +191,160 @@
                     <phone:LongListSelector ItemsSource="{Binding Vehicles}" SelectionChanged="OnVehicleSelectionChanged">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="0,0,0,6"
-                                            Orientation="Horizontal"
-                                            d:DataContext="{d:DesignInstance Type=contexts:Vehicle}"
-                                            toolkit:TiltEffect.IsTiltEnabled="True">
-                                    <Border Style="{StaticResource DefaultTile128x128}">
-                                        <Grid>
-                                            <Image HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Stretch"
-                                                   Source="{Binding Image}"
-                                                   Visibility="{Binding HasImage,
-                                                                        Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                            <Grid Background="{StaticResource PhoneBackgroundBrush}" Visibility="{Binding HasImage, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=!}">
-                                                <TextBlock Margin="10"
-                                                           HorizontalAlignment="Left"
-                                                           VerticalAlignment="Bottom"
-                                                           FontSize="{StaticResource PhoneFontSizeLarge}"
-                                                           Style="{StaticResource PhoneTextNormalStyle}"
-                                                           Text="{Binding LocalizedResources.NoVehiclePhotoText,
-                                                                          Source={StaticResource LocalizedStrings}}"
-                                                           TextWrapping="Wrap" />
-                                            </Grid>
-                                            <Border HorizontalAlignment="Stretch"
-                                                    VerticalAlignment="Stretch"
-                                                    BorderBrush="{StaticResource PhoneAccentBrush}"
-                                                    BorderThickness="6"
-                                                    Visibility="{Binding IsSelected,
-                                                                         Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <Grid>
-                                                    <Polygon Fill="{StaticResource PhoneAccentBrush}"
-                                                             Points="60,0 128,0 128,65"
-                                                             Stroke="{StaticResource PhoneAccentBrush}" />
-                                                    <Border Width="100"
-                                                            Height="100"
-                                                            Margin="-4"
-                                                            HorizontalAlignment="Right"
-                                                            VerticalAlignment="Top">
-                                                        <Polyline Points="30,50 50,70 80,20"
-                                                                  Stroke="White"
-                                                                  StrokeThickness="10">
-                                                            <Polyline.RenderTransform>
-                                                                <ScaleTransform CenterX="100"
-                                                                                CenterY="0"
-                                                                                ScaleX="0.4"
-                                                                                ScaleY="0.4" />
-                                                            </Polyline.RenderTransform>
-                                                        </Polyline>
-                                                    </Border>
+                                <Grid>
 
-                                                </Grid>
-                                            </Border>
-                                        </Grid>
-                                    </Border>
-                                    <StackPanel Margin="12,0,0,0">
-                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                                   FontSize="{StaticResource PhoneFontSizeExtraLarge}"
-                                                   Style="{StaticResource PhoneTextNormalStyle}"
-                                                   Text="{Binding LicencePlate}" />
-                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                                   FontSize="{StaticResource PhoneFontSizeSmall}"
-                                                   Style="{StaticResource PhoneTextSmallStyle}"
-                                                   Text="{Binding Notes}" />
+
+                                    <StackPanel Margin="0,0,0,6"
+                                                Orientation="Horizontal"
+                                                d:DataContext="{d:DesignInstance Type=contexts:Vehicle}"
+                                                toolkit:TiltEffect.IsTiltEnabled="True">
+                                        <Border Style="{StaticResource DefaultTile128x128}">
+                                            <Grid>
+                                                <Image HorizontalAlignment="Stretch"
+                                                       VerticalAlignment="Stretch"
+                                                       Source="{Binding Image}"
+                                                       Visibility="{Binding HasImage,
+                                                                            Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                <Image HorizontalAlignment="Stretch"
+                                                       VerticalAlignment="Stretch"
+                                                       Source="/Assets/Vehicle.jpg"
+                                                       Visibility="{Binding HasImage,
+                                                                            Converter={StaticResource BooleanToVisibilityConverter},
+                                                                            ConverterParameter=!}" />
+
+                                                <Border HorizontalAlignment="Stretch"
+                                                        VerticalAlignment="Stretch"
+                                                        BorderBrush="{StaticResource PhoneAccentBrush}"
+                                                        BorderThickness="6"
+                                                        Visibility="{Binding IsSelected,
+                                                                             Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <Grid>
+                                                        <Polygon Fill="{StaticResource PhoneAccentBrush}"
+                                                                 Points="60,0 128,0 128,65"
+                                                                 Stroke="{StaticResource PhoneAccentBrush}" />
+                                                        <Border Width="100"
+                                                                Height="100"
+                                                                Margin="-4"
+                                                                HorizontalAlignment="Right"
+                                                                VerticalAlignment="Top">
+                                                            <Polyline Points="30,50 50,70 80,20"
+                                                                      Stroke="White"
+                                                                      StrokeThickness="10">
+                                                                <Polyline.RenderTransform>
+                                                                    <ScaleTransform CenterX="100"
+                                                                                    CenterY="0"
+                                                                                    ScaleX="0.4"
+                                                                                    ScaleY="0.4" />
+                                                                </Polyline.RenderTransform>
+                                                            </Polyline>
+                                                        </Border>
+
+                                                    </Grid>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                        <StackPanel Margin="12,0,0,0">
+                                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                       FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                                                       Style="{StaticResource PhoneTextNormalStyle}"
+                                                       Text="{Binding LicencePlate}" />
+                                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                       FontSize="{StaticResource PhoneFontSizeSmall}"
+                                                       Style="{StaticResource PhoneTextSmallStyle}"
+                                                       Text="{Binding Notes}" />
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
+                                    <Rectangle HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch"
+                                               Fill="Transparent"
+                                               Stroke="Transparent">
+                                        <toolkit:ContextMenuService.ContextMenu>
+                                            <toolkit:ContextMenu>
+                                                <toolkit:MenuItem Click="OnDeleteVehicleMenuItemClicked" Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
+                                            </toolkit:ContextMenu>
+                                        </toolkit:ContextMenuService.ContextMenu>
+                                    </Rectangle>
+                                </Grid>
                             </DataTemplate>
                         </phone:LongListSelector.ItemTemplate>
                     </phone:LongListSelector>
                 </phone:PanoramaItem>
                 <phone:PanoramaItem Header="{Binding LocalizedResources.DriversPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
-                    <phone:LongListSelector ItemsSource="{Binding Drivers}">
+                    <phone:LongListSelector ItemsSource="{Binding Drivers}" SelectionChanged="OnDriverSelectionChanged">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="0,0,0,6"
-                                            Orientation="Horizontal"
-                                            d:DataContext="{d:DesignInstance Type=contexts:Driver}">
-                                    <Border Style="{StaticResource DefaultTile128x128}">
-                                        <Grid>
-                                            <Image HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Stretch"
-                                                   Source="{Binding Image}"
-                                                   Visibility="{Binding HasImage,
-                                                                        Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                            <Grid Background="{StaticResource PhoneAccentBrush}" Visibility="{Binding HasImage, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=!}">
-                                                <TextBlock Margin="10"
-                                                           HorizontalAlignment="Left"
-                                                           VerticalAlignment="Bottom"
-                                                           FontSize="{StaticResource PhoneFontSizeExtraLarge}"
-                                                           Style="{StaticResource PhoneTextNormalStyle}"
-                                                           Text="{Binding LocalizedResources.AddVehiclePhotoText,
-                                                                          Source={StaticResource LocalizedStrings}}"
-                                                           TextWrapping="Wrap" />
+                                <Grid>
+                                    <StackPanel Margin="0,0,0,6"
+                                                Orientation="Horizontal"
+                                                d:DataContext="{d:DesignInstance Type=contexts:Driver}"
+                                                toolkit:TiltEffect.IsTiltEnabled="True">
+                                        <Border Style="{StaticResource DefaultTile128x128}">
+                                            <Grid>
+                                                <Image HorizontalAlignment="Stretch"
+                                                       VerticalAlignment="Stretch"
+                                                       Source="{Binding Image}"
+                                                       Visibility="{Binding HasImage,
+                                                                            Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                <Image HorizontalAlignment="Stretch"
+                                                       VerticalAlignment="Stretch"
+                                                       Source="/Assets/Driver.jpg"
+                                                       Visibility="{Binding HasImage,
+                                                                            Converter={StaticResource BooleanToVisibilityConverter},
+                                                                            ConverterParameter=!}" />
+                                                <Border HorizontalAlignment="Stretch"
+                                                        VerticalAlignment="Stretch"
+                                                        BorderBrush="{StaticResource PhoneAccentBrush}"
+                                                        BorderThickness="6"
+                                                        Visibility="{Binding IsSelected,
+                                                                             Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <Grid>
+                                                        <Polygon Fill="{StaticResource PhoneAccentBrush}"
+                                                                 Points="60,0 128,0 128,65"
+                                                                 Stroke="{StaticResource PhoneAccentBrush}" />
+                                                        <Border Width="100"
+                                                                Height="100"
+                                                                Margin="-4"
+                                                                HorizontalAlignment="Right"
+                                                                VerticalAlignment="Top">
+                                                            <Polyline Points="30,50 50,70 80,20"
+                                                                      Stroke="White"
+                                                                      StrokeThickness="10">
+                                                                <Polyline.RenderTransform>
+                                                                    <ScaleTransform CenterX="100"
+                                                                                    CenterY="0"
+                                                                                    ScaleX="0.4"
+                                                                                    ScaleY="0.4" />
+                                                                </Polyline.RenderTransform>
+                                                            </Polyline>
+                                                        </Border>
+
+                                                    </Grid>
+                                                </Border>
                                             </Grid>
-                                        </Grid>
-                                    </Border>
-                                    <StackPanel Margin="12,0,0,0">
-                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                                   FontSize="{StaticResource PhoneFontSizeExtraLarge}"
-                                                   Style="{StaticResource PhoneTextNormalStyle}"
-                                                   Text="{Binding LicencePlate}" />
-                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                                   FontSize="{StaticResource PhoneFontSizeSmall}"
-                                                   Style="{StaticResource PhoneTextSmallStyle}"
-                                                   Text="{Binding Notes}" />
+                                        </Border>
+                                        <StackPanel Margin="12,0,0,0">
+                                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                                       FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                                                       Style="{StaticResource PhoneTextNormalStyle}">
+                                                <Run Text="{Binding Forename}" />
+                                                <LineBreak />
+                                                <Run FontSize="{StaticResource PhoneFontSizeMedium}"
+                                                     Foreground="Gray"
+                                                     Text="{Binding Surname}" />
+                                            </TextBlock>
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
+                                    <Rectangle HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch"
+                                               Fill="Transparent"
+                                               Stroke="Transparent">
+                                        <toolkit:ContextMenuService.ContextMenu>
+                                            <toolkit:ContextMenu>
+                                                <toolkit:MenuItem Click="OnDeleteDriverMenuItemClicked" Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
+                                            </toolkit:ContextMenu>
+                                        </toolkit:ContextMenuService.ContextMenu>
+                                    </Rectangle>
+                                </Grid>
                             </DataTemplate>
                         </phone:LongListSelector.ItemTemplate>
                     </phone:LongListSelector>

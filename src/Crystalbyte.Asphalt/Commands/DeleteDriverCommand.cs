@@ -17,13 +17,13 @@ using System.Composition;
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
     [Export(typeof(IAppBarButtonCommand))]
-    public sealed class DeleteTourCommand : IAppBarButtonCommand {
+    public sealed class DeleteDriverCommand : IAppBarButtonCommand {
 
         [Import]
         public AppContext AppContext { get; set; }
 
         [Import]
-        public TourSelectionSource TourSelectionSource { get; set; }
+        public DriverSelectionSource DriverSelectionSource { get; set; }
 
         [Import]
         public Channels Channels { get; set; }
@@ -34,7 +34,7 @@ namespace Crystalbyte.Asphalt.Commands {
         [Import]
         public Navigator Navigator { get; set; }
 
-        public DeleteTourCommand() {
+        public DeleteDriverCommand() {
             Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Delete.png", UriKind.Relative)) {
                 Text = AppResources.DeleteButtonText
             };
@@ -51,7 +51,7 @@ namespace Crystalbyte.Asphalt.Commands {
 
         [OnImportsSatisfied]
         public void OnImportsSatisfied() {
-            TourSelectionSource.SelectionChanged += (sender, e) => OnCanExecuteChanged(EventArgs.Empty);
+            DriverSelectionSource.SelectionChanged += (sender, e) => OnCanExecuteChanged(EventArgs.Empty);
         }
 
         #region IAppBarButtonCommand implementation
@@ -67,7 +67,7 @@ namespace Crystalbyte.Asphalt.Commands {
                 }
 
                 // Display always on details page.
-                var detailsPage = Navigator.GetCurrentPage<TourDetailsPage>();
+                var detailsPage = Navigator.GetCurrentPage<DriverCompositionPage>();
                 if (detailsPage != null) {
                     return true;
                 }
@@ -75,7 +75,7 @@ namespace Crystalbyte.Asphalt.Commands {
                 // Display on Landing page only with an active selection.
                 var landingPage = Navigator.GetCurrentPage<LandingPage>();
                 if (landingPage != null) {
-                    return TourSelectionSource.Selections.Any() && landingPage.PanoramaIndex == 1;
+                    return DriverSelectionSource.Selections.Any() && landingPage.PanoramaIndex == 3;
                 }
 
                 return false;
@@ -87,7 +87,7 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public bool CanExecute(object parameter) {
-            return TourSelectionSource.Selections.Any();
+            return IsApplicable;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -99,28 +99,28 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public async void Execute(object parameter) {
-            var caption = AppResources.DeleteRouteConfirmCaption;
-            var message = AppResources.DeleteRouteConfirmMessage;
+            var caption = AppResources.DeleteDriverConfirmCaption;
+            var message = AppResources.DeleteDriverConfirmMessage;
             var result = MessageBox.Show(message, caption, MessageBoxButton.OKCancel);
             if (result.HasFlag(MessageBoxResult.Cancel)) {
                 Debug.WriteLine("Deletion aborted by user.");
                 return;
             }
 
-            Debug.WriteLine("Deleting selected tours ...");
+            Debug.WriteLine("Deleting selected driver ...");
 
-            var tours = TourSelectionSource.Selections;
+            var driver = DriverSelectionSource.Selection;
 
             await Channels.Database.Enqueue(() => {
-                LocalStorage.DataContext.Tours.DeleteAllOnSubmit(tours);
+                LocalStorage.DataContext.Drivers.DeleteOnSubmit(driver);
                 LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
             });
 
             OnDeletionCompleted(EventArgs.Empty);
 
-            Debug.WriteLine("Selected tours have been successfully deleted.");
+            Debug.WriteLine("Selected driver has been successfully deleted.");
 
-            var detailsPage = Navigator.GetCurrentPage<TourDetailsPage>();
+            var detailsPage = Navigator.GetCurrentPage<DriverCompositionPage>();
             if (detailsPage != null) {
                 // Return to LandingPage.xaml
                 Navigator.Navigate<LandingPage>();

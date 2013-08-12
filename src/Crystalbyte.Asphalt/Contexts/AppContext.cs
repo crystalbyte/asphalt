@@ -17,6 +17,9 @@ namespace Crystalbyte.Asphalt.Contexts {
         private bool _isMovementDetectionEnabled;
 
         [Import]
+        public Channels Channels { get; set; }
+
+        [Import]
         public LocalStorage LocalStorage { get; set; }
 
         [Import]
@@ -26,10 +29,19 @@ namespace Crystalbyte.Asphalt.Contexts {
         public LocationTracker LocationTracker { get; set; }
 
         [Import]
-        public Channels Channels { get; set; }
+        public DeleteTourCommand DeleteTourCommand { get; set; }
 
         [Import]
-        public DeleteTourCommand DeleteTourCommand { get; set; }
+        public DeleteVehicleCommand DeleteVehicleCommand { get; set; }
+
+        [Import]
+        public DeleteDriverCommand DeleteDriverCommand { get; set; }
+
+        [Import]
+        public TourSelectionSource TourSelectionSource { get; set; }
+
+        [Import]
+        public VehicleSelectionSource VehicleSelectionSource { get; set; }
 
         public AppContext() {
             Tours = new ObservableCollection<Tour>();
@@ -43,13 +55,23 @@ namespace Crystalbyte.Asphalt.Contexts {
         public void OnImportsSatisfied() {
             LocationTracker.TourStored += (sender, e) => LoadData();
             DeleteTourCommand.DeletionCompleted += OnTourDeletionCompleted;
+            DeleteVehicleCommand.DeletionCompleted += OnVehicleDeletionCompleted;
+            DeleteDriverCommand.DeletionCompleted += OnDriversDeletionCompleted;
 
-            // Attach monitorign event handler
+            // Attach monitoring event handler
             AppSettings.IsMovementDetectionEnabledChanged += (sender, e) => 
                 NotifyIsMovementDetectionEnabledChanged();
 
             // Trigger initial update
             NotifyIsMovementDetectionEnabledChanged();
+        }
+
+        private async void OnDriversDeletionCompleted(object sender, EventArgs e) {
+            await LoadDriversAsync();
+        }
+
+        private async void OnVehicleDeletionCompleted(object sender, EventArgs e) {
+            await LoadVehiclesAsync();
         }
 
         private async void OnTourDeletionCompleted(object sender, EventArgs e) {
@@ -92,6 +114,11 @@ namespace Crystalbyte.Asphalt.Contexts {
             var handler = SelectionEnabledChanged;
             if (handler != null)
                 handler(this, e);
+        }
+
+        public void RefreshSelections() {
+            Vehicles.ForEach(x => x.InvalidateSelection());
+            Drivers.ForEach(x => x.InvalidateSelection());
         }
 
         /// <summary>
@@ -139,17 +166,22 @@ namespace Crystalbyte.Asphalt.Contexts {
             await LoadToursAsync();
             await LoadVehiclesAsync();
             await LoadDriversAsync();
+
+            VehicleSelectionSource.Selection = null;
+            TourSelectionSource.Selection = null;
+
+            RefreshSelections();
             IsDataLoaded = true;
         }
 
         private async Task LoadDriversAsync() {
             Drivers.Clear();
-            var tours = await Channels.Database.Enqueue(
+            var drivers = await Channels.Database.Enqueue(
                 () => LocalStorage.DataContext.Drivers
                           .Select(x => x)
                           .ToArray());
 
-            Tours.AddRange(tours);
+            Drivers.AddRange(drivers);
         }
 
         public async Task LoadToursAsync() {

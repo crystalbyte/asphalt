@@ -96,6 +96,10 @@
     <Compile Include="Channels.cs" />
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Commands\AddVehicleCommand.cs" />
+    <Compile Include="Commands\AddDriverCommand.cs" />
+    <Compile Include="Commands\DeleteVehicleCommand.cs" />
+    <Compile Include="Commands\DeleteDriverCommand.cs" />
+    <Compile Include="Commands\EditDriverCommand.cs" />
     <Compile Include="Commands\DeleteTourCommand.cs" />
     <Compile Include="Commands\EditVehicleCommand.cs" />
     <Compile Include="Commands\ExportCommand.cs" />
@@ -120,6 +124,10 @@
     <Compile Include="Converters\NullTextConverter.cs" />
     <Compile Include="Converters\TourTypeToColorConverter.cs" />
     <Compile Include="Converters\UnitOfLengthFormatter.cs" />
+    <Compile Include="DriverSelectionSource.cs" />
+    <Compile Include="Pages\DriverCompositionPage.xaml.cs">
+      <DependentUpon>DriverCompositionPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ExportPage.xaml.cs">
       <DependentUpon>ExportPage.xaml</DependentUpon>
     </Compile>
@@ -175,6 +183,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Pages\DriverCompositionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\ExportPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -225,13 +237,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Assets\BackgroundDark.jpg" />
-    <Content Include="Assets\VehicleBackground.jpg" />
+    <Content Include="Assets\Driver.jpg" />
+    <Content Include="Assets\Vehicle.jpg" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <Resource Include="Assets\PanoramaBackground.png" />
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationBar\Add.png" />
     <Content Include="Assets\ApplicationBar\Cancel.png" />

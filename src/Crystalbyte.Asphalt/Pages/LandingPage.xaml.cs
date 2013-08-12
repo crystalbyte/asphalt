@@ -45,6 +45,18 @@ namespace Crystalbyte.Asphalt.Pages {
             get { return App.Composition.GetExport<DeleteTourCommand>(); }
         }
 
+        public ICommand DeleteDriverCommand {
+            get { return App.Composition.GetExport<DeleteDriverCommand>(); }
+        }
+
+        public ICommand DeleteVehicleCommand {
+            get { return App.Composition.GetExport<DeleteVehicleCommand>(); }
+        }
+
+        public Navigator Navigator {
+            get { return App.Composition.GetExport<Navigator>(); }
+        }
+
         public Channels Channels {
             get { return App.Composition.GetExport<Channels>(); }
         }
@@ -57,14 +69,20 @@ namespace Crystalbyte.Asphalt.Pages {
             get { return App.Composition.GetExport<TourSelectionSource>(); }
         }
 
+        public VehicleSelectionSource VehicleSelectionSource {
+            get { return App.Composition.GetExport<VehicleSelectionSource>(); }
+        }
+
+        public DriverSelectionSource DriverSelectionSource {
+            get { return App.Composition.GetExport<DriverSelectionSource>(); }
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             if (_isNewPageInstance) {
-                var navigation = App.Composition.GetExport<Navigator>();
-                navigation.Initialize(NavigationService);
+                Navigator.Initialize(NavigationService);
             }
 
-            ClearSelection();
-
+            // Wait for animations to complete.
             this.UpdateApplicationBar();
 
             if (!App.Context.IsDataLoaded) {
@@ -72,10 +90,6 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             _isNewPageInstance = false;
-        }
-
-        private void ClearSelection() {
-            TourSelectionSource.Selection = null;
         }
 
         private void OnDeleteTourMenuItemClicked(object sender, RoutedEventArgs e) {
@@ -128,8 +142,7 @@ namespace Crystalbyte.Asphalt.Pages {
 
         private void HandleTourTap(Tour tour) {
             TourSelectionSource.Selection = tour;
-            NavigationService.Navigate(new Uri(string.Format("/Pages/{0}.xaml", typeof(TourDetailsPage).Name),
-                                               UriKind.Relative));
+            Navigator.Navigate<TourDetailsPage>();
         }
 
         private void OnToursSelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -162,9 +175,11 @@ namespace Crystalbyte.Asphalt.Pages {
             this.UpdateApplicationBar();
         }
 
-        private static void HandleVehicleTap(Vehicle vehicle) {
+        private void HandleVehicleTap(Vehicle vehicle) {
             vehicle.SelectionTime = DateTime.Now;
-            App.Context.Vehicles.ForEach(x => x.InvalidateSelection());
+            AppContext.RefreshSelections();
+
+            VehicleSelectionSource.Selection = vehicle;
         }
 
         private void OnVehicleSelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -174,6 +189,38 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             HandleVehicleTap(vehicle);
+
+            var selector = (LongListSelector)sender;
+            selector.SelectedItem = null;
+        }
+
+        private void OnDriverSelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var driver = e.AddedItems.Cast<Driver>().FirstOrDefault();
+            if (driver == null) {
+                return;
+            }
+
+            HandleDriverTap(driver);
+
+            var selector = (LongListSelector)sender;
+            selector.SelectedItem = null;
+        }
+
+        private void HandleDriverTap(Driver driver) {
+            driver.SelectionTime = DateTime.Now;
+            AppContext.RefreshSelections();
+
+            DriverSelectionSource.Selection = driver;
+        }
+
+        private void OnDeleteVehicleMenuItemClicked(object sender, RoutedEventArgs e) {
+            VehicleSelectionSource.Selection = ((MenuItem)sender).DataContext as Vehicle;
+            DeleteVehicleCommand.Execute(null);
+        }
+
+        private void OnDeleteDriverMenuItemClicked(object sender, RoutedEventArgs e) {
+            DriverSelectionSource.Selection = ((MenuItem)sender).DataContext as Driver;
+            DeleteDriverCommand.Execute(null);
         }
     }
 }

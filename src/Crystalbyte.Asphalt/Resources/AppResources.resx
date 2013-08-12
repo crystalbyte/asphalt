@@ -288,4 +288,40 @@
   <data name="EditVehicleButtonText" xml:space="preserve">
     <value>edit</value>
   </data>
+  <data name="AddDriverPageTitle" xml:space="preserve">
+    <value>add driver</value>
+  </data>
+  <data name="ForenameLabel" xml:space="preserve">
+    <value>Forename</value>
+  </data>
+  <data name="SurnameLabel" xml:space="preserve">
+    <value>Surname</value>
+  </data>
+  <data name="AddDriverImageText" xml:space="preserve">
+    <value>add photo</value>
+  </data>
+  <data name="ForenameNotNullOrEmpty" xml:space="preserve">
+    <value>The forname must not be empty.</value>
+  </data>
+  <data name="SurnameNotNullOrEmpty" xml:space="preserve">
+    <value>The surname must not be empty.</value>
+  </data>
+  <data name="CancelButtonText" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="ConfirmButtonText" xml:space="preserve">
+    <value>confirm</value>
+  </data>
+  <data name="DeleteDriverConfirmCaption" xml:space="preserve">
+    <value>Delete driver?</value>
+  </data>
+  <data name="DeleteDriverConfirmMessage" xml:space="preserve">
+    <value>This action cannot be undone.</value>
+  </data>
+  <data name="DeleteVehicleConfirmCaption" xml:space="preserve">
+    <value>Delete vehicle?</value>
+  </data>
+  <data name="DeleteVehicleConfirmMessage" xml:space="preserve">
+    <value>This action cannot be undone.</value>
+  </data>
 </root>

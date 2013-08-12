@@ -1,24 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Linq;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Crystalbyte.Asphalt.Pages {
-    public partial class VehicleCompositionPage {
+    public partial class DriverCompositionPage {
 
-        private const string VehicleStateKey = "vehicle";
+        private const string DriverStateKey = "driver";
         private bool _isNewPageInstance;
         private readonly PhotoChooserTask _photoChooser;
         private string _chosenPhotoName;
 
-        public VehicleCompositionPage() {
+        public DriverCompositionPage() {
             InitializeComponent();
             BindingValidationError += OnBindingValidationError;
 
@@ -26,6 +31,12 @@ namespace Crystalbyte.Asphalt.Pages {
             _photoChooser.Completed += OnPhotoChooserTaskCompleted;
 
             _isNewPageInstance = true;
+        }
+
+        public DriverSelectionSource DriverSelectionSource {
+            get {
+                return App.Composition.GetExport<DriverSelectionSource>();
+            }
         }
 
         protected override void OnKeyUp(KeyEventArgs e) {
@@ -40,10 +51,10 @@ namespace Crystalbyte.Asphalt.Pages {
         private void HandleEnterKey() {
             Focus();
         }
-        
+
         private void OnBindingValidationError(object sender, ValidationErrorEventArgs e) {
             var button = ApplicationBar.Buttons.OfType<ApplicationBarIconButton>().First();
-            button.IsEnabled = !Vehicle.HasErrors;
+            button.IsEnabled = !Driver.HasErrors;
         }
 
         public LocalStorage LocalStorage {
@@ -53,17 +64,10 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         /// <summary>
-        /// Gets the VehicleSelectionSource.
-        /// </summary>
-        public VehicleSelectionSource VehicleSelectionSource {
-            get { return App.Composition.GetExport<VehicleSelectionSource>(); }
-        }
-
-        /// <summary>
         /// Gets or sets the current datacontext as a vehicle.
         /// </summary>
-        public Vehicle Vehicle {
-            get { return (Vehicle)DataContext; }
+        public Driver Driver {
+            get { return (Driver)DataContext; }
             set { DataContext = value; }
         }
 
@@ -71,7 +75,7 @@ namespace Crystalbyte.Asphalt.Pages {
             base.OnNavigatedFrom(e);
 
             if (e.NavigationMode == NavigationMode.New) {
-                State[VehicleStateKey] = Vehicle;
+                State[DriverStateKey] = Driver;
             }
         }
 
@@ -79,34 +83,34 @@ namespace Crystalbyte.Asphalt.Pages {
             base.OnNavigatedTo(e);
 
             if (e.NavigationMode == NavigationMode.New) {
-                InitializeVehicle();
+                InitializeDriver();
             }
 
-            if (_isNewPageInstance && Vehicle == null) {
-                Vehicle = (Vehicle)State[VehicleStateKey];
+            if (_isNewPageInstance && Driver == null) {
+                Driver = (Driver)State[DriverStateKey];
             }
 
             if (_chosenPhotoName != null) {
-                Vehicle.ImagePath = _chosenPhotoName;
+                Driver.ImagePath = _chosenPhotoName;
             }
 
-            if (Vehicle.Image == null && Vehicle.ImagePath != null) {
-                Vehicle.RestoreImageFromPath();
+            if (Driver.Image == null && Driver.ImagePath != null) {
+                Driver.RestoreImageFromPath();
             }
 
-            Vehicle.ValidateAll();
+            Driver.ValidateAll();
 
             _isNewPageInstance = false;
         }
 
-        private void InitializeVehicle() {
-            Vehicle = VehicleSelectionSource.Selection;
-            Vehicle.ValidateAll();
+        private void InitializeDriver() {
+            Driver = DriverSelectionSource.Selection;
+            Driver.ValidateAll();
         }
 
         private void OnCheckButtonClicked(object sender, EventArgs e) {
-            if (Vehicle.Id == 0) {
-                LocalStorage.DataContext.Vehicles.InsertOnSubmit(Vehicle);
+            if (Driver.Id == 0) {
+                LocalStorage.DataContext.Drivers.InsertOnSubmit(Driver);
             }
             LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
 
@@ -125,7 +129,6 @@ namespace Crystalbyte.Asphalt.Pages {
         private void SelectImage() {
             _photoChooser.Show();
         }
-
         private void OnPhotoChooserTaskCompleted(object sender, PhotoResult e) {
             // User canceled photo selection
             if (e.ChosenPhoto == null) {
@@ -145,14 +148,14 @@ namespace Crystalbyte.Asphalt.Pages {
             await LocalStorage.StoreImageAsync(_chosenPhotoName, data);
         }
 
-        private void OnNotesTextChanged(object sender, TextChangedEventArgs e) {
+        private void OnForenameChanged(object sender, TextChangedEventArgs e) {
             var textbox = (TextBox)sender;
-            Vehicle.Notes = textbox.Text;
+            Driver.Forename = textbox.Text;
         }
 
-        private void OnLicencePlateTextChanged(object sender, TextChangedEventArgs e) {
+        private void OnSurnameChanged(object sender, TextChangedEventArgs e) {
             var textbox = (TextBox)sender;
-            Vehicle.LicencePlate = textbox.Text;
+            Driver.Surname = textbox.Text;
         }
     }
 }
