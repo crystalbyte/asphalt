@@ -87,6 +87,14 @@ namespace Crystalbyte.Asphalt.Contexts {
                 handler(this, e);
         }
 
+        public event EventHandler VehicleUpdated;
+
+        public void OnVehicleUpdated(EventArgs e) {
+            var handler = VehicleUpdated;
+            if (handler != null)
+                handler(this, e);
+        }
+
         public event EventHandler Updated;
 
         public void OnUpdated(EventArgs e) {
@@ -181,9 +189,17 @@ namespace Crystalbyte.Asphalt.Contexts {
                 App.InitializeGeolocator();
             }
 
+            var vehicle = AppContext.Vehicles.First(x => x.IsSelected);
+            Debug.Assert(vehicle != null);
+
+            var driver = AppContext.Drivers.First(x => x.IsSelected);
+            Debug.Assert(driver != null);
+
             CurrentTour = new Tour {
                 StartTime = DateTime.Now,
-                VehicleId = AppContext.Vehicles.First(x => x.IsSelected).Id
+                VehicleId = vehicle.Id,
+                DriverId = driver.Id,
+                InitialMileage = vehicle.Mileage
             };
 
             Debug.WriteLine("Submitting tour (Id = {0}) ...", CurrentTour.Id);
@@ -231,6 +247,10 @@ namespace Crystalbyte.Asphalt.Contexts {
             Debug.WriteLine("Changes successfully submitted.");
 
             OnTourStored(EventArgs.Empty);
+
+            tour.ActiveVehicle.Mileage = tour.InitialMileage + tour.Distance;
+            OnVehicleUpdated(EventArgs.Empty);
+
             NotifyStopTracking();
 
             if (tour.Positions.Count > 0) {

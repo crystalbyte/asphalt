@@ -120,9 +120,13 @@ namespace Crystalbyte.Asphalt.Commands {
 
             Debug.WriteLine("Selected tours have been successfully deleted.");
 
-            var detailsPage = Navigator.GetCurrentPage<TourDetailsPage>();
-            if (detailsPage != null) {
-                // Return to LandingPage.xaml
+            var page = Navigator.GetCurrentPage<TourDetailsPage>();
+            if (page == null) 
+                return;
+
+            if (Navigator.Service.CanGoBack) {
+                Navigator.Service.GoBack();
+            } else {
                 Navigator.Navigate<LandingPage>();
             }
         }

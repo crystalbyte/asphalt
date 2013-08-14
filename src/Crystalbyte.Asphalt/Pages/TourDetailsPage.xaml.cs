@@ -57,7 +57,7 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         // [Import]
-        protected TourSelectionSource TourSelector {
+        protected TourSelectionSource TourSelectionSource {
             get { return App.Composition.GetExport<TourSelectionSource>(); }
         }
 
@@ -74,6 +74,10 @@ namespace Crystalbyte.Asphalt.Pages {
             if (e.NavigationMode == NavigationMode.New) {
                 State[TourStateKey] = Tour;
             }
+
+            if (e.NavigationMode == NavigationMode.Back) {
+                TourSelectionSource.Selection = null;
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -84,7 +88,7 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             if (e.NavigationMode == NavigationMode.New) {
-                Tour = TourSelector.Selection;
+                Tour = TourSelectionSource.Selection;
             }
 
             if (_isNewPageInstance && Tour == null) {
@@ -174,16 +178,6 @@ namespace Crystalbyte.Asphalt.Pages {
         private void OnReasonInputFormLostFocus(object sender, RoutedEventArgs e) {
             IsEditing = false;
             ApplicationBar.IsVisible = true;
-        }
-
-        private void OnVehicleSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var picker = (ListPicker)sender;
-            var item = (Vehicle) picker.SelectedItem;
-            if (item == null) {
-                return;
-            }
-
-            Tour.VehicleId = item.Id;
         }
     }
 }

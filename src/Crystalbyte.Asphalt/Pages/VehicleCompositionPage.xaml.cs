@@ -42,8 +42,10 @@ namespace Crystalbyte.Asphalt.Pages {
         }
         
         private void OnBindingValidationError(object sender, ValidationErrorEventArgs e) {
-            var button = ApplicationBar.Buttons.OfType<ApplicationBarIconButton>().First();
-            button.IsEnabled = !Vehicle.HasErrors;
+            var button = ApplicationBar.Buttons.OfType<ApplicationBarIconButton>().FirstOrDefault();
+            if (button != null) {
+                button.IsEnabled = !Vehicle.HasErrors;
+            }
         }
 
         public LocalStorage LocalStorage {
@@ -94,6 +96,8 @@ namespace Crystalbyte.Asphalt.Pages {
                 Vehicle.RestoreImageFromPath();
             }
 
+            this.UpdateApplicationBar();
+
             Vehicle.ValidateAll();
 
             _isNewPageInstance = false;
@@ -102,20 +106,6 @@ namespace Crystalbyte.Asphalt.Pages {
         private void InitializeVehicle() {
             Vehicle = VehicleSelectionSource.Selection;
             Vehicle.ValidateAll();
-        }
-
-        private void OnCheckButtonClicked(object sender, EventArgs e) {
-            if (Vehicle.Id == 0) {
-                LocalStorage.DataContext.Vehicles.InsertOnSubmit(Vehicle);
-            }
-            LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-
-            App.Context.InvalidateData();
-            NavigationService.GoBack();
-        }
-
-        private void OnCancelButtonClicked(object sender, EventArgs e) {
-            NavigationService.GoBack();
         }
 
         private void OnStackPanelTap(object sender, GestureEventArgs e) {

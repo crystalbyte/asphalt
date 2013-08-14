@@ -3,6 +3,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Crystalbyte.Asphalt.Data;
@@ -43,39 +44,86 @@ namespace Crystalbyte.Asphalt.Contexts {
         [Import]
         public VehicleSelectionSource VehicleSelectionSource { get; set; }
 
+        [Import]
+        public SaveVehicleCommand SaveVehicleCommand { get; set; }
+
+        [Import]
+        public SaveDriverCommand SaveDriverCommand { get; set; }
+
+        [Import]
+        public AddVehicleCommand AddVehicleCommand { get; set; }
+
+        [Import]
+        public AddDriverCommand AddDriverCommand { get; set; }
+
         public AppContext() {
             Tours = new ObservableCollection<Tour>();
             Tours.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedTours);
 
             Vehicles = new ObservableCollection<Vehicle>();
+            Vehicles.CollectionChanged += (sender, e) => Debug.WriteLine("vchanged");
             Drivers = new ObservableCollection<Driver>();
+            Drivers.CollectionChanged += (sender, e) => Debug.WriteLine("dchanged");
+        }
+
+        public bool IsReady {
+            get {
+                return Vehicles.Any(x => x.IsSelected) 
+                    && Drivers.Any(x => x.IsSelected);
+            }
         }
 
         [OnImportsSatisfied]
         public void OnImportsSatisfied() {
-            LocationTracker.TourStored += (sender, e) => LoadData();
+            LocationTracker.TourStored += OnTourStored;
             DeleteTourCommand.DeletionCompleted += OnTourDeletionCompleted;
             DeleteVehicleCommand.DeletionCompleted += OnVehicleDeletionCompleted;
             DeleteDriverCommand.DeletionCompleted += OnDriversDeletionCompleted;
+            SaveVehicleCommand.VehicleSaved += OnVehicleSaved;
+            SaveDriverCommand.DriverSaved += OnDriverSaved;
 
             // Attach monitoring event handler
-            AppSettings.IsMovementDetectionEnabledChanged += (sender, e) => 
+            AppSettings.IsMovementDetectionEnabledChanged += (sender, e) =>
                 NotifyIsMovementDetectionEnabledChanged();
 
             // Trigger initial update
             NotifyIsMovementDetectionEnabledChanged();
         }
 
+        private async void OnDriverSaved(object sender, EventArgs e) {
+            await LoadDriversAsync();
+            RefreshSelections();
+            NotifyIsReadyChanged();
+        }
+
+        private async void OnVehicleSaved(object sender, EventArgs e) {
+            await LoadVehiclesAsync();
+            RefreshSelections();
+            NotifyIsReadyChanged();
+        }
+
         private async void OnDriversDeletionCompleted(object sender, EventArgs e) {
             await LoadDriversAsync();
+            RefreshSelections();
+            NotifyIsReadyChanged();
         }
 
         private async void OnVehicleDeletionCompleted(object sender, EventArgs e) {
             await LoadVehiclesAsync();
+            RefreshSelections();
+            NotifyIsReadyChanged();
+        }
+
+        private async void OnTourStored(object sender, EventArgs e) {
+            await LoadToursAsync();
         }
 
         private async void OnTourDeletionCompleted(object sender, EventArgs e) {
             await LoadToursAsync();
+        }
+
+        public void NotifyIsReadyChanged() {
+            RaisePropertyChanged(() => IsReady);
         }
 
         public void NotifyIsMovementDetectionEnabledChanged() {
@@ -171,6 +219,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             TourSelectionSource.Selection = null;
 
             RefreshSelections();
+            NotifyIsReadyChanged();
             IsDataLoaded = true;
         }
 

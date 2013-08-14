@@ -72,6 +72,15 @@ namespace Crystalbyte.Asphalt.Resources {
         /// <summary>
         ///   Looks up a localized string similar to add driver.
         /// </summary>
+        public static string AddDriverLandingButtonText {
+            get {
+                return ResourceManager.GetString("AddDriverLandingButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add driver.
+        /// </summary>
         public static string AddDriverPageTitle {
             get {
                 return ResourceManager.GetString("AddDriverPageTitle", resourceCulture);
@@ -84,6 +93,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string AddVehicleButtonText {
             get {
                 return ResourceManager.GetString("AddVehicleButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add vehicle.
+        /// </summary>
+        public static string AddVehicleLandingButtonText {
+            get {
+                return ResourceManager.GetString("AddVehicleLandingButtonText", resourceCulture);
             }
         }
         
@@ -246,6 +264,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string DistanceLabel {
             get {
                 return ResourceManager.GetString("DistanceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driver.
+        /// </summary>
+        public static string DriverLabel {
+            get {
+                return ResourceManager.GetString("DriverLabel", resourceCulture);
             }
         }
         
@@ -502,11 +529,29 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estimated Route.
+        ///   Looks up a localized string similar to The displayed route is only an approximation and not used in calculations..
+        /// </summary>
+        public static string RouteDescription {
+            get {
+                return ResourceManager.GetString("RouteDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Route.
         /// </summary>
         public static string RouteLabel {
             get {
                 return ResourceManager.GetString("RouteLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to save.
+        /// </summary>
+        public static string SaveVehicleButtonText {
+            get {
+                return ResourceManager.GetString("SaveVehicleButtonText", resourceCulture);
             }
         }
         
@@ -547,11 +592,47 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start recording a new tour.
+        /// </summary>
+        public static string StartButtonDescriptionText {
+            get {
+                return ResourceManager.GetString("StartButtonDescriptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string StartButtonText {
+            get {
+                return ResourceManager.GetString("StartButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Begin.
         /// </summary>
         public static string StartTimeLabel {
             get {
                 return ResourceManager.GetString("StartTimeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminate current recording.
+        /// </summary>
+        public static string StopButtonDescriptionText {
+            get {
+                return ResourceManager.GetString("StopButtonDescriptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string StopButtonText {
+            get {
+                return ResourceManager.GetString("StopButtonText", resourceCulture);
             }
         }
         
@@ -660,6 +741,16 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string VehiclesPanoramaPageHeaderText {
             get {
                 return ResourceManager.GetString("VehiclesPanoramaPageHeaderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep track of all your routes.
+        ///Start recordings manually or let Asphalt handle it based on your travelling speed..
+        /// </summary>
+        public static string WelcomeText {
+            get {
+                return ResourceManager.GetString("WelcomeText", resourceCulture);
             }
         }
     }

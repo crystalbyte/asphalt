@@ -97,6 +97,7 @@
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Commands\AddVehicleCommand.cs" />
     <Compile Include="Commands\AddDriverCommand.cs" />
+    <Compile Include="Commands\SaveDriverCommand.cs" />
     <Compile Include="Commands\DeleteVehicleCommand.cs" />
     <Compile Include="Commands\DeleteDriverCommand.cs" />
     <Compile Include="Commands\EditDriverCommand.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Commands\EditVehicleCommand.cs" />
     <Compile Include="Commands\ExportCommand.cs" />
     <Compile Include="Commands\NavigateBackCommand.cs" />
+    <Compile Include="Commands\SaveVehicleCommand.cs" />
     <Compile Include="Commands\StopTrackingCommand.cs" />
     <Compile Include="Commands\IAppBarButtonCommand.cs" />
     <Compile Include="Commands\IAppBarMenuCommand.cs" />
@@ -146,7 +148,6 @@
     <Compile Include="Pages\TourDetailsPage.xaml.cs">
       <DependentUpon>TourDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TourState.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Data\AsphaltDataContext.cs" />
     <Compile Include="Data\LocalStorage.cs" />
@@ -236,7 +237,6 @@
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Assets\BackgroundDark.jpg" />
     <Content Include="Assets\Driver.jpg" />
     <Content Include="Assets\Vehicle.jpg" />
     <Content Include="README_FIRST.txt" />

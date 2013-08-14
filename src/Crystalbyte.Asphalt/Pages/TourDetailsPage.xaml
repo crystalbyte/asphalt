@@ -18,6 +18,27 @@
                             shell:SystemTray.IsVisible="True"
                             mc:Ignorable="d">
 
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
 
     <!--  LayoutRoot is the root grid where all page content is placed  -->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -32,18 +53,49 @@
         </StackPanel>
 
         <Grid x:Name="ContentPanel" Grid.Row="1">
-            <ScrollViewer>
+            <ScrollViewer Grid.Row="1" Padding="0,0,0,12">
                 <ui:DockPanel>
 
-                    <!--  Route  -->
-                    <TextBlock Foreground="{StaticResource PhoneAccentBrush}"
+                    <!--  Type  -->
+                    <TextBlock Margin="12,0,0,0"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.TourTypeLabel,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+
+
+                    <toolkit:ListPicker Margin="12,0"
+                                        HorizontalAlignment="Stretch"
+                                        ItemsSource="{Binding TourTypeSource}"
+                                        SelectionChanged="OnTourTypeSelectionChanged"
+                                        ui:DockPanel.Dock="Top" />
+
+                    <!--  Reason  -->
+                    <TextBlock Margin="12,12,0,0"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.ReasonLabel,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+
+                    <ui:WatermarkTextBox Margin="0,-4,0,0"
+                                         HorizontalAlignment="Stretch"
+                                         GotFocus="OnReasonInputFormGotFocus"
+                                         LostFocus="OnReasonInputFormLostFocus"
+                                         Text="{Binding Reason,
+                                                        Mode=TwoWay}"
+                                         WatermarkText="Reason not specified ..."
+                                         ui:DockPanel.Dock="Top" />
+
+                    <!--  Reason  -->
+                    <TextBlock Margin="12,0,0,4"
                                Style="{StaticResource PhoneTextSmallStyle}"
                                Text="{Binding LocalizedResources.RouteLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
 
+                    <!--  Route  -->
                     <Border Height="300"
-                            Margin="12,4,12,12"
+                            Margin="12,4,12,6"
                             BorderBrush="White"
                             BorderThickness="3"
                             ui:DockPanel.Dock="Top">
@@ -67,56 +119,63 @@
                                                            ConverterParameter=!}" />
                         </Grid>
                     </Border>
-
-                    <!--  Type  -->
-                    <TextBlock Margin="12,12,0,0"
-                               Foreground="{StaticResource PhoneAccentBrush}"
+                    <TextBlock Foreground="{StaticResource PhoneAccentBrush}"
                                Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.TourTypeLabel,
+                               Text="{Binding LocalizedResources.RouteDescription,
                                               Source={StaticResource LocalizedStrings}}"
+                               TextWrapping="Wrap"
                                ui:DockPanel.Dock="Top" />
 
-                    <toolkit:ListPicker Margin="12,-1,12,0"
-                                        HorizontalAlignment="Stretch"
-                                        ItemsSource="{Binding TourTypeSource}"
-                                        SelectionChanged="OnTourTypeSelectionChanged"
-                                        ui:DockPanel.Dock="Top" />
 
                     <!--  Reason  -->
                     <TextBlock Margin="12,12,0,0"
-                               Foreground="{StaticResource PhoneAccentBrush}"
                                Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.ReasonLabel,
+                               Text="{Binding LocalizedResources.DriverLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
-                    <ui:WatermarkTextBox Margin="0,-4,0,0"
-                                         HorizontalAlignment="Stretch"
-                                         GotFocus="OnReasonInputFormGotFocus"
-                                         LostFocus="OnReasonInputFormLostFocus"
-                                         Text="{Binding Reason,
-                                                        Mode=TwoWay}"
-                                         WatermarkText="Reason not specified ..."
-                                         ui:DockPanel.Dock="Top" />
+
+                    <!--  Driver  -->
+                    <StackPanel Margin="12,4,0,0"
+                                DataContext="{Binding ActiveDriver}"
+                                Orientation="Horizontal"
+                                ui:DockPanel.Dock="Top">
+                        <Border Margin="0" Style="{StaticResource DefaultTile128x128}">
+                            <Grid>
+                                <Image HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       Source="{Binding Image}"
+                                       Visibility="{Binding HasImage,
+                                                            Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <Image HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       Source="/Assets/Driver.jpg"
+                                       Visibility="{Binding HasImage,
+                                                            Converter={StaticResource BooleanToVisibilityConverter},
+                                                            ConverterParameter=!}" />
+                            </Grid>
+                        </Border>
+
+                        <StackPanel Margin="12,0,0,0">
+                            <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                       FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                                       Style="{StaticResource PhoneTextNormalStyle}">
+                                <Run Text="{Binding Forename}" />
+                                <LineBreak />
+                                <Run FontSize="{StaticResource PhoneFontSizeMedium}"
+                                     Foreground="Gray"
+                                     Text="{Binding Surname}" />
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
 
                     <!--  Vehicle  -->
-                    <TextBlock Margin="12,12,0,0"
+                    <TextBlock Margin="12,24,0,0"
                                Style="{StaticResource PhoneTextSmallStyle}"
                                Text="{Binding LocalizedResources.VehicleLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                                Text="{Binding ActiveVehicle.LicencePlate}"
-                               ui:DockPanel.Dock="Top" />
-
-                    <!--  Distance  -->
-                    <TextBlock Margin="12,12,0,0"
-                               Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="{Binding LocalizedResources.DistanceLabel,
-                                              Source={StaticResource LocalizedStrings}}"
-                               ui:DockPanel.Dock="Top" />
-                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                               Text="{Binding Distance,
-                                              Converter={StaticResource DistanceFormatter}}"
                                ui:DockPanel.Dock="Top" />
 
                     <!--  Start  -->
@@ -166,13 +225,24 @@
                     <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                                Text="{Binding Destination}"
                                ui:DockPanel.Dock="Top" />
-                    <TextBlock Margin="12,0,0,20"
+                    <TextBlock Margin="12,0,0,0"
                                Style="{StaticResource PhoneTextSmallStyle}"
                                ui:DockPanel.Dock="Top">
                         <Run Text="{Binding DestinationLatitude, Converter={StaticResource AngleFormatter}, ConverterParameter=lat}" />
                         <Run Text=" - " />
                         <Run Text="{Binding DestinationLongitude, Converter={StaticResource AngleFormatter}}" />
                     </TextBlock>
+
+                    <!--  Distance  -->
+                    <TextBlock Margin="12,12,0,0"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.DistanceLabel,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               Text="{Binding Distance,
+                                              Converter={StaticResource DistanceFormatter}}"
+                               ui:DockPanel.Dock="Top" />
 
                 </ui:DockPanel>
             </ScrollViewer>

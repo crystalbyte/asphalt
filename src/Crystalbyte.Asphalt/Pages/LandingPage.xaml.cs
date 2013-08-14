@@ -82,12 +82,11 @@ namespace Crystalbyte.Asphalt.Pages {
                 Navigator.Initialize(NavigationService);
             }
 
-            // Wait for animations to complete.
-            this.UpdateApplicationBar();
-
             if (!App.Context.IsDataLoaded) {
                 App.Context.LoadData();
             }
+
+            this.UpdateApplicationBar();
 
             _isNewPageInstance = false;
         }

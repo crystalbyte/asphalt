@@ -9,6 +9,7 @@ using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
 using System.Runtime.Serialization;
 using System.Windows.Media;
+using System.Windows.Input;
 
 #endregion
 
@@ -33,11 +34,6 @@ namespace Crystalbyte.Asphalt.Contexts {
             SelectionTime = DateTime.Now;
         }
 
-        [OnDeserialized]
-        public void OnDeserialized(StreamingContext e) {
-            Construct();
-        }
-
         public Channels Channels {
             get { return App.Composition.GetExport<Channels>(); }
         }
@@ -48,6 +44,11 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         public AppContext AppContext {
             get { return App.Composition.GetExport<AppContext>(); }
+        }
+
+        [OnDeserialized]
+        public void OnDeserialized(StreamingContext e) {
+            Construct();
         }
 
         private async void DeleteCurrentImageAsync() {

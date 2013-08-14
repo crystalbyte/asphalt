@@ -34,6 +34,9 @@ namespace Crystalbyte.Asphalt.Commands {
         [Import]
         public Navigator Navigator { get; set; }
 
+        [Import]
+        public LocationTracker LocationTracker { get; set; }
+
         public DeleteVehicleCommand() {
             Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Delete.png", UriKind.Relative)) {
                 Text = AppResources.DeleteButtonText
@@ -60,25 +63,14 @@ namespace Crystalbyte.Asphalt.Commands {
 
         public bool IsApplicable {
             get {
-
                 // Don't display delete button if there is nothing to delete.
                 if (AppContext.IsDataLoaded && AppContext.Vehicles.Count == 0) {
                     return false;
                 }
 
                 // Display always on details page.
-                var detailsPage = Navigator.GetCurrentPage<VehicleCompositionPage>();
-                if (detailsPage != null) {
-                    return true;
-                }
-
-                // Display on Landing page only with an active selection.
-                var landingPage = Navigator.GetCurrentPage<LandingPage>();
-                if (landingPage != null) {
-                    return VehicleSelectionSource.Selections.Any() && landingPage.PanoramaIndex == 2;
-                }
-
-                return false;
+                var page = Navigator.GetCurrentPage<VehicleCompositionPage>();
+                return page != null;
             }
         }
 
@@ -87,7 +79,7 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public bool CanExecute(object parameter) {
-            return IsApplicable;
+            return IsApplicable && !LocationTracker.IsTracking;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -120,9 +112,13 @@ namespace Crystalbyte.Asphalt.Commands {
 
             Debug.WriteLine("Selected vehicle has been successfully deleted.");
 
-            var detailsPage = Navigator.GetCurrentPage<VehicleCompositionPage>();
-            if (detailsPage != null) {
-                // Return to LandingPage.xaml
+            var page = Navigator.GetCurrentPage<VehicleCompositionPage>();
+            if (page == null) 
+                return;
+
+            if (Navigator.Service.CanGoBack) {
+                Navigator.Service.GoBack();
+            } else {
                 Navigator.Navigate<LandingPage>();
             }
         }

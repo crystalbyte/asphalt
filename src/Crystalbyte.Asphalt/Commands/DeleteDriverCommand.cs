@@ -34,6 +34,9 @@ namespace Crystalbyte.Asphalt.Commands {
         [Import]
         public Navigator Navigator { get; set; }
 
+        [Import]
+        public LocationTracker LocationTracker { get; set; }
+
         public DeleteDriverCommand() {
             Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Delete.png", UriKind.Relative)) {
                 Text = AppResources.DeleteButtonText
@@ -72,12 +75,6 @@ namespace Crystalbyte.Asphalt.Commands {
                     return true;
                 }
 
-                // Display on Landing page only with an active selection.
-                var landingPage = Navigator.GetCurrentPage<LandingPage>();
-                if (landingPage != null) {
-                    return DriverSelectionSource.Selections.Any() && landingPage.PanoramaIndex == 3;
-                }
-
                 return false;
             }
         }
@@ -87,7 +84,7 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public bool CanExecute(object parameter) {
-            return IsApplicable;
+            return IsApplicable && !LocationTracker.IsTracking;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -120,9 +117,13 @@ namespace Crystalbyte.Asphalt.Commands {
 
             Debug.WriteLine("Selected driver has been successfully deleted.");
 
-            var detailsPage = Navigator.GetCurrentPage<DriverCompositionPage>();
-            if (detailsPage != null) {
-                // Return to LandingPage.xaml
+            var page = Navigator.GetCurrentPage<DriverCompositionPage>();
+            if (page == null) 
+                return;
+
+            if (Navigator.Service.CanGoBack) {
+                Navigator.Service.GoBack();
+            } else {
                 Navigator.Navigate<LandingPage>();
             }
         }

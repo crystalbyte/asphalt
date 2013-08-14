@@ -22,7 +22,6 @@ namespace Crystalbyte.Asphalt.Contexts {
     [DebuggerDisplay("Id = {Id}")]
     public sealed class Tour : BindingModelBase<Tour> {
         private int _id;
-        private TourState _state;
         private DateTime _startTime;
         private DateTime? _stopTime;
         private string _reason;
@@ -38,6 +37,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         private double _distance;
         private Guid _uniqueId;
         private int _vehicleId;
+        private int _driverId;
         private double _initialMileage;
 
         public Tour() {
@@ -346,6 +346,20 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
+        [DataMember, Column(CanBeNull = false)]
+        public int DriverId {
+            get { return _driverId; }
+            set {
+                if (_driverId == value) {
+                    return;
+                }
+
+                RaisePropertyChanging(() => VehicleId);
+                _driverId = value;
+                RaisePropertyChanged(() => VehicleId);
+            }
+        }
+
         [DataMember, Column(CanBeNull = true)]
         public string Reason {
             get { return _reason; }
@@ -440,19 +454,6 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         [DataMember, Column(DbType = "TINYINT NOT NULL")]
-        public TourState State {
-            get { return _state; }
-            set {
-                if (_state == value) {
-                    return;
-                }
-                RaisePropertyChanging(() => State);
-                _state = value;
-                RaisePropertyChanged(() => State);
-            }
-        }
-
-        [DataMember, Column(DbType = "TINYINT NOT NULL")]
         public TourType Type {
             get { return _type; }
             set {
@@ -469,6 +470,12 @@ namespace Crystalbyte.Asphalt.Contexts {
         public Vehicle ActiveVehicle {
             get {
                 return App.Context.Vehicles.FirstOrDefault(x => x.Id == VehicleId);
+            }
+        }
+
+        public Driver ActiveDriver {
+            get {
+                return App.Context.Drivers.FirstOrDefault(x => x.Id == DriverId);
             }
         }
 

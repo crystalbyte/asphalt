@@ -98,6 +98,8 @@ namespace Crystalbyte.Asphalt.Pages {
                 Driver.RestoreImageFromPath();
             }
 
+            this.UpdateApplicationBar();
+
             Driver.ValidateAll();
 
             _isNewPageInstance = false;
@@ -107,21 +109,7 @@ namespace Crystalbyte.Asphalt.Pages {
             Driver = DriverSelectionSource.Selection;
             Driver.ValidateAll();
         }
-
-        private void OnCheckButtonClicked(object sender, EventArgs e) {
-            if (Driver.Id == 0) {
-                LocalStorage.DataContext.Drivers.InsertOnSubmit(Driver);
-            }
-            LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-
-            App.Context.InvalidateData();
-            NavigationService.GoBack();
-        }
-
-        private void OnCancelButtonClicked(object sender, EventArgs e) {
-            NavigationService.GoBack();
-        }
-
+        
         private void OnStackPanelTap(object sender, GestureEventArgs e) {
             SelectImage();
         }
@@ -129,6 +117,7 @@ namespace Crystalbyte.Asphalt.Pages {
         private void SelectImage() {
             _photoChooser.Show();
         }
+
         private void OnPhotoChooserTaskCompleted(object sender, PhotoResult e) {
             // User canceled photo selection
             if (e.ChosenPhoto == null) {

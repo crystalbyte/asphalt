@@ -33,7 +33,6 @@ namespace Crystalbyte.Asphalt.Commands {
             }
 
             LocationTracker.StopTrackingManually();
-            AppContext.LoadData();
         }
 
         public event EventHandler CanExecuteChanged;

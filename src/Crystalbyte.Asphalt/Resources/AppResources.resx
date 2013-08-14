@@ -188,8 +188,8 @@
   <data name="UnitOfLengthDescriptionText" xml:space="preserve">
     <value>Sets the preferred unit of length for export and visual output.</value>
   </data>
-  <data name="RouteLabel" xml:space="preserve">
-    <value>Estimated Route</value>
+  <data name="RouteDescription" xml:space="preserve">
+    <value>The displayed route is only an approximation and not used in calculations.</value>
   </data>
   <data name="TourTypeLabel" xml:space="preserve">
     <value>Type</value>
@@ -323,5 +323,36 @@
   </data>
   <data name="DeleteVehicleConfirmMessage" xml:space="preserve">
     <value>This action cannot be undone.</value>
+  </data>
+  <data name="AddDriverLandingButtonText" xml:space="preserve">
+    <value>add driver</value>
+  </data>
+  <data name="AddVehicleLandingButtonText" xml:space="preserve">
+    <value>add vehicle</value>
+  </data>
+  <data name="DriverLabel" xml:space="preserve">
+    <value>Driver</value>
+  </data>
+  <data name="RouteLabel" xml:space="preserve">
+    <value>Route</value>
+  </data>
+  <data name="SaveVehicleButtonText" xml:space="preserve">
+    <value>save</value>
+  </data>
+  <data name="StartButtonDescriptionText" xml:space="preserve">
+    <value>Start recording a new tour</value>
+  </data>
+  <data name="StartButtonText" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="StopButtonDescriptionText" xml:space="preserve">
+    <value>Terminate current recording</value>
+  </data>
+  <data name="StopButtonText" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="WelcomeText" xml:space="preserve">
+    <value>Keep track of all your routes.
+Start recordings manually or let Asphalt handle it based on your travelling speed.</value>
   </data>
 </root>

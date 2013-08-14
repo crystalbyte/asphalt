@@ -42,7 +42,7 @@ namespace Crystalbyte.Asphalt.Commands {
         public int Position { get { return 0; } }
 
         public bool CanExecute(object parameter) {
-            return IsApplicable;
+            return true;
         }
 
         public event EventHandler CanExecuteChanged;

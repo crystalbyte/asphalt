@@ -11,11 +11,9 @@ namespace Crystalbyte.Asphalt.Converters {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             var distance = (double) value;
 
-            distance = Math.Round(distance, 1);
-
             return distance < 1
-                       ? string.Format("{0} {1}", (distance * 1000), "m")
-                       : string.Format("{0} {1}", (distance), "km");
+                       ? string.Format("{0} {1}", (Math.Round(distance * 1000, 1)), "m")
+                       : string.Format("{0} {1}", (Math.Round(distance, 1)), "km");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
