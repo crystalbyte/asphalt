@@ -11,6 +11,7 @@ using System.Composition;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Resources;
 using Crystalbyte.Asphalt.Data;
+using System.Windows;
 
 namespace Crystalbyte.Asphalt.Commands {
 
@@ -67,8 +68,8 @@ namespace Crystalbyte.Asphalt.Commands {
 
             OnVehicleSaved(EventArgs.Empty);
 
-            if (Navigator.Service.CanGoBack) {
-                Navigator.Service.GoBack();
+            if (Navigator.Frame.CanGoBack) {
+                Navigator.Frame.GoBack();
             } else {
                 Navigator.Navigate<LandingPage>();
             }

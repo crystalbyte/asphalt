@@ -67,8 +67,8 @@ namespace Crystalbyte.Asphalt.Commands {
 
             OnDriverSaved(EventArgs.Empty);
 
-            if (Navigator.Service.CanGoBack) {
-                Navigator.Service.GoBack();
+            if (Navigator.Frame.CanGoBack) {
+                Navigator.Frame.GoBack();
             } else {
                 Navigator.Navigate<LandingPage>();
             }

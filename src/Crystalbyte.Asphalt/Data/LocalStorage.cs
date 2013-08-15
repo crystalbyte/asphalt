@@ -1,5 +1,6 @@
 ﻿#region Using directives
 
+using Crystalbyte.Asphalt.Resources;
 using System;
 using System.Composition;
 using System.Diagnostics;
@@ -24,49 +25,71 @@ namespace Crystalbyte.Asphalt.Data {
         public AsphaltDataContext DataContext { get; private set; }
 
         public async Task DeleteImageAsync(string name) {
-            var local = ApplicationData.Current.LocalFolder;
-            var imageFolder = await local.GetFolderAsync(ImagePath);
 
-            var store = IsolatedStorageFile.GetUserStoreForApplication();
-            if (!store.FileExists(Path.Combine(local.Path, ImagePath, name))) {
-                return;
+            try {
+                var local = ApplicationData.Current.LocalFolder;
+                var imageFolder = await local.GetFolderAsync(ImagePath);
+
+                var store = IsolatedStorageFile.GetUserStoreForApplication();
+                if (!store.FileExists(Path.Combine(local.Path, ImagePath, name))) {
+                    return;
+                }
+                var file = await imageFolder.GetFileAsync(name);
+                await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
             }
-            var file = await imageFolder.GetFileAsync(name);
-            await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
+            catch (Exception ex) {
+                var caption = AppResources.ErrorDeletingImageCaption;
+                MessageBox.Show(ex.ToString(), caption, MessageBoxButton.OK);
+            }
+            
         }
 
         public async Task StoreImageAsync(string name, Stream stream) {
-            var local = ApplicationData.Current.LocalFolder;
-            var imageFolder = await local.GetFolderAsync(ImagePath);
+            try {
+                var local = ApplicationData.Current.LocalFolder;
+                var imageFolder = await local.GetFolderAsync(ImagePath);
 
-            var file = await imageFolder.CreateFileAsync(name,
-                                                         CreationCollisionOption.FailIfExists);
+                var file = await imageFolder.CreateFileAsync(name,
+                                                             CreationCollisionOption.FailIfExists);
 
-            using (var sr = new BinaryReader(stream)) {
-                var bytes = sr.ReadBytes(Convert.ToInt32(stream.Length));
-                using (var sw = await file.OpenStreamForWriteAsync()) {
-                    await sw.WriteAsync(bytes, 0, bytes.Length);
+                using (var sr = new BinaryReader(stream)) {
+                    var bytes = sr.ReadBytes(Convert.ToInt32(stream.Length));
+                    using (var sw = await file.OpenStreamForWriteAsync()) {
+                        await sw.WriteAsync(bytes, 0, bytes.Length);
 
-                    // Manually dispose stream, due to possible framework issue.
-                    // http://social.msdn.microsoft.com/Forums/windowsapps/en-US/de83d7b1-2ef2-4e45-8e0c-a7334ecf1ee8/unauthorizedaccessexception-when-usig-storagefoldercreatefileasync-in-windows-8
-                    sw.Dispose();
+                        // Manually dispose stream, due to possible framework issue.
+                        // http://social.msdn.microsoft.com/Forums/windowsapps/en-US/de83d7b1-2ef2-4e45-8e0c-a7334ecf1ee8/unauthorizedaccessexception-when-usig-storagefoldercreatefileasync-in-windows-8
+                        sw.Dispose();
+                    }
                 }
-            }
 
-            stream.Dispose();
+                stream.Dispose();
+            }
+            catch (Exception ex) {
+                var caption = AppResources.ErrorStoringImageCaption;
+                MessageBox.Show(ex.ToString(), caption, MessageBoxButton.OK);
+            }
+            
         }
 
         public async Task<Stream> GetImageStreamAsync(string name) {
-            var local = ApplicationData.Current.LocalFolder;
-            var imageFolder = await local.GetFolderAsync(ImagePath);
+            try {
+                var local = ApplicationData.Current.LocalFolder;
+                var imageFolder = await local.GetFolderAsync(ImagePath);
 
-            var store = IsolatedStorageFile.GetUserStoreForApplication();
-            if (!store.FileExists(Path.Combine(local.Path, ImagePath, name))) {
+                var store = IsolatedStorageFile.GetUserStoreForApplication();
+                if (!store.FileExists(Path.Combine(local.Path, ImagePath, name))) {
+                    return null;
+                }
+
+                var stream = await imageFolder.OpenStreamForReadAsync(name);
+                return stream;
+            }
+            catch (Exception ex) {
+                var caption = AppResources.ErrorLoadingImageCaption;
+                MessageBox.Show(ex.ToString(), caption, MessageBoxButton.OK);
                 return null;
             }
-
-            var stream = await imageFolder.OpenStreamForReadAsync(name);
-            return stream;
         }
 
         [OnImportsSatisfied]

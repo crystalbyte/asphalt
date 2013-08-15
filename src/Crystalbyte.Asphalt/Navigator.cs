@@ -13,10 +13,9 @@ using System.Windows.Navigation;
 namespace Crystalbyte.Asphalt {
     [Export, Shared]
     public sealed class Navigator {
-        public NavigationService Service { get; private set; }
 
-        public void Initialize(NavigationService service) {
-            Service = service;
+        public PhoneApplicationFrame Frame {
+            get { return Application.Current.RootVisual as PhoneApplicationFrame; }
         }
 
         public bool IsCurrentPageOfType<T>() {
@@ -24,7 +23,7 @@ namespace Crystalbyte.Asphalt {
         }
 
         public void Navigate<T>(string query = "") where T : PhoneApplicationPage {
-            Service.Navigate(new Uri(string.Format("/Pages/{0}.xaml?param={1}", typeof(T).Name, query),
+            Frame.Navigate(new Uri(string.Format("/Pages/{0}.xaml?param={1}", typeof(T).Name, query),
                                                 UriKind.Relative));
         }
 

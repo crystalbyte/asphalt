@@ -215,9 +215,6 @@ namespace Crystalbyte.Asphalt.Contexts {
             await LoadVehiclesAsync();
             await LoadDriversAsync();
 
-            VehicleSelectionSource.Selection = null;
-            TourSelectionSource.Selection = null;
-
             RefreshSelections();
             NotifyIsReadyChanged();
             IsDataLoaded = true;

@@ -304,6 +304,33 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to delete image..
+        /// </summary>
+        public static string ErrorDeletingImageCaption {
+            get {
+                return ResourceManager.GetString("ErrorDeletingImageCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to load image..
+        /// </summary>
+        public static string ErrorLoadingImageCaption {
+            get {
+                return ResourceManager.GetString("ErrorLoadingImageCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to save image..
+        /// </summary>
+        public static string ErrorStoringImageCaption {
+            get {
+                return ResourceManager.GetString("ErrorStoringImageCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Querying route ....
         /// </summary>
         public static string EstimatingRoute {
@@ -746,7 +773,7 @@ namespace Crystalbyte.Asphalt.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Keep track of all your routes.
-        ///Start recordings manually or let Asphalt handle it based on your travelling speed..
+        ///Start recordings manually or let Asphalt handle it for you..
         /// </summary>
         public static string WelcomeText {
             get {

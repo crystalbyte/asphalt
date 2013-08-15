@@ -17,7 +17,6 @@ using System.Windows.Input;
 
 namespace Crystalbyte.Asphalt.Pages {
     public partial class LandingPage {
-        private bool _isNewPageInstance;
         private bool _skipNextTapEvent;
 
         // Constructor
@@ -26,8 +25,6 @@ namespace Crystalbyte.Asphalt.Pages {
 
             AppContext = App.Context;
             AppContext.SelectionEnabledChanged += AppContextOnSelectionEnabledChanged;
-
-            _isNewPageInstance = true;
         }
 
         private void AppContextOnSelectionEnabledChanged(object sender, EventArgs eventArgs) {
@@ -78,17 +75,7 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            if (_isNewPageInstance) {
-                Navigator.Initialize(NavigationService);
-            }
-
-            if (!App.Context.IsDataLoaded) {
-                App.Context.LoadData();
-            }
-
             this.UpdateApplicationBar();
-
-            _isNewPageInstance = false;
         }
 
         private void OnDeleteTourMenuItemClicked(object sender, RoutedEventArgs e) {

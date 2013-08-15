@@ -97,6 +97,11 @@ namespace Crystalbyte.Asphalt {
         private void OnApplicationLaunching(object sender, LaunchingEventArgs e) {
             ComposeApplication();
             InitializeApplication();
+
+            // Ensure that application state is restored appropriately
+            if (!Context.IsDataLoaded) {
+                Context.LoadData();
+            }
         }
 
         private static void InitializeApplication() {

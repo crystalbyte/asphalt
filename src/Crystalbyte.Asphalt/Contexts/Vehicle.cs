@@ -57,6 +57,9 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         public async void RestoreImageFromPath() {
             var stream = await LocalStorage.GetImageStreamAsync(ImagePath);
+            if (stream == null || stream.Length == 0) {
+                return;
+            }
 
             SmartDispatcher.InvokeAsync(() => {
                 var image = new BitmapImage();

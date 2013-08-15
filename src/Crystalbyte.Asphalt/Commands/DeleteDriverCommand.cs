@@ -16,8 +16,8 @@ using System.Composition;
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof(IAppBarButtonCommand))]
-    public sealed class DeleteDriverCommand : IAppBarButtonCommand {
+    [Export(typeof(IAppBarMenuCommand))]
+    public sealed class DeleteDriverCommand : IAppBarMenuCommand {
 
         [Import]
         public AppContext AppContext { get; set; }
@@ -38,10 +38,8 @@ namespace Crystalbyte.Asphalt.Commands {
         public LocationTracker LocationTracker { get; set; }
 
         public DeleteDriverCommand() {
-            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Delete.png", UriKind.Relative)) {
-                Text = AppResources.DeleteButtonText
-            };
-            Button.Click += (sender, e) => Execute(null);
+            MenuItem = new ApplicationBarMenuItem(AppResources.DeleteButtonText);
+            MenuItem.Click += (sender, e) => Execute(null);
         }
 
         public event EventHandler DeletionCompleted;
@@ -57,9 +55,11 @@ namespace Crystalbyte.Asphalt.Commands {
             DriverSelectionSource.SelectionChanged += (sender, e) => OnCanExecuteChanged(EventArgs.Empty);
         }
 
-        #region IAppBarButtonCommand implementation
+        #region IAppBarMenuCommand implementation
 
-        public ApplicationBarIconButton Button { get; private set; }
+        public ApplicationBarMenuItem MenuItem {
+            get; private set;
+        }
 
         public bool IsApplicable {
             get {
@@ -70,12 +70,8 @@ namespace Crystalbyte.Asphalt.Commands {
                 }
 
                 // Display always on details page.
-                var detailsPage = Navigator.GetCurrentPage<DriverCompositionPage>();
-                if (detailsPage != null) {
-                    return true;
-                }
-
-                return false;
+                var page = Navigator.GetCurrentPage<DriverCompositionPage>();
+                return page != null;
             }
         }
 
@@ -121,13 +117,15 @@ namespace Crystalbyte.Asphalt.Commands {
             if (page == null) 
                 return;
 
-            if (Navigator.Service.CanGoBack) {
-                Navigator.Service.GoBack();
+            if (Navigator.Frame.CanGoBack) {
+                Navigator.Frame.GoBack();
             } else {
                 Navigator.Navigate<LandingPage>();
             }
         }
 
         #endregion
+
+        
     }
 }

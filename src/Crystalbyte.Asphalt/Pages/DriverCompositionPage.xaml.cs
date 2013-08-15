@@ -87,7 +87,9 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             if (_isNewPageInstance && Driver == null) {
-                Driver = (Driver)State[DriverStateKey];
+                var driver = (Driver) State[DriverStateKey];
+                DriverSelectionSource.Selection = driver;
+                Driver = driver;
             }
 
             if (_chosenPhotoName != null) {
@@ -99,8 +101,6 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             this.UpdateApplicationBar();
-
-            Driver.ValidateAll();
 
             _isNewPageInstance = false;
         }

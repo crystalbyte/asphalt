@@ -35,7 +35,7 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public bool CanExecute(object parameter) {
-            return Navigator.Service.CanGoBack;
+            return Navigator.Frame.CanGoBack;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -47,7 +47,7 @@ namespace Crystalbyte.Asphalt.Commands {
         }
 
         public void Execute(object parameter) {
-            Navigator.Service.GoBack();
+            Navigator.Frame.GoBack();
         }
     }
 }

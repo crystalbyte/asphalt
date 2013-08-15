@@ -19,8 +19,8 @@ using Microsoft.Phone.Maps.Services;
 namespace Crystalbyte.Asphalt.Contexts {
 
     [DataContract, Table]
-    [DebuggerDisplay("Id = {Id}")]
-    public sealed class Tour : BindingModelBase<Tour> {
+    [DebuggerDisplay("Tour, Id = {Id}")]
+    public sealed class Tour : NotificationObject {
         private int _id;
         private DateTime _startTime;
         private DateTime? _stopTime;

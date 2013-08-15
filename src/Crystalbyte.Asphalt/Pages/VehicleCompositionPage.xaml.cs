@@ -85,11 +85,14 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             if (_isNewPageInstance && Vehicle == null) {
-                Vehicle = (Vehicle)State[VehicleStateKey];
+                var vehicle = (Vehicle)State[VehicleStateKey];
+                VehicleSelectionSource.Selection = Vehicle;
+                Vehicle = vehicle;
             }
 
             if (_chosenPhotoName != null) {
                 Vehicle.ImagePath = _chosenPhotoName;
+                _chosenPhotoName = null;
             }
 
             if (Vehicle.Image == null && Vehicle.ImagePath != null) {
@@ -97,8 +100,6 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             this.UpdateApplicationBar();
-
-            Vehicle.ValidateAll();
 
             _isNewPageInstance = false;
         }

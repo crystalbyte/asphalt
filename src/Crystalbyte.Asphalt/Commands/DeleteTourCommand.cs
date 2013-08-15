@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Linq;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Pages;
@@ -16,8 +12,9 @@ using System.Composition;
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
+    [Export(typeof(IAppBarMenuCommand))]
     [Export(typeof(IAppBarButtonCommand))]
-    public sealed class DeleteTourCommand : IAppBarButtonCommand {
+    public sealed class DeleteTourCommand : IAppBarMenuCommand, IAppBarButtonCommand {
 
         [Import]
         public AppContext AppContext { get; set; }
@@ -35,6 +32,9 @@ namespace Crystalbyte.Asphalt.Commands {
         public Navigator Navigator { get; set; }
 
         public DeleteTourCommand() {
+            MenuItem = new ApplicationBarMenuItem(AppResources.DeleteButtonText);
+            MenuItem.Click += (sender, e) => Execute(null);
+
             Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Delete.png", UriKind.Relative)) {
                 Text = AppResources.DeleteButtonText
             };
@@ -54,9 +54,17 @@ namespace Crystalbyte.Asphalt.Commands {
             TourSelectionSource.SelectionChanged += (sender, e) => OnCanExecuteChanged(EventArgs.Empty);
         }
 
-        #region IAppBarButtonCommand implementation
+        #region IAppBarMenuCommand implementation
 
-        public ApplicationBarIconButton Button { get; private set; }
+        public ApplicationBarMenuItem MenuItem {
+            get;
+            private set;
+        }
+
+        public ApplicationBarIconButton Button {
+            get;
+            private set;
+        }
 
         public bool IsApplicable {
             get {
@@ -121,11 +129,11 @@ namespace Crystalbyte.Asphalt.Commands {
             Debug.WriteLine("Selected tours have been successfully deleted.");
 
             var page = Navigator.GetCurrentPage<TourDetailsPage>();
-            if (page == null) 
+            if (page == null)
                 return;
 
-            if (Navigator.Service.CanGoBack) {
-                Navigator.Service.GoBack();
+            if (Navigator.Frame.CanGoBack) {
+                Navigator.Frame.GoBack();
             } else {
                 Navigator.Navigate<LandingPage>();
             }

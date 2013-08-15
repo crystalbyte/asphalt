@@ -23,11 +23,14 @@ namespace Crystalbyte.Asphalt.Pages {
         private const string TourStateKey = "tour";
         private bool _isNewPageInstance;
         private bool _routeQueryCompleted;
-        private bool _isZoomed;
+        private bool _isMapReady;
+        private bool _isZoomedIn;
 
         public TourDetailsPage() {
             InitializeComponent();
             TourMap.ZoomLevelChanged += OnTourMapZoomLevelChanged;
+
+            _isNewPageInstance = true;
         }
 
         protected override void OnKeyUp(KeyEventArgs e) {
@@ -43,17 +46,23 @@ namespace Crystalbyte.Asphalt.Pages {
             Focus();
         }
 
+
+
         private void OnTourMapZoomLevelChanged(object sender, MapZoomLevelChangedEventArgs e) {
-            if (_isZoomed)
+            _isMapReady = true;
+            if (_isZoomedIn)
                 return;
 
             // The method "ZoomToFit(positions)" uses the "Map.SetView(bounds)" function to scale the map.
             // Unfortunately we have to wait until the map control has been properly initialized.
             // The ZoomLevelChanged event serves as the "readyness" indicator.
             // http://www.awenius.de/blog/2013/07/26/windows-phone-8-map-setview-funktioniert-erst-nach-dem-ersten-zoomlevelchanged-event/
-            ZoomToFit(Tour.Positions);
+            var positions = Tour.Positions;
+            if (positions.Count <= 0) 
+                return;
 
-            _isZoomed = true;
+            _isZoomedIn = true;
+            ZoomToFit(Tour.Positions);
         }
 
         // [Import]
@@ -83,30 +92,29 @@ namespace Crystalbyte.Asphalt.Pages {
         protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
-            if (DesignerProperties.IsInDesignTool) {
-                return;
-            }
-
             if (e.NavigationMode == NavigationMode.New) {
                 Tour = TourSelectionSource.Selection;
             }
 
             if (_isNewPageInstance && Tour == null) {
-                Tour = (Tour)State[TourStateKey];
+                var tour = (Tour)State[TourStateKey];
+                TourSelectionSource.Selection = tour;
+                Tour = tour;
             }
 
-            Tour.ValidateAll();
-
+            DisplayRoute();
             this.UpdateApplicationBar();
 
+            _isNewPageInstance = false;
+        }
+
+        private void DisplayRoute() {
             // We can't launch multiple queries and have to wait for previous one's to complete.
             if (Tour.IsQuerying) {
                 Tour.CivicAddressesResolved += OnTourCivicAddressesResolved;
             } else {
                 RequestRoute();
             }
-
-            _isNewPageInstance = false;
         }
 
         private void OnTourCivicAddressesResolved(object sender, EventArgs e) {
@@ -119,7 +127,7 @@ namespace Crystalbyte.Asphalt.Pages {
                 await Tour.LoadData();
             }
 
-            var positions = Tour.Positions;
+            var positions = Tour.Positions.Sample(20);
 
             if (positions.Count < 2 || _routeQueryCompleted) {
                 return;
@@ -137,6 +145,9 @@ namespace Crystalbyte.Asphalt.Pages {
                 }
 
                 DisplayRoute(Tour.CachedRoute);
+                if (_isMapReady && !_isZoomedIn) {
+                    ZoomToFit(Tour.Positions);
+                }
 
                 _routeQueryCompleted = true;
             }
