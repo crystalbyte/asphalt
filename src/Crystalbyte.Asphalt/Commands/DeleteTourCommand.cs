@@ -13,8 +13,7 @@ using System.Composition;
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
     [Export(typeof(IAppBarMenuCommand))]
-    [Export(typeof(IAppBarButtonCommand))]
-    public sealed class DeleteTourCommand : IAppBarMenuCommand, IAppBarButtonCommand {
+    public sealed class DeleteTourCommand : IAppBarMenuCommand {
 
         [Import]
         public AppContext AppContext { get; set; }
@@ -34,11 +33,6 @@ namespace Crystalbyte.Asphalt.Commands {
         public DeleteTourCommand() {
             MenuItem = new ApplicationBarMenuItem(AppResources.DeleteButtonText);
             MenuItem.Click += (sender, e) => Execute(null);
-
-            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Delete.png", UriKind.Relative)) {
-                Text = AppResources.DeleteButtonText
-            };
-            Button.Click += (sender, e) => Execute(null);
         }
 
         public event EventHandler DeletionCompleted;
@@ -57,11 +51,6 @@ namespace Crystalbyte.Asphalt.Commands {
         #region IAppBarMenuCommand implementation
 
         public ApplicationBarMenuItem MenuItem {
-            get;
-            private set;
-        }
-
-        public ApplicationBarIconButton Button {
             get;
             private set;
         }

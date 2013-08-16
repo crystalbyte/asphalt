@@ -97,6 +97,10 @@
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Commands\AddVehicleCommand.cs" />
     <Compile Include="Commands\AddDriverCommand.cs" />
+    <Compile Include="Commands\CommitSettingsCommand.cs" />
+    <Compile Include="Commands\DeleteSelectedToursCommand.cs" />
+    <Compile Include="Commands\EditSettingsCommand.cs" />
+    <Compile Include="Commands\ResetSettingsCommand.cs" />
     <Compile Include="Commands\SaveDriverCommand.cs" />
     <Compile Include="Commands\DeleteVehicleCommand.cs" />
     <Compile Include="Commands\DeleteDriverCommand.cs" />
@@ -122,10 +126,11 @@
     <Compile Include="Converters\AngleFormatter.cs" />
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
     <Compile Include="Converters\BooleanToTextConverter.cs" />
-    <Compile Include="Converters\DistanceFormatter.cs" />
+    <Compile Include="Converters\MathRoundDoubleConverter.cs" />
     <Compile Include="Converters\NullTextConverter.cs" />
     <Compile Include="Converters\TourTypeToColorConverter.cs" />
-    <Compile Include="Converters\UnitOfLengthFormatter.cs" />
+    <Compile Include="Converters\SpeedFormatter.cs" />
+    <Compile Include="Converters\DistanceFormatter.cs" />
     <Compile Include="DriverSelectionSource.cs" />
     <Compile Include="Pages\DriverCompositionPage.xaml.cs">
       <DependentUpon>DriverCompositionPage.xaml</DependentUpon>
@@ -142,6 +147,7 @@
     <Compile Include="QueryExtensions.cs" />
     <Compile Include="ReverseGeocodeQueryPool.cs" />
     <Compile Include="SelectionSource.cs" />
+    <Compile Include="SetupState.cs" />
     <Compile Include="SmartDispatcher.cs" />
     <Compile Include="Speed.cs" />
     <Compile Include="TourSelectionSource.cs" />

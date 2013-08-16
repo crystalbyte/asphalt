@@ -21,11 +21,9 @@ namespace Crystalbyte.Asphalt.Contexts {
         private double _currentLongitude;
         private double _currentSpeed;
         private bool _isTracking;
+        private int _speedExceedances;
 
         private static readonly AngleFormatter AngleFormatter = new AngleFormatter();
-
-        private const double SpeedThresholdInKilometersPerSecond = 8.3;
-        private const double TimeThresholdInMinutes = 2;
 
         public LocationTracker() {
             App.GeolocatorTombstoned += OnGeolocatorTombstoned;
@@ -64,7 +62,7 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         [OnImportsSatisfied]
         public void OnImportsSatisfied() {
-            AppSettings.IsMovementDetectionEnabledChanged += AppSettingsOnIsMovementDetectionEnabledChanged;
+            AppSettings.SettingsChanged += AppSettingsOnIsMovementDetectionEnabledChanged;
         }
 
         private void AppSettingsOnIsMovementDetectionEnabledChanged(object sender, EventArgs eventArgs) {
@@ -136,9 +134,6 @@ namespace Crystalbyte.Asphalt.Contexts {
         public void Update(Geoposition position) {
             CurrentPosition = position;
 
-            //Debug.WriteLine("Update received at lat:{0}, lon:{1}", position.Coordinate.Latitude,
-            //                position.Coordinate.Longitude);
-
             if (LastPosition == null) {
                 LastPosition = position;
                 return;
@@ -168,9 +163,15 @@ namespace Crystalbyte.Asphalt.Contexts {
 
                 OnUpdated(EventArgs.Empty);
             } else {
-                var start = CheckTrackingStartCondition();
-                if (start) {
-                    StartTracking();
+                var success = CheckTrackingStartCondition();
+                if (success) {
+                    _speedExceedances += 1;
+                    if (_speedExceedances >= AppSettings.SpeedExceedances) {
+                        StartTracking();
+                        _speedExceedances = 0;
+                    }
+                } else {
+                    _speedExceedances = 0;
                 }
             }
 
@@ -283,7 +284,7 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         private bool CheckTrackingStartCondition() {
             var speed = CalculateSpeed();
-            return speed > SpeedThresholdInKilometersPerSecond;
+            return speed > AppSettings.SpeedThreshold;
         }
 
         private bool CheckTrackingStopCondition() {
@@ -293,14 +294,14 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
 
             var speed = CalculateSpeed();
-            if (speed > SpeedThresholdInKilometersPerSecond) {
+            if (speed > AppSettings.SpeedThreshold) {
                 AnchorPosition = CurrentPosition;
                 return false;
             }
 
             var current = CurrentPosition.Coordinate.Timestamp;
             var anchor = AnchorPosition.Coordinate.Timestamp;
-            return current.Subtract(anchor).TotalMinutes > TimeThresholdInMinutes;
+            return current.Subtract(anchor).TotalMinutes > AppSettings.RecordingTimeout;
         }
 
         private void UpdateCurrentTour() {

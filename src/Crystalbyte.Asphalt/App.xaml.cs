@@ -20,11 +20,6 @@ namespace Crystalbyte.Asphalt {
     public partial class App {
 
         /// <summary>
-        /// The accuracy threshold of a location query in meters.
-        /// </summary>
-        private const double AccuracyThreshold = 60.0d;
-
-        /// <summary>
         ///   Gets the main context object.
         /// </summary>
         /// <returns> The main context object. </returns>
@@ -123,12 +118,12 @@ namespace Crystalbyte.Asphalt {
         }
 
         private static void OnGeolocatorPositionChanged(Geolocator sender, PositionChangedEventArgs args) {
-            if (args.Position.Coordinate.Accuracy < AccuracyThreshold) {
+            if (args.Position.Coordinate.Accuracy < AppSettings.RequiredAccuracy) {
                 SmartDispatcher.InvokeAsync(() => Context.LocationTracker.Update(args.Position));
                 return;
             }
 
-            Debug.WriteLine("Skipped update due to inaccurate reading ({0}).", args.Position.Coordinate.Accuracy);
+            Debug.WriteLine("Skipped update due to insufficient accuracy ({0}m).", args.Position.Coordinate.Accuracy);
         }
 
         private static void ComposeApplication() {
@@ -146,7 +141,7 @@ namespace Crystalbyte.Asphalt {
             Debug.WriteLine("Geolocator initializing ...");
             Geolocator = new Geolocator {
                 DesiredAccuracy = PositionAccuracy.High,
-                ReportInterval = 1500
+                ReportInterval = AppSettings.ReportInterval
             };
             Geolocator.PositionChanged += OnGeolocatorPositionChanged;
             Debug.WriteLine("Geolocator initialized.");
@@ -239,14 +234,14 @@ namespace Crystalbyte.Asphalt {
             RootFrame.Navigated -= CompleteInitializePhoneApplication;
         }
 
-        private void CheckForResetNavigation(object sender, NavigationEventArgs e) {
+        private static void CheckForResetNavigation(object sender, NavigationEventArgs e) {
             // If the app has received a 'reset' navigation, then we need to check
             // on the next navigation to see if the page stack should be reset
             if (e.NavigationMode == NavigationMode.Reset)
                 RootFrame.Navigated += ClearBackStackAfterReset;
         }
 
-        private void ClearBackStackAfterReset(object sender, NavigationEventArgs e) {
+        private static void ClearBackStackAfterReset(object sender, NavigationEventArgs e) {
             // Unregister the event so it doesn't get called again
             RootFrame.Navigated -= ClearBackStackAfterReset;
 
@@ -279,7 +274,7 @@ namespace Crystalbyte.Asphalt {
         //
         // For more info on localizing Windows Phone apps see http://go.microsoft.com/fwlink/?LinkId=262072.
         //
-        private void InitializeLanguage() {
+        private static void InitializeLanguage() {
             try {
                 // Set the font to match the display language defined by the
                 // ResourceLanguage resource string for each supported language.

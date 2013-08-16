@@ -41,7 +41,6 @@ namespace Crystalbyte.Asphalt.Data {
                 var caption = AppResources.ErrorDeletingImageCaption;
                 MessageBox.Show(ex.ToString(), caption, MessageBoxButton.OK);
             }
-            
         }
 
         public async Task StoreImageAsync(string name, Stream stream) {

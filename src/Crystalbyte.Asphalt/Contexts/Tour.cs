@@ -98,7 +98,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public void ResolveCivicAddresses() {
-            // All queries must originate from the dispatcher thread, therefor we need to invoke.
+            // All queries must originate from the UI thread, therefor the need to invoke.
             SmartDispatcher.InvokeAsync(ResolveCivicAddressesInternal);
         }
 
@@ -489,5 +489,9 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public Route CachedRoute { get; set; }
+
+        public void UpdateUnitsOfLength() {
+           RaisePropertyChanged(() => Distance); 
+        }
     }
 }

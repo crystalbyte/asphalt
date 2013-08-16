@@ -189,7 +189,7 @@
     <value>Sets the preferred unit of length for export and visual output.</value>
   </data>
   <data name="RouteDescription" xml:space="preserve">
-    <value>The displayed route is only an approximation and not used in calculations.</value>
+    <value>The displayed route is only an approximation and not used in calculating distances.</value>
   </data>
   <data name="TourTypeLabel" xml:space="preserve">
     <value>Type</value>
@@ -238,7 +238,7 @@
     <value>export</value>
   </data>
   <data name="MovementDetectionDescription" xml:space="preserve">
-    <value>The app will automatically start and stop recordings for new routes based on you traveling speed.</value>
+    <value>The app will automatically start and stop recordings for new routes.</value>
   </data>
   <data name="MovementDetectionLabel" xml:space="preserve">
     <value>Automated movement detection</value>
@@ -363,5 +363,35 @@ Start recordings manually or let Asphalt handle it for you.</value>
   </data>
   <data name="ErrorStoringImageCaption" xml:space="preserve">
     <value>Unable to save image.</value>
+  </data>
+  <data name="CommitSettingsButtonText" xml:space="preserve">
+    <value>commit</value>
+  </data>
+  <data name="DangerZoneText" xml:space="preserve">
+    <value>Danger zone</value>
+  </data>
+  <data name="DoNotChangeText" xml:space="preserve">
+    <value>Do not change these values unless you know exactly what your doing. Invalid settings may decrease accuracy or impair functionality.</value>
+  </data>
+  <data name="EditSettingsButtonText" xml:space="preserve">
+    <value>edit</value>
+  </data>
+  <data name="RecordingTimeoutLabel" xml:space="preserve">
+    <value>Recording timeout</value>
+  </data>
+  <data name="ReportIntervalLabel" xml:space="preserve">
+    <value>Geolocation report interval</value>
+  </data>
+  <data name="RequiredAccuracyLabel" xml:space="preserve">
+    <value>Minimal required GPS accuracy</value>
+  </data>
+  <data name="ResetSettingsMenuText" xml:space="preserve">
+    <value>restore factory settings</value>
+  </data>
+  <data name="SpeedExceedancesLabel" xml:space="preserve">
+    <value>Necessary speed exceedances</value>
+  </data>
+  <data name="SpeedThresholdLabel" xml:space="preserve">
+    <value>Speed exceedance threshold</value>
   </data>
 </root>

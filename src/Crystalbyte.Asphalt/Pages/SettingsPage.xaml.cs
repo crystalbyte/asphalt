@@ -9,9 +9,14 @@ using Crystalbyte.Asphalt.Contexts;
 
 namespace Crystalbyte.Asphalt.Pages {
     public partial class SettingsPage {
+        private double _entryChecksum;
+        private double _exitChecksum;
+
         public SettingsPage() {
             InitializeComponent();
-            Initialize();
+
+            AppSettings = App.Composition.GetExport<AppSettings>();
+            AppSettings.IsEditingChanged += (sender, e) => this.UpdateApplicationBar();
         }
 
         public AppSettings AppSettings {
@@ -22,20 +27,38 @@ namespace Crystalbyte.Asphalt.Pages {
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
+            CalculateEntryChecksum();
+
             this.UpdateApplicationBar();
         }
 
-        private void Initialize() {
-            AppSettings = App.Context.AppSettings;
-            UnitOfLengthListPicker.ItemsSource = Enum.GetValues(typeof (UnitOfLength));
+        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e) {
+            base.OnNavigatedFrom(e);
+
+            CalculateExitChecksum();
+            if (Math.Abs(_entryChecksum - _exitChecksum) < double.Epsilon) {
+                return;
+            }
+
+            AppSettings.OnSettingsChanged(EventArgs.Empty);
         }
 
-        private void OnUnitOfLengthListBoxSelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void CalculateEntryChecksum() {
+            _entryChecksum = AppSettings.ReportInterval + AppSettings.RecordingTimeout * 2 + AppSettings.SpeedThreshold * 3
+                + AppSettings.RequiredAccuracy * 4 + AppSettings.SpeedExceedances * 5;
+        }
+
+        private void CalculateExitChecksum() {
+            _exitChecksum = AppSettings.ReportInterval + AppSettings.RecordingTimeout * 2 + AppSettings.SpeedThreshold * 3
+                + AppSettings.RequiredAccuracy * 4 + AppSettings.SpeedExceedances * 5;
+        }
+
+        private void OnUnitOfLengthSelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (e.AddedItems.Count == 0) {
                 return;
             }
-            var unit = e.AddedItems.OfType<UnitOfLength>().First();
-            AppSettings.UnitOfLength = unit;
+            var unit = e.AddedItems.Cast<UnitOfLength>().FirstOrDefault();
+            AppSettings.UnitOfLength = unit;    
         }
     }
 }

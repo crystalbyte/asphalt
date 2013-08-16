@@ -16,9 +16,14 @@ namespace Crystalbyte.Asphalt.Commands {
         [Import]
         public LocationTracker LocationTracker { get; set; }
 
+        [Import]
+        public AppContext AppContext { get; set; }
+
         public bool CanExecute(object parameter) {
-            return !LocationTracker.IsTracking;
+            return !LocationTracker.IsTracking 
+                && AppContext.SetupState == SetupState.Completed;
         }
+
 
         public void Execute(object parameter) {
             var message = AppResources.RecordRouteConfirmMessage;
@@ -42,6 +47,7 @@ namespace Crystalbyte.Asphalt.Commands {
         [OnImportsSatisfied]
         public void OnImportsSatisfied() {
             LocationTracker.IsTrackingChanged += (sender, e) => OnCanExecuteChanged(EventArgs.Empty);
+            AppContext.SetupStateChanged += (sender, e) => OnCanExecuteChanged(EventArgs.Empty);
         }
     }
 }

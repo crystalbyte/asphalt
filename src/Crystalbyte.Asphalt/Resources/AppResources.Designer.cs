@@ -160,11 +160,29 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to commit.
+        /// </summary>
+        public static string CommitSettingsButtonText {
+            get {
+                return ResourceManager.GetString("CommitSettingsButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to confirm.
         /// </summary>
         public static string ConfirmButtonText {
             get {
                 return ResourceManager.GetString("ConfirmButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Danger zone.
+        /// </summary>
+        public static string DangerZoneText {
+            get {
+                return ResourceManager.GetString("DangerZoneText", resourceCulture);
             }
         }
         
@@ -268,6 +286,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do not change these values unless you know exactly what your doing. Invalid settings may decrease accuracy or impair functionality..
+        /// </summary>
+        public static string DoNotChangeText {
+            get {
+                return ResourceManager.GetString("DoNotChangeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Driver.
         /// </summary>
         public static string DriverLabel {
@@ -282,6 +309,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string DriversPanoramaPageHeaderText {
             get {
                 return ResourceManager.GetString("DriversPanoramaPageHeaderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to edit.
+        /// </summary>
+        public static string EditSettingsButtonText {
+            get {
+                return ResourceManager.GetString("EditSettingsButtonText", resourceCulture);
             }
         }
         
@@ -457,7 +493,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The app will automatically start and stop recordings for new routes based on you traveling speed..
+        ///   Looks up a localized string similar to The app will automatically start and stop recordings for new routes..
         /// </summary>
         public static string MovementDetectionDescription {
             get {
@@ -511,6 +547,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recording timeout.
+        /// </summary>
+        public static string RecordingTimeoutLabel {
+            get {
+                return ResourceManager.GetString("RecordingTimeoutLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start recording?.
         /// </summary>
         public static string RecordRouteConfirmCaption {
@@ -538,6 +583,33 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geolocation report interval.
+        /// </summary>
+        public static string ReportIntervalLabel {
+            get {
+                return ResourceManager.GetString("ReportIntervalLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimal required GPS accuracy.
+        /// </summary>
+        public static string RequiredAccuracyLabel {
+            get {
+                return ResourceManager.GetString("RequiredAccuracyLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to restore factory settings.
+        /// </summary>
+        public static string ResetSettingsMenuText {
+            get {
+                return ResourceManager.GetString("ResetSettingsMenuText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LeftToRight.
         /// </summary>
         public static string ResourceFlowDirection {
@@ -556,7 +628,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The displayed route is only an approximation and not used in calculations..
+        ///   Looks up a localized string similar to The displayed route is only an approximation and not used in calculating distances..
         /// </summary>
         public static string RouteDescription {
             get {
@@ -610,11 +682,29 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Necessary speed exceedances.
+        /// </summary>
+        public static string SpeedExceedancesLabel {
+            get {
+                return ResourceManager.GetString("SpeedExceedancesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speed.
         /// </summary>
         public static string SpeedLabel {
             get {
                 return ResourceManager.GetString("SpeedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speed exceedance threshold.
+        /// </summary>
+        public static string SpeedThresholdLabel {
+            get {
+                return ResourceManager.GetString("SpeedThresholdLabel", resourceCulture);
             }
         }
         

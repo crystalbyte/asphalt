@@ -16,6 +16,7 @@ namespace Crystalbyte.Asphalt.Contexts {
     public sealed class AppContext : NotificationObject {
         private bool _isSelectionEnabled;
         private bool _isMovementDetectionEnabled;
+        private SetupState _setupState;
 
         [Import]
         public Channels Channels { get; set; }
@@ -66,10 +67,32 @@ namespace Crystalbyte.Asphalt.Contexts {
             Drivers.CollectionChanged += (sender, e) => Debug.WriteLine("dchanged");
         }
 
-        public bool IsReady {
-            get {
-                return Vehicles.Any(x => x.IsSelected) 
+        public event EventHandler SetupStateChanged;
+
+        public void OnSetupStateChanged(EventArgs e) {
+            var handler = SetupStateChanged;
+            if (handler != null)
+                handler(this, e);
+        }
+
+        private void CheckSetupState() {
+            var isCompleted = Vehicles.Any(x => x.IsSelected)
                     && Drivers.Any(x => x.IsSelected);
+
+            SetupState = isCompleted ? SetupState.Completed : SetupState.NotCompleted;
+        }
+
+        public SetupState SetupState {
+            get { return _setupState; }
+            private set {
+                if (_setupState == value) {
+                    return;
+                }
+
+                RaisePropertyChanging(() => SetupState);
+                _setupState = value;
+                RaisePropertyChanged(() => SetupState);
+                OnSetupStateChanged(EventArgs.Empty);
             }
         }
 
@@ -83,7 +106,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             SaveDriverCommand.DriverSaved += OnDriverSaved;
 
             // Attach monitoring event handler
-            AppSettings.IsMovementDetectionEnabledChanged += (sender, e) =>
+            AppSettings.SettingsChanged += (sender, e) =>
                 NotifyIsMovementDetectionEnabledChanged();
 
             // Trigger initial update
@@ -93,25 +116,25 @@ namespace Crystalbyte.Asphalt.Contexts {
         private async void OnDriverSaved(object sender, EventArgs e) {
             await LoadDriversAsync();
             RefreshSelections();
-            NotifyIsReadyChanged();
+            CheckSetupState();
         }
 
         private async void OnVehicleSaved(object sender, EventArgs e) {
             await LoadVehiclesAsync();
             RefreshSelections();
-            NotifyIsReadyChanged();
+            CheckSetupState();
         }
 
         private async void OnDriversDeletionCompleted(object sender, EventArgs e) {
             await LoadDriversAsync();
             RefreshSelections();
-            NotifyIsReadyChanged();
+            CheckSetupState();
         }
 
         private async void OnVehicleDeletionCompleted(object sender, EventArgs e) {
             await LoadVehiclesAsync();
             RefreshSelections();
-            NotifyIsReadyChanged();
+            CheckSetupState();
         }
 
         private async void OnTourStored(object sender, EventArgs e) {
@@ -120,10 +143,6 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         private async void OnTourDeletionCompleted(object sender, EventArgs e) {
             await LoadToursAsync();
-        }
-
-        public void NotifyIsReadyChanged() {
-            RaisePropertyChanged(() => IsReady);
         }
 
         public void NotifyIsMovementDetectionEnabledChanged() {
@@ -216,7 +235,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             await LoadDriversAsync();
 
             RefreshSelections();
-            NotifyIsReadyChanged();
+            CheckSetupState();
             IsDataLoaded = true;
         }
 

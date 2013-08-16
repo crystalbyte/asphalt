@@ -10,6 +10,11 @@ using System.Windows.Data;
 namespace Crystalbyte.Asphalt.Converters {
     public sealed class BooleanToVisibilityConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+
+            if (value == null) {
+                return Visibility.Collapsed;
+            }
+
             var p = parameter as string;
             var inverse = p != null && p == "!";
 

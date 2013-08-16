@@ -3,95 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:Crystalbyte.Asphalt.Converters"
              xmlns:local="clr-namespace:Crystalbyte.Asphalt"
-             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
              xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit">
+             xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!--  Application Resources  -->
     <Application.Resources>
         <sys:String x:Key="DefaultConnectionString">Data Source=isostore:/asphalt.sdf</sys:String>
         <sys:Double x:Key="PanoramaItemHeaderFontSize">66</sys:Double>
-        <Style x:Key="PlayButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="Green" />
-            <Setter Property="VerticalContentAlignment" Value="Top" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border>
-                            <StackPanel Orientation="Horizontal">
-                                <Grid>
-                                    <Ellipse Width="64"
-                                             Height="64"
-                                             Fill="Transparent"
-                                             Stroke="{TemplateBinding Foreground}"
-                                             StrokeThickness="4" />
-                                    <Polygon Fill="{TemplateBinding Foreground}"
-                                             Points="0,0 51.2,32 0,64"
-                                             StrokeThickness="0">
-                                        <Polygon.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform CenterX="32"
-                                                                CenterY="32"
-                                                                ScaleX="0.5"
-                                                                ScaleY="0.5" />
-                                                <TranslateTransform X="6" />
-                                            </TransformGroup>
-                                        </Polygon.RenderTransform>
-                                    </Polygon>
-                                </Grid>
-                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  Content="{TemplateBinding Content}"
-                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
-                            </StackPanel>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="StopButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="Red" />
-            <Setter Property="VerticalContentAlignment" Value="Top" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border>
-                            <StackPanel Orientation="Horizontal">
-                                <Grid>
-                                    <Ellipse Width="64"
-                                             Height="64"
-                                             Fill="Transparent"
-                                             Stroke="{TemplateBinding Foreground}"
-                                             StrokeThickness="4" />
-                                    <Rectangle Width="22"
-                                               Height="22"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Fill="{TemplateBinding Foreground}"
-                                               StrokeThickness="4" />
-                                </Grid>
-                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  Content="{TemplateBinding Content}"
-                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
-                            </StackPanel>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
         <Style x:Key="DefaultTile128x128" TargetType="Border">
             <Setter Property="Margin" Value="12,0,0,0" />
             <Setter Property="Width" Value="128" />
             <Setter Property="Height" Value="128" />
-        </Style>
-
-        <Style x:Key="WarningTextStyle"
-               BasedOn="{StaticResource PhoneTextNormalStyle}"
-               TargetType="TextBlock">
-            <Setter Property="Foreground" Value="Orange" />
         </Style>
 
         <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">
@@ -158,18 +81,17 @@
         <local:LocalizedStrings x:Key="LocalizedStrings" />
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:DistanceFormatter x:Key="DistanceFormatter" />
+        <converters:SpeedFormatter x:Key="SpeedFormatter" />
         <converters:AngleFormatter x:Key="AngleFormatter" />
         <converters:NullTextConverter x:Key="NullTextConverter" />
-        <converters:UnitOfLengthFormatter x:Key="UnitOfLengthFormatter" />
-        <converters:BooleanToBrushConverter x:Key="BooleanGreenRedConverter"
-                                            BrushForFalse="Red"
-                                            BrushForTrue="Green" />
+        <!--  <converters:UnitOfLengthFormatter x:Key="UnitOfLengthFormatter" />  -->
         <converters:BooleanToTextConverter x:Key="BooleanEnabledDisabledConverter"
                                            TextForFalse="{Binding LocalizedResources.Disabled,
                                                                   Source={StaticResource LocalizedStrings}}"
                                            TextForTrue="{Binding LocalizedResources.Enabled,
                                                                  Source={StaticResource LocalizedStrings}}" />
         <converters:TourTypeToColorConverter x:Key="TourTypeToColorConverter" />
+        <converters:MathRoundDoubleConverter x:Key="MathRoundDoubleConverter" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

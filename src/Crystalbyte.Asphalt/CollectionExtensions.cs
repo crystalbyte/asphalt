@@ -40,6 +40,9 @@ namespace Crystalbyte.Asphalt {
 
         public static List<T> Sample<T>(this IList<T> collection, int count) {
             var distance = collection.Count / count;
+            if (distance == 0) {
+                return new List<T>();
+            }
             var indices = Enumerable.Range(0, collection.Count).Where(x => x % distance == 0);
             return indices.Select(x => collection[x]).ToList();
         }

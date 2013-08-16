@@ -7,6 +7,7 @@
                             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
                             xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+                            xmlns:ui="clr-namespace:Crystalbyte.Asphalt.UI"
                             FontFamily="{StaticResource PhoneFontFamilyNormal}"
                             FontSize="{StaticResource PhoneFontSizeNormal}"
                             Foreground="{StaticResource PhoneForegroundBrush}"
@@ -15,7 +16,6 @@
                             d:DataContext="{d:DesignInstance Type=contexts:AppSettings}"
                             shell:SystemTray.IsVisible="True"
                             mc:Ignorable="d">
-
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
             <toolkit:NavigationInTransition.Backward>
@@ -57,37 +57,170 @@
         <Grid x:Name="ContentPanel"
               Grid.Row="1"
               Margin="12,0,12,0">
-            <StackPanel>
-                <TextBlock Style="{StaticResource PhoneTextAccentStyle}"
-                           Text="{Binding LocalizedResources.MovementDetectionLabel,
-                                          Source={StaticResource LocalizedStrings}}"
-                           TextWrapping="Wrap" />
-                <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
-                           Text="{Binding LocalizedResources.MovementDetectionDescription,
-                                          Source={StaticResource LocalizedStrings}}"
-                           TextWrapping="Wrap" />
-                <Grid>
-                    <toolkit:ToggleSwitch IsChecked="{Binding IsMovementDetectionEnabled, Mode=TwoWay}" />
-                </Grid>
-                <TextBlock Style="{StaticResource PhoneTextAccentStyle}"
-                           Text="{Binding LocalizedResources.UnitOfLengthSettingsText,
-                                          Source={StaticResource LocalizedStrings}}"
-                           TextWrapping="Wrap" />
-                <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
-                           Text="{Binding LocalizedResources.UnitOfLengthDescriptionText,
-                                          Source={StaticResource LocalizedStrings}}"
-                           TextWrapping="Wrap" />
-                <Grid>
-                    <toolkit:ListPicker x:Name="UnitOfLengthListPicker" SelectionChanged="OnUnitOfLengthListBoxSelectionChanged" />
-                </Grid>
-            </StackPanel>
+            <ScrollViewer>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.MovementDetectionLabel,
+                                              Source={StaticResource LocalizedStrings}}"
+                               TextWrapping="Wrap" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               Text="{Binding LocalizedResources.MovementDetectionDescription,
+                                              Source={StaticResource LocalizedStrings}}"
+                               TextWrapping="Wrap" />
+                    <Grid>
+                        <toolkit:ToggleSwitch IsChecked="{Binding IsMovementDetectionEnabled, Mode=TwoWay}" />
+                    </Grid>
+                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.UnitOfLengthSettingsText,
+                                              Source={StaticResource LocalizedStrings}}"
+                               TextWrapping="Wrap" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               Text="{Binding LocalizedResources.UnitOfLengthDescriptionText,
+                                              Source={StaticResource LocalizedStrings}}"
+                               TextWrapping="Wrap" />
+                    <Grid>
+                        <toolkit:ListPicker ItemsSource="{Binding UnitOfLengthItemsSource}" SelectionChanged="OnUnitOfLengthSelectionChanged" SelectedItem="{Binding UnitOfLength, Mode=OneWay}">
+                            <toolkit:ListPicker.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" />
+                                </DataTemplate>
+                            </toolkit:ListPicker.ItemTemplate>
+                            <toolkit:ListPicker.FullModeItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" />
+                                </DataTemplate>
+                            </toolkit:ListPicker.FullModeItemTemplate>
+                        </toolkit:ListPicker>
+                    </Grid>
 
+                    <TextBlock Margin="12,18,0,0"
+                               Foreground="Red"
+                               Style="{StaticResource PhoneTextLargeStyle}"
+                               Text="{Binding LocalizedResources.DangerZoneText,
+                                              Source={StaticResource LocalizedStrings}}" />
+                    <TextBlock Margin="12,0,0,18"
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               Text="{Binding LocalizedResources.DoNotChangeText,
+                                              Source={StaticResource LocalizedStrings}}"
+                               TextWrapping="Wrap" />
+
+                    <!--  recording timeout  -->
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Left"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Text="{Binding LocalizedResources.ReportIntervalLabel,
+                                                  Source={StaticResource LocalizedStrings}}"
+                                   TextWrapping="Wrap" />
+                        <TextBlock HorizontalAlignment="Right"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Text="{Binding ReportInterval,
+                                                  StringFormat='{}{0} ms'}"
+                                   TextWrapping="Wrap" />
+                    </Grid>
+                    <Slider IsEnabled="{Binding IsEditing,
+                                                Mode=OneWay}"
+                            LargeChange="1000"
+                            Maximum="10000"
+                            Minimum="1000"
+                            SmallChange="100"
+                            Value="{Binding ReportInterval,
+                                            Mode=TwoWay}" />
+
+                    <!--  speed exceedances  -->
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Left"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Text="{Binding LocalizedResources.SpeedExceedancesLabel,
+                                                  Source={StaticResource LocalizedStrings}}"
+                                   TextWrapping="Wrap" />
+                        <TextBlock HorizontalAlignment="Right"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Text="{Binding SpeedExceedances,
+                                                  StringFormat='{}{0}'}"
+                                   TextWrapping="Wrap" />
+                    </Grid>
+
+                    <Slider IsEnabled="{Binding IsEditing}"
+                            LargeChange="1"
+                            Maximum="3"
+                            Minimum="1"
+                            SmallChange="0"
+                            Value="{Binding SpeedExceedances,
+                                            Mode=TwoWay}" />
+
+
+                    <!--  required accuracy  -->
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Left"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Text="{Binding LocalizedResources.RequiredAccuracyLabel,
+                                                  Source={StaticResource LocalizedStrings}}"
+                                   TextWrapping="Wrap" />
+                        <TextBlock HorizontalAlignment="Right"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Text="{Binding RequiredAccuracy,
+                                                  Converter={StaticResource MathRoundDoubleConverter},
+                                                  StringFormat='{}{0} m'}"
+                                   TextWrapping="Wrap" />
+                    </Grid>
+                    <Slider IsEnabled="{Binding IsEditing}"
+                            LargeChange="5.0"
+                            Maximum="100.0"
+                            Minimum="5.0"
+                            SmallChange="1.0"
+                            Value="{Binding RequiredAccuracy,
+                                            Mode=TwoWay}" />
+
+                    <!--  speed treshold  -->
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Left"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Text="{Binding LocalizedResources.SpeedThresholdLabel,
+                                                  Source={StaticResource LocalizedStrings}}"
+                                   TextWrapping="Wrap" />
+                        <TextBlock HorizontalAlignment="Right"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Text="{Binding SpeedThreshold,
+                                                  Converter={StaticResource SpeedFormatter},
+                                                  ConverterParameter=ms}"
+                                   TextWrapping="Wrap" />
+                    </Grid>
+                    <Slider IsEnabled="{Binding IsEditing}"
+                            LargeChange="0.1"
+                            Maximum="10.0"
+                            Minimum="6.0"
+                            SmallChange="1.0"
+                            Value="{Binding SpeedThreshold,
+                                            Mode=TwoWay}" />
+
+                    <!--  recording timeout  -->
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Left"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Text="{Binding LocalizedResources.RecordingTimeoutLabel,
+                                                  Source={StaticResource LocalizedStrings}}"
+                                   TextWrapping="Wrap" />
+                        <TextBlock HorizontalAlignment="Right"
+                                   Style="{StaticResource PhoneTextSmallStyle}"
+                                   Text="{Binding RecordingTimeout,
+                                                  Converter={StaticResource MathRoundDoubleConverter},
+                                                  StringFormat='{}{0} min'}"
+                                   TextWrapping="Wrap" />
+                    </Grid>
+                    <Slider IsEnabled="{Binding IsEditing}"
+                            LargeChange="1.0"
+                            Maximum="8.0"
+                            Minimum="1.0"
+                            SmallChange="0.1"
+                            Value="{Binding RecordingTimeout,
+                                            Mode=TwoWay}" />
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
-
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="False" />
+        <shell:ApplicationBar />
     </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>
