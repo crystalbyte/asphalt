@@ -1,10 +1,11 @@
 ﻿#region Using directives
 
 using System;
+using Crystalbyte.Asphalt.Contexts;
 
 #endregion
 
-namespace Crystalbyte.Asphalt.Contexts {
+namespace Crystalbyte.Asphalt {
     /// <summary>
     ///   Add validation support to properties
     /// </summary>

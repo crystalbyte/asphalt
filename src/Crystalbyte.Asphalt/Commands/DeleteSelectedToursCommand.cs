@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.Composition;
 using System.Linq;
 using Crystalbyte.Asphalt.Contexts;
@@ -7,11 +9,12 @@ using Crystalbyte.Asphalt.Pages;
 using Crystalbyte.Asphalt.Resources;
 using Microsoft.Phone.Shell;
 
+#endregion
+
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof(IAppBarButtonCommand))]
+    [Export(typeof (IAppBarButtonCommand))]
     public sealed class DeleteSelectedToursCommand : IAppBarButtonCommand {
-
         [Import]
         public AppContext AppContext { get; set; }
 
@@ -31,9 +34,10 @@ namespace Crystalbyte.Asphalt.Commands {
         public DeleteTourCommand DeleteTourCommand { get; set; }
 
         public DeleteSelectedToursCommand() {
-            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Delete.png", UriKind.Relative)) {
-                Text = AppResources.DeleteButtonText
-            };
+            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Delete.png", UriKind.Relative))
+                         {
+                             Text = AppResources.DeleteButtonText
+                         };
             Button.Click += (sender, e) => Execute(null);
         }
 

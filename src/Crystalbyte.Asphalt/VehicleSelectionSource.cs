@@ -1,7 +1,11 @@
-﻿using Crystalbyte.Asphalt.Contexts;
+﻿#region Using directives
+
 using System.Composition;
+using Crystalbyte.Asphalt.Contexts;
+
+#endregion
 
 namespace Crystalbyte.Asphalt {
     [Export, Shared]
-    public sealed class VehicleSelectionSource : SelectionSource<Vehicle> { }
+    public sealed class VehicleSelectionSource : SelectionSource<Vehicle> {}
 }

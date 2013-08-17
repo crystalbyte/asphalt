@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Linq;
@@ -8,10 +10,11 @@ using System.Windows.Media.Imaging;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
 
+#endregion
+
 namespace Crystalbyte.Asphalt.Contexts {
     [DataContract, Table]
     public sealed class Driver : BindingModelBase<Driver> {
-
         private int _id;
         private string _imagePath;
         private ImageSource _image;
@@ -64,10 +67,10 @@ namespace Crystalbyte.Asphalt.Contexts {
             var stream = await LocalStorage.GetImageStreamAsync(ImagePath);
 
             SmartDispatcher.InvokeAsync(() => {
-                var image = new BitmapImage();
-                image.SetSource(stream);
-                Image = image;
-            });
+                                            var image = new BitmapImage();
+                                            image.SetSource(stream);
+                                            Image = image;
+                                        });
         }
 
         public bool HasImage {
@@ -98,9 +101,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public ImageSource Image {
-            get {
-                return _image;
-            }
+            get { return _image; }
             set {
                 if (_image == value) {
                     return;
@@ -130,7 +131,8 @@ namespace Crystalbyte.Asphalt.Contexts {
 
                 if (string.IsNullOrWhiteSpace(value)) {
                     Image = null;
-                } else {
+                }
+                else {
                     RestoreImageFromPath();
                 }
             }
@@ -192,7 +194,7 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         public void CommitChanges() {
             Channels.Database.Enqueue(() =>
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+                                      LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
         }
 
         public void InvalidateSelection() {
@@ -202,14 +204,12 @@ namespace Crystalbyte.Asphalt.Contexts {
         public bool IsSelected {
             get {
                 return AppContext.Drivers
-                    .Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this;
+                           .Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this;
             }
         }
 
         public string PageHeaderText {
-            get {
-                return Id == 0 ? AppResources.AddDriverPageTitle : Forename;
-            }
+            get { return Id == 0 ? AppResources.AddDriverPageTitle : Forename; }
         }
     }
 }

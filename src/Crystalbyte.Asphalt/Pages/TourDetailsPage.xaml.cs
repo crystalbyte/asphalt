@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Device.Location;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,9 +11,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
-using Microsoft.Phone.Controls;
 
 #endregion
 
@@ -47,7 +46,6 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
 
-
         private void OnTourMapZoomLevelChanged(object sender, MapZoomLevelChangedEventArgs e) {
             _isMapReady = true;
             if (_isZoomedIn)
@@ -58,7 +56,7 @@ namespace Crystalbyte.Asphalt.Pages {
             // The ZoomLevelChanged event serves as the "readyness" indicator.
             // http://www.awenius.de/blog/2013/07/26/windows-phone-8-map-setview-funktioniert-erst-nach-dem-ersten-zoomlevelchanged-event/
             var positions = Tour.Positions;
-            if (positions.Count <= 0) 
+            if (positions.Count <= 0)
                 return;
 
             _isZoomedIn = true;
@@ -73,7 +71,7 @@ namespace Crystalbyte.Asphalt.Pages {
         public bool IsEditing { get; private set; }
 
         public Tour Tour {
-            get { return (Tour)DataContext; }
+            get { return (Tour) DataContext; }
             set { DataContext = value; }
         }
 
@@ -97,7 +95,7 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             if (_isNewPageInstance && Tour == null) {
-                var tour = (Tour)State[TourStateKey];
+                var tour = (Tour) State[TourStateKey];
                 TourSelectionSource.Selection = tour;
                 Tour = tour;
             }
@@ -112,7 +110,8 @@ namespace Crystalbyte.Asphalt.Pages {
             // We can't launch multiple queries and have to wait for previous one's to complete.
             if (Tour.IsQuerying) {
                 Tour.CivicAddressesResolved += OnTourCivicAddressesResolved;
-            } else {
+            }
+            else {
                 RequestRoute();
             }
         }
@@ -177,8 +176,8 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void OnTourTypeSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var picker = (ListPicker)sender;
-            Tour.Type = (TourType)picker.SelectedItem;
+            var picker = (ListPicker) sender;
+            Tour.Type = (TourType) picker.SelectedItem;
         }
 
         private void OnReasonInputFormGotFocus(object sender, RoutedEventArgs e) {

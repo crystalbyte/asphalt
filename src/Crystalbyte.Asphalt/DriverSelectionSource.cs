@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Crystalbyte.Asphalt.Contexts;
+﻿#region Using directives
+
 using System.Composition;
+using Crystalbyte.Asphalt.Contexts;
+
+#endregion
 
 namespace Crystalbyte.Asphalt {
     [Export, Shared]
-    public sealed class DriverSelectionSource : SelectionSource<Driver> { }
+    public sealed class DriverSelectionSource : SelectionSource<Driver> {}
 }

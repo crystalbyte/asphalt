@@ -1,17 +1,18 @@
-﻿using System.Linq;
-using Crystalbyte.Asphalt.Contexts;
-using Microsoft.Phone.Shell;
+﻿#region Using directives
+
 using System;
 using System.Composition;
+using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Pages;
 using Crystalbyte.Asphalt.Resources;
+using Microsoft.Phone.Shell;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Commands {
-
     [Export, Shared]
-    [Export(typeof(IAppBarButtonCommand))]
+    [Export(typeof (IAppBarButtonCommand))]
     public sealed class ExportCommand : IAppBarButtonCommand {
-
         [Import]
         public Navigator Navigator { get; set; }
 
@@ -22,9 +23,10 @@ namespace Crystalbyte.Asphalt.Commands {
         public TourSelectionSource TourSelectionSource { get; set; }
 
         public ExportCommand() {
-            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Upload.png", UriKind.Relative)) {
-                Text = AppResources.ExportButtonText
-            };
+            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Upload.png", UriKind.Relative))
+                         {
+                             Text = AppResources.ExportButtonText
+                         };
             Button.Click += (sender, e) => Execute(null);
         }
 
@@ -32,7 +34,6 @@ namespace Crystalbyte.Asphalt.Commands {
 
         public bool IsApplicable {
             get {
-
                 // Don't display export button if there is nothing to export.
                 if (AppContext.IsDataLoaded && AppContext.Tours.Count == 0) {
                     return false;
@@ -44,8 +45,8 @@ namespace Crystalbyte.Asphalt.Commands {
                 }
 
                 var landingPage = Navigator.GetCurrentPage<LandingPage>();
-                return landingPage != null 
-                    && landingPage.PanoramaIndex == 1;
+                return landingPage != null
+                       && landingPage.PanoramaIndex == 1;
             }
         }
 

@@ -1,11 +1,14 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.Globalization;
 using System.Windows.Data;
 using Crystalbyte.Asphalt.Contexts;
 
+#endregion
+
 namespace Crystalbyte.Asphalt.Converters {
     public sealed class SpeedFormatter : IValueConverter {
-
         private const double MileRatio = 0.621371192;
 
         public AppSettings AppSettings {
@@ -20,11 +23,11 @@ namespace Crystalbyte.Asphalt.Converters {
             }
             var p = parameter as string;
             if (!string.IsNullOrWhiteSpace(p) && p == "ms") {
-                return Format((double)value * 3.6);
+                return Format((double) value*3.6);
             }
 
 
-            return Format((double)value);
+            return Format((double) value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -45,7 +48,7 @@ namespace Crystalbyte.Asphalt.Converters {
         }
 
         private static string FormatMilePerHour(double value) {
-            var milesPerHour = value * MileRatio;
+            var milesPerHour = value*MileRatio;
             return string.Format("{0} mph", Math.Round(milesPerHour, 1));
         }
 

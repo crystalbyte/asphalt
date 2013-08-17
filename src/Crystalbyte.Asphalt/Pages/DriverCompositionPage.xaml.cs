@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
@@ -8,11 +10,11 @@ using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
-using GestureEventArgs = System.Windows.Input.GestureEventArgs;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Pages {
     public partial class DriverCompositionPage {
-
         private const string DriverStateKey = "driver";
         private bool _isNewPageInstance;
         private readonly PhotoChooserTask _photoChooser;
@@ -22,16 +24,14 @@ namespace Crystalbyte.Asphalt.Pages {
             InitializeComponent();
             BindingValidationError += OnBindingValidationError;
 
-            _photoChooser = new PhotoChooserTask { ShowCamera = true, PixelHeight = 200, PixelWidth = 200 };
+            _photoChooser = new PhotoChooserTask {ShowCamera = true, PixelHeight = 200, PixelWidth = 200};
             _photoChooser.Completed += OnPhotoChooserTaskCompleted;
 
             _isNewPageInstance = true;
         }
 
         public DriverSelectionSource DriverSelectionSource {
-            get {
-                return App.Composition.GetExport<DriverSelectionSource>();
-            }
+            get { return App.Composition.GetExport<DriverSelectionSource>(); }
         }
 
         protected override void OnKeyUp(KeyEventArgs e) {
@@ -53,16 +53,14 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         public LocalStorage LocalStorage {
-            get {
-                return App.Composition.GetExport<LocalStorage>();
-            }
+            get { return App.Composition.GetExport<LocalStorage>(); }
         }
 
         /// <summary>
-        /// Gets or sets the current datacontext as a vehicle.
+        ///   Gets or sets the current datacontext as a vehicle.
         /// </summary>
         public Driver Driver {
-            get { return (Driver)DataContext; }
+            get { return (Driver) DataContext; }
             set { DataContext = value; }
         }
 
@@ -104,7 +102,7 @@ namespace Crystalbyte.Asphalt.Pages {
             Driver = DriverSelectionSource.Selection;
             Driver.ValidateAll();
         }
-        
+
         private void OnStackPanelTap(object sender, GestureEventArgs e) {
             SelectImage();
         }
@@ -120,7 +118,7 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             SmartDispatcher.InvokeAsync(() =>
-                HandleChosenPhoto(e.OriginalFileName, e.ChosenPhoto));
+                                        HandleChosenPhoto(e.OriginalFileName, e.ChosenPhoto));
         }
 
         private async void HandleChosenPhoto(string name, Stream data) {
@@ -133,12 +131,12 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void OnForenameChanged(object sender, TextChangedEventArgs e) {
-            var textbox = (TextBox)sender;
+            var textbox = (TextBox) sender;
             Driver.Forename = textbox.Text;
         }
 
         private void OnSurnameChanged(object sender, TextChangedEventArgs e) {
-            var textbox = (TextBox)sender;
+            var textbox = (TextBox) sender;
             Driver.Surname = textbox.Text;
         }
     }

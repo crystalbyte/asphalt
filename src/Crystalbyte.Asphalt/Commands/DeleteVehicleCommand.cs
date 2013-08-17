@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using directives
+
+using System;
+using System.Composition;
 using System.Data.Linq;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Pages;
-using Microsoft.Phone.Shell;
 using Crystalbyte.Asphalt.Resources;
-using System.Composition;
+using Microsoft.Phone.Shell;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof(IAppBarMenuCommand))]
+    [Export(typeof (IAppBarMenuCommand))]
     public sealed class DeleteVehicleCommand : IAppBarMenuCommand {
-
         [Import]
         public AppContext AppContext { get; set; }
 
@@ -57,9 +55,7 @@ namespace Crystalbyte.Asphalt.Commands {
 
         #region IAppBarMenuCommand implementation
 
-        public ApplicationBarMenuItem MenuItem { 
-            get; private set;
-        }
+        public ApplicationBarMenuItem MenuItem { get; private set; }
 
         public bool IsApplicable {
             get {
@@ -104,27 +100,26 @@ namespace Crystalbyte.Asphalt.Commands {
             var vehicle = VehicleSelectionSource.Selection;
 
             await Channels.Database.Enqueue(() => {
-                LocalStorage.DataContext.Vehicles.DeleteOnSubmit(vehicle);
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-            });
+                                                LocalStorage.DataContext.Vehicles.DeleteOnSubmit(vehicle);
+                                                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+                                            });
 
             OnDeletionCompleted(EventArgs.Empty);
 
             Debug.WriteLine("Selected vehicle has been successfully deleted.");
 
             var page = Navigator.GetCurrentPage<VehicleCompositionPage>();
-            if (page == null) 
+            if (page == null)
                 return;
 
             if (Navigator.Frame.CanGoBack) {
                 Navigator.Frame.GoBack();
-            } else {
+            }
+            else {
                 Navigator.Navigate<LandingPage>();
             }
         }
 
         #endregion
-
-       
     }
 }

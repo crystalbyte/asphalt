@@ -7,44 +7,44 @@ using System.Windows.Media;
 #endregion
 
 namespace Crystalbyte.Asphalt.UI {
-    [StyleTypedProperty(Property = "WatermarkTextStyle", StyleTargetType = typeof(TextBlock)),
-     TemplatePart(Name = "WatermarkText", Type = typeof(TextBlock)),
+    [StyleTypedProperty(Property = "WatermarkTextStyle", StyleTargetType = typeof (TextBlock)),
+     TemplatePart(Name = "WatermarkText", Type = typeof (TextBlock)),
      TemplateVisualState(Name = "WatermarkTextVisible", GroupName = "WatermarkTextStates"),
      TemplateVisualState(Name = "WatermarkTextHidden", GroupName = "WatermarkTextStates")]
     public class WatermarkTextBox : TextBox {
         public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register(
             "WatermarkText",
-            typeof(string),
-            typeof(WatermarkTextBox),
+            typeof (string),
+            typeof (WatermarkTextBox),
             new PropertyMetadata(string.Empty, OnWatermarkTextPropertyChanged));
 
         public static readonly DependencyProperty WatermarkTextForegroundProperty = DependencyProperty.Register(
             "WatermarkTextForeground",
-            typeof(Brush),
-            typeof(WatermarkTextBox),
+            typeof (Brush),
+            typeof (WatermarkTextBox),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray), OnWatermarkTextForegroundPropertyChanged));
 
         public static readonly DependencyProperty WatermarkTextStyleProperty = DependencyProperty.Register(
             "WatermarkTextStyle",
-            typeof(Style),
-            typeof(WatermarkTextBox),
+            typeof (Style),
+            typeof (WatermarkTextBox),
             new PropertyMetadata(null, OnWatermarkTextStylePropertyChanged));
 
 
         private bool _isFocused;
 
         public string WatermarkText {
-            get { return (string)GetValue(WatermarkTextProperty); }
+            get { return (string) GetValue(WatermarkTextProperty); }
             set { SetValue(WatermarkTextProperty, value); }
         }
 
         public Brush WatermarkTextForeground {
-            get { return (Brush)GetValue(WatermarkTextForegroundProperty); }
+            get { return (Brush) GetValue(WatermarkTextForegroundProperty); }
             set { SetValue(WatermarkTextForegroundProperty, value); }
         }
 
         public Style WatermarkTextStyle {
-            get { return (Style)GetValue(WatermarkTextStyleProperty); }
+            get { return (Style) GetValue(WatermarkTextStyleProperty); }
             set { SetValue(WatermarkTextStyleProperty, value); }
         }
 
@@ -69,7 +69,7 @@ namespace Crystalbyte.Asphalt.UI {
 
 
         public WatermarkTextBox() {
-            DefaultStyleKey = typeof(WatermarkTextBox);
+            DefaultStyleKey = typeof (WatermarkTextBox);
 
             GotFocus += OnWatermarkTextBoxGotFocus;
             LostFocus += OnWatermarkTextBoxLostFocus;
@@ -100,7 +100,8 @@ namespace Crystalbyte.Asphalt.UI {
         private void GoToVisualState(bool theIsWatermarkDisplayed) {
             if (theIsWatermarkDisplayed && (Text == null || (Text != null && Text.Length == 0))) {
                 VisualStateManager.GoToState(this, "WatermarkTextVisible", true);
-            } else {
+            }
+            else {
                 VisualStateManager.GoToState(this, "WatermarkTextHidden", true);
             }
         }

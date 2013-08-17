@@ -1,5 +1,6 @@
-﻿using System;
-using System.Data.Linq;
+﻿#region Using directives
+
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
@@ -10,9 +11,10 @@ using Crystalbyte.Asphalt.Data;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 
+#endregion
+
 namespace Crystalbyte.Asphalt.Pages {
     public partial class VehicleCompositionPage {
-
         private const string VehicleStateKey = "vehicle";
         private bool _isNewPageInstance;
         private readonly PhotoChooserTask _photoChooser;
@@ -22,7 +24,7 @@ namespace Crystalbyte.Asphalt.Pages {
             InitializeComponent();
             BindingValidationError += OnBindingValidationError;
 
-            _photoChooser = new PhotoChooserTask { ShowCamera = true, PixelHeight = 200, PixelWidth = 200 };
+            _photoChooser = new PhotoChooserTask {ShowCamera = true, PixelHeight = 200, PixelWidth = 200};
             _photoChooser.Completed += OnPhotoChooserTaskCompleted;
 
             _isNewPageInstance = true;
@@ -40,7 +42,7 @@ namespace Crystalbyte.Asphalt.Pages {
         private void HandleEnterKey() {
             Focus();
         }
-        
+
         private void OnBindingValidationError(object sender, ValidationErrorEventArgs e) {
             var button = ApplicationBar.Buttons.OfType<ApplicationBarIconButton>().FirstOrDefault();
             if (button != null) {
@@ -49,23 +51,21 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         public LocalStorage LocalStorage {
-            get {
-                return App.Composition.GetExport<LocalStorage>();
-            }
+            get { return App.Composition.GetExport<LocalStorage>(); }
         }
 
         /// <summary>
-        /// Gets the VehicleSelectionSource.
+        ///   Gets the VehicleSelectionSource.
         /// </summary>
         public VehicleSelectionSource VehicleSelectionSource {
             get { return App.Composition.GetExport<VehicleSelectionSource>(); }
         }
 
         /// <summary>
-        /// Gets or sets the current datacontext as a vehicle.
+        ///   Gets or sets the current datacontext as a vehicle.
         /// </summary>
         public Vehicle Vehicle {
-            get { return (Vehicle)DataContext; }
+            get { return (Vehicle) DataContext; }
             set { DataContext = value; }
         }
 
@@ -85,7 +85,7 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             if (_isNewPageInstance && Vehicle == null) {
-                var vehicle = (Vehicle)State[VehicleStateKey];
+                var vehicle = (Vehicle) State[VehicleStateKey];
                 VehicleSelectionSource.Selection = Vehicle;
                 Vehicle = vehicle;
             }
@@ -124,7 +124,7 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             SmartDispatcher.InvokeAsync(() =>
-                HandleChosenPhoto(e.OriginalFileName, e.ChosenPhoto));
+                                        HandleChosenPhoto(e.OriginalFileName, e.ChosenPhoto));
         }
 
         private async void HandleChosenPhoto(string name, Stream data) {
@@ -137,12 +137,12 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void OnNotesTextChanged(object sender, TextChangedEventArgs e) {
-            var textbox = (TextBox)sender;
+            var textbox = (TextBox) sender;
             Vehicle.Notes = textbox.Text;
         }
 
         private void OnLicencePlateTextChanged(object sender, TextChangedEventArgs e) {
-            var textbox = (TextBox)sender;
+            var textbox = (TextBox) sender;
             Vehicle.LicencePlate = textbox.Text;
         }
     }

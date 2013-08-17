@@ -18,7 +18,6 @@ using Windows.Devices.Geolocation;
 
 namespace Crystalbyte.Asphalt {
     public partial class App {
-
         /// <summary>
         ///   Gets the main context object.
         /// </summary>
@@ -103,7 +102,7 @@ namespace Crystalbyte.Asphalt {
             if (AppSettings.IsMovementDetectionEnabled) {
                 InitializeGeolocator();
             }
-        }        
+        }
 
         public static void TombstoneGeolocator() {
             Debug.WriteLine("Geolocator tombstoning ...");
@@ -128,7 +127,7 @@ namespace Crystalbyte.Asphalt {
 
         private static void ComposeApplication() {
             var config = new ContainerConfiguration()
-                .WithAssembly(typeof(App).GetTypeInfo().Assembly);
+                .WithAssembly(typeof (App).GetTypeInfo().Assembly);
 
             Composition = config.CreateContainer();
         }
@@ -139,10 +138,11 @@ namespace Crystalbyte.Asphalt {
 
         public static void InitializeGeolocator() {
             Debug.WriteLine("Geolocator initializing ...");
-            Geolocator = new Geolocator {
-                DesiredAccuracy = PositionAccuracy.High,
-                ReportInterval = AppSettings.ReportInterval
-            };
+            Geolocator = new Geolocator
+                             {
+                                 DesiredAccuracy = PositionAccuracy.High,
+                                 ReportInterval = AppSettings.ReportInterval
+                             };
             Geolocator.PositionChanged += OnGeolocatorPositionChanged;
             Debug.WriteLine("Geolocator initialized.");
         }
@@ -292,7 +292,7 @@ namespace Crystalbyte.Asphalt {
                 //
                 // If a compiler error is hit then ResourceFlowDirection is missing from
                 // the resource file.
-                var flow = (FlowDirection)Enum.Parse(typeof(FlowDirection), AppResources.ResourceFlowDirection);
+                var flow = (FlowDirection) Enum.Parse(typeof (FlowDirection), AppResources.ResourceFlowDirection);
                 RootFrame.FlowDirection = flow;
             }
             catch {

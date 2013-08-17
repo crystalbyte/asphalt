@@ -1,20 +1,14 @@
 ﻿<phone:PhoneApplicationPage x:Class="Crystalbyte.Asphalt.Pages.SettingsPage"
                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                            xmlns:contexts="clr-namespace:Crystalbyte.Asphalt.Contexts"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:contexts="clr-namespace:Crystalbyte.Asphalt.Contexts"
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
                             xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-                            FontFamily="{StaticResource PhoneFontFamilyNormal}"
-                            FontSize="{StaticResource PhoneFontSizeNormal}"
-                            Foreground="{StaticResource PhoneForegroundBrush}"
-                            Orientation="Portrait"
-                            SupportedOrientations="Portrait"
-                            d:DataContext="{d:DesignInstance Type=contexts:AppSettings}"
-                            shell:SystemTray.IsVisible="True"
-                            mc:Ignorable="d">
+                            FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}"
+                            Foreground="{StaticResource PhoneForegroundBrush}" Orientation="Portrait" SupportedOrientations="Portrait"
+                            d:DataContext="{d:DesignInstance Type=contexts:AppSettings}" shell:SystemTray.IsVisible="True" mc:Ignorable="d">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -49,17 +43,15 @@
 
         <!--  TitlePanel contains the name of the application and page title  -->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding LocalizedResources.ApplicationTitleCapital, Source={StaticResource LocalizedStrings}}" />
-            <TextBlock Margin="9,-7,0,0"
-                       Style="{StaticResource PhoneTextTitle1Style}"
+            <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                       Text="{Binding LocalizedResources.ApplicationTitleCapital, Source={StaticResource LocalizedStrings}}" />
+            <TextBlock Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"
                        Text="{Binding LocalizedResources.SettingsPageTitle,
                                       Source={StaticResource LocalizedStrings}}" />
         </StackPanel>
 
         <!--  ContentPanel - place additional content here  -->
-        <Grid x:Name="ContentPanel"
-              Grid.Row="1"
-              Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <ScrollViewer>
                 <StackPanel>
                     <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
@@ -82,7 +74,8 @@
                                               Source={StaticResource LocalizedStrings}}"
                                TextWrapping="Wrap" />
                     <Grid>
-                        <toolkit:ListPicker ItemsSource="{Binding UnitOfLengthItemsSource}" SelectedItem="{Binding UnitOfLength, Mode=TwoWay}">
+                        <toolkit:ListPicker ItemsSource="{Binding UnitOfLengthItemsSource}"
+                                            SelectedItem="{Binding UnitOfLength, Mode=TwoWay}">
                             <toolkit:ListPicker.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" />
@@ -96,126 +89,95 @@
                         </toolkit:ListPicker>
                     </Grid>
 
-                    <TextBlock Margin="12,18,0,0"
-                               Foreground="Red"
-                               Style="{StaticResource PhoneTextLargeStyle}"
+                    <TextBlock Margin="12,18,0,0" Foreground="Red" Style="{StaticResource PhoneTextLargeStyle}"
                                Text="{Binding LocalizedResources.DangerZoneText,
                                               Source={StaticResource LocalizedStrings}}" />
-                    <TextBlock Margin="12,0,0,18"
-                               Style="{StaticResource PhoneTextNormalStyle}"
+                    <TextBlock Margin="12,0,0,18" Style="{StaticResource PhoneTextNormalStyle}"
                                Text="{Binding LocalizedResources.DoNotChangeText,
                                               Source={StaticResource LocalizedStrings}}"
                                TextWrapping="Wrap" />
 
                     <!--  recording timeout  -->
                     <Grid>
-                        <TextBlock HorizontalAlignment="Left"
-                                   Style="{StaticResource PhoneTextSmallStyle}"
+                        <TextBlock HorizontalAlignment="Left" Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding LocalizedResources.ReportIntervalLabel,
                                                   Source={StaticResource LocalizedStrings}}"
                                    TextWrapping="Wrap" />
-                        <TextBlock HorizontalAlignment="Right"
-                                   Style="{StaticResource PhoneTextSmallStyle}"
+                        <TextBlock HorizontalAlignment="Right" Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding ReportInterval,
                                                   StringFormat='{}{0} ms'}"
                                    TextWrapping="Wrap" />
                     </Grid>
-                    <Slider IsEnabled="{Binding IsEditing,
-                                                Mode=OneWay}"
-                            LargeChange="1000"
-                            Maximum="10000"
-                            Minimum="1000"
-                            SmallChange="100"
-                            Value="{Binding ReportInterval,
+                    <Slider
+                        IsEnabled="{Binding IsEditing,
+                                                Mode=OneWay}" LargeChange="1000"
+                        Maximum="10000" Minimum="1000" SmallChange="100"
+                        Value="{Binding ReportInterval,
                                             Mode=TwoWay}" />
 
                     <!--  speed exceedances  -->
                     <Grid>
-                        <TextBlock HorizontalAlignment="Left"
-                                   Style="{StaticResource PhoneTextSmallStyle}"
+                        <TextBlock HorizontalAlignment="Left" Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding LocalizedResources.SpeedExceedancesLabel,
                                                   Source={StaticResource LocalizedStrings}}"
                                    TextWrapping="Wrap" />
-                        <TextBlock HorizontalAlignment="Right"
-                                   Style="{StaticResource PhoneTextSmallStyle}"
+                        <TextBlock HorizontalAlignment="Right" Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding SpeedExceedances,
                                                   StringFormat='{}{0}'}"
                                    TextWrapping="Wrap" />
                     </Grid>
 
-                    <Slider IsEnabled="{Binding IsEditing}"
-                            LargeChange="1"
-                            Maximum="3"
-                            Minimum="1"
-                            SmallChange="0"
+                    <Slider IsEnabled="{Binding IsEditing}" LargeChange="1" Maximum="3" Minimum="1" SmallChange="0"
                             Value="{Binding SpeedExceedances,
                                             Mode=TwoWay}" />
 
 
                     <!--  required accuracy  -->
                     <Grid>
-                        <TextBlock HorizontalAlignment="Left"
-                                   Style="{StaticResource PhoneTextSmallStyle}"
+                        <TextBlock HorizontalAlignment="Left" Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding LocalizedResources.RequiredAccuracyLabel,
                                                   Source={StaticResource LocalizedStrings}}"
                                    TextWrapping="Wrap" />
-                        <TextBlock HorizontalAlignment="Right"
-                                   Style="{StaticResource PhoneTextSmallStyle}"
+                        <TextBlock HorizontalAlignment="Right" Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding RequiredAccuracy,
                                                   Converter={StaticResource MathRoundDoubleConverter},
                                                   StringFormat='{}{0} m'}"
                                    TextWrapping="Wrap" />
                     </Grid>
-                    <Slider IsEnabled="{Binding IsEditing}"
-                            LargeChange="5.0"
-                            Maximum="100.0"
-                            Minimum="5.0"
-                            SmallChange="1.0"
-                            Value="{Binding RequiredAccuracy,
+                    <Slider IsEnabled="{Binding IsEditing}" LargeChange="5.0" Maximum="100.0" Minimum="5.0"
+                            SmallChange="1.0" Value="{Binding RequiredAccuracy,
                                             Mode=TwoWay}" />
 
                     <!--  speed treshold  -->
                     <Grid>
-                        <TextBlock HorizontalAlignment="Left"
-                                   Style="{StaticResource PhoneTextSmallStyle}"
+                        <TextBlock HorizontalAlignment="Left" Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding LocalizedResources.SpeedThresholdLabel,
                                                   Source={StaticResource LocalizedStrings}}"
                                    TextWrapping="Wrap" />
-                        <TextBlock HorizontalAlignment="Right"
-                                   Style="{StaticResource PhoneTextSmallStyle}"
+                        <TextBlock HorizontalAlignment="Right" Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding SpeedThreshold,
                                                   Converter={StaticResource SpeedFormatter},
                                                   ConverterParameter=ms}"
                                    TextWrapping="Wrap" />
                     </Grid>
-                    <Slider IsEnabled="{Binding IsEditing}"
-                            LargeChange="0.1"
-                            Maximum="10.0"
-                            Minimum="6.0"
-                            SmallChange="1.0"
-                            Value="{Binding SpeedThreshold,
+                    <Slider IsEnabled="{Binding IsEditing}" LargeChange="0.1" Maximum="10.0" Minimum="6.0"
+                            SmallChange="1.0" Value="{Binding SpeedThreshold,
                                             Mode=TwoWay}" />
 
                     <!--  recording timeout  -->
                     <Grid>
-                        <TextBlock HorizontalAlignment="Left"
-                                   Style="{StaticResource PhoneTextSmallStyle}"
+                        <TextBlock HorizontalAlignment="Left" Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding LocalizedResources.RecordingTimeoutLabel,
                                                   Source={StaticResource LocalizedStrings}}"
                                    TextWrapping="Wrap" />
-                        <TextBlock HorizontalAlignment="Right"
-                                   Style="{StaticResource PhoneTextSmallStyle}"
+                        <TextBlock HorizontalAlignment="Right" Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding RecordingTimeout,
                                                   Converter={StaticResource MathRoundDoubleConverter},
                                                   StringFormat='{}{0} min'}"
                                    TextWrapping="Wrap" />
                     </Grid>
-                    <Slider IsEnabled="{Binding IsEditing}"
-                            LargeChange="1.0"
-                            Maximum="8.0"
-                            Minimum="1.0"
-                            SmallChange="0.1"
-                            Value="{Binding RecordingTimeout,
+                    <Slider IsEnabled="{Binding IsEditing}" LargeChange="1.0" Maximum="8.0" Minimum="1.0"
+                            SmallChange="0.1" Value="{Binding RecordingTimeout,
                                             Mode=TwoWay}" />
                 </StackPanel>
             </ScrollViewer>

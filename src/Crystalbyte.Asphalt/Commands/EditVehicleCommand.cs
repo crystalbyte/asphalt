@@ -1,26 +1,30 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.Composition;
 using System.Linq;
 using Crystalbyte.Asphalt.Contexts;
-using Microsoft.Phone.Shell;
-using Crystalbyte.Asphalt.Resources;
 using Crystalbyte.Asphalt.Pages;
+using Crystalbyte.Asphalt.Resources;
+using Microsoft.Phone.Shell;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof(IAppBarButtonCommand))]
+    [Export(typeof (IAppBarButtonCommand))]
     public sealed class EditVehicleCommand : IAppBarButtonCommand {
-
         public EditVehicleCommand() {
-            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Edit.png", UriKind.Relative)) {
-                Text = AppResources.EditVehicleButtonText
-            };
+            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Edit.png", UriKind.Relative))
+                         {
+                             Text = AppResources.EditVehicleButtonText
+                         };
             Button.Click += (sender, e) => Execute(null);
         }
 
         [Import]
         public Navigator Navigator { get; set; }
-        
+
         [Import]
         public AppContext AppContext { get; set; }
 
@@ -29,7 +33,7 @@ namespace Crystalbyte.Asphalt.Commands {
 
         [OnImportsSatisfied]
         public void OnImportsSatisfied() {
-            AppContext.Vehicles.CollectionChanged += 
+            AppContext.Vehicles.CollectionChanged +=
                 (sender, e) => OnCanExecuteChanged(EventArgs.Empty);
         }
 
@@ -56,16 +60,14 @@ namespace Crystalbyte.Asphalt.Commands {
 
         #region Implementation of IAppBarButtonCommand
 
-        public ApplicationBarIconButton Button {
-            get; private set;
-        }
+        public ApplicationBarIconButton Button { get; private set; }
 
         public bool IsApplicable {
-            get { 
+            get {
                 var page = Navigator.GetCurrentPage<LandingPage>();
                 if (page != null) {
-                    return page.PanoramaIndex == 2 
-                        && AppContext.Vehicles.Any(x => x.IsSelected);
+                    return page.PanoramaIndex == 2
+                           && AppContext.Vehicles.Any(x => x.IsSelected);
                 }
 
                 return false;

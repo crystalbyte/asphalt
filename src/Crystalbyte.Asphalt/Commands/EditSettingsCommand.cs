@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Crystalbyte.Asphalt.Commands;
-using Crystalbyte.Asphalt.Contexts;
-using Microsoft.Phone.Shell;
+﻿#region Using directives
+
+using System;
 using System.Composition;
-using Crystalbyte.Asphalt.Resources;
+using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Pages;
+using Crystalbyte.Asphalt.Resources;
+using Microsoft.Phone.Shell;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof(IAppBarButtonCommand))]
+    [Export(typeof (IAppBarButtonCommand))]
     public sealed class EditSettingsCommand : IAppBarButtonCommand {
-
         public EditSettingsCommand() {
-            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Edit.png", UriKind.Relative)) {
-                Text = AppResources.EditSettingsButtonText
-            };
+            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Edit.png", UriKind.Relative))
+                         {
+                             Text = AppResources.EditSettingsButtonText
+                         };
             Button.Click += (sender, e) => Execute(null);
         }
 
@@ -51,6 +50,7 @@ namespace Crystalbyte.Asphalt.Commands {
         #region Implementation of IAppBarButtonCommand
 
         public ApplicationBarIconButton Button { get; private set; }
+
         public bool IsApplicable {
             get {
                 var page = Navigator.GetCurrentPage<SettingsPage>();

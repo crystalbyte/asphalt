@@ -1,15 +1,14 @@
-﻿using Crystalbyte.Asphalt.Contexts;
+﻿#region Using directives
+
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
+using Crystalbyte.Asphalt.Contexts;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Converters {
     public sealed class MileageUnitConverter : IValueConverter {
-
         private const double MileRatio = 0.621371192;
 
         public AppSettings AppSettings {
@@ -23,8 +22,8 @@ namespace Crystalbyte.Asphalt.Converters {
                 return value;
             }
 
-            var v = (double)value;
-            return Math.Round(v * MileRatio, 1);
+            var v = (double) value;
+            return Math.Round(v*MileRatio, 1);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -32,8 +31,8 @@ namespace Crystalbyte.Asphalt.Converters {
                 return value;
             }
 
-            var v = (double)value;
-            return Math.Round(v / MileRatio, 1);
+            var v = (double) value;
+            return Math.Round(v/MileRatio, 1);
         }
 
         #endregion

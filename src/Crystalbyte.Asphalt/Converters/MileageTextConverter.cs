@@ -1,12 +1,15 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.Globalization;
 using System.Windows.Data;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Resources;
 
+#endregion
+
 namespace Crystalbyte.Asphalt.Converters {
     public sealed class MileageTextConverter : IValueConverter {
-
         public AppSettings AppSettings {
             get { return App.Composition.GetExport<AppSettings>(); }
         }
@@ -14,6 +17,9 @@ namespace Crystalbyte.Asphalt.Converters {
         #region Implementation of IValueConverter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+            if (value == null) {
+                return string.Empty;
+            }
             return AppSettings.UnitOfLength == UnitOfLength.Mile ? value : AppResources.KilometreLabel;
         }
 

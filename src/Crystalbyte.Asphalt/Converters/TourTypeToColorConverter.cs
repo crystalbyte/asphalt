@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Using directives
+
+using System;
+using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
+#endregion
+
 namespace Crystalbyte.Asphalt.Converters {
     public sealed class TourTypeToColorConverter : IValueConverter {
-
         #region IValueConverter implementation
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             var t = (TourType) value;
             switch (t) {
                 case TourType.Business:
@@ -25,7 +25,7 @@ namespace Crystalbyte.Asphalt.Converters {
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
             throw new NotSupportedException();
         }
 

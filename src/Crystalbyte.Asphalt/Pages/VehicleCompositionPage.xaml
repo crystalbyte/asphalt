@@ -1,21 +1,15 @@
 ﻿<phone:PhoneApplicationPage x:Class="Crystalbyte.Asphalt.Pages.VehicleCompositionPage"
                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:local="clr-namespace:Crystalbyte.Asphalt.Contexts"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
                             xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-                            xmlns:ui="clr-namespace:Crystalbyte.Asphalt.UI"
-                            FontFamily="{StaticResource PhoneFontFamilyNormal}"
-                            FontSize="{StaticResource PhoneFontSizeNormal}"
-                            Foreground="{StaticResource PhoneForegroundBrush}"
-                            Orientation="Portrait"
-                            SupportedOrientations="Portrait"
-                            d:DataContext="{d:DesignInstance local:Vehicle}"
-                            shell:SystemTray.IsVisible="True"
-                            mc:Ignorable="d">
+                            xmlns:ui="clr-namespace:Crystalbyte.Asphalt.UI" FontFamily="{StaticResource PhoneFontFamilyNormal}"
+                            FontSize="{StaticResource PhoneFontSizeNormal}" Foreground="{StaticResource PhoneForegroundBrush}"
+                            Orientation="Portrait" SupportedOrientations="Portrait" d:DataContext="{d:DesignInstance local:Vehicle}"
+                            shell:SystemTray.IsVisible="True" mc:Ignorable="d">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -51,58 +45,44 @@
 
         <!--  TitlePanel contains the name of the application and page title  -->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding LocalizedResources.ApplicationTitleCapital, Source={StaticResource LocalizedStrings}}" />
-            <TextBlock Margin="9,-7,0,0"
-                       Style="{StaticResource PhoneTextTitle1Style}"
-                       Text="{Binding PageHeaderText}" />
+            <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                       Text="{Binding LocalizedResources.ApplicationTitleCapital, Source={StaticResource LocalizedStrings}}" />
+            <TextBlock Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" Text="{Binding PageHeaderText}" />
         </StackPanel>
 
         <!--  ContentPanel - place additional content here  -->
         <ScrollViewer Grid.Row="1">
             <Grid x:Name="ContentPanel" Margin="12,0">
                 <ui:DockPanel>
-                    <StackPanel Margin="12,0,0,20"
-                                HorizontalAlignment="Left"
-                                Orientation="Horizontal"
-                                Tap="OnStackPanelTap"
-                                ui:DockPanel.Dock="Top">
-                        <Image Width="200"
-                               Height="200"
-                               Source="{Binding Image}"
+                    <StackPanel Margin="12,0,0,20" HorizontalAlignment="Left" Orientation="Horizontal"
+                                Tap="OnStackPanelTap" ui:DockPanel.Dock="Top">
+                        <Image Width="200" Height="200" Source="{Binding Image}"
                                Visibility="{Binding HasImage,
                                                     Converter={StaticResource BooleanToVisibilityConverter}}" />
-                        <Grid Width="200"
-                              Height="200"
-                              Background="{StaticResource PhoneAccentBrush}"
+                        <Grid Width="200" Height="200" Background="{StaticResource PhoneAccentBrush}"
                               Visibility="{Binding HasImage,
                                                    Converter={StaticResource BooleanToVisibilityConverter},
                                                    ConverterParameter=!}">
-                            <TextBlock Margin="10"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Bottom"
-                                       FontSize="{StaticResource PhoneFontSizeExtraLarge}"
-                                       Style="{StaticResource PhoneTextNormalStyle}"
+                            <TextBlock Margin="10" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                       FontSize="{StaticResource PhoneFontSizeExtraLarge}" Style="{StaticResource PhoneTextNormalStyle}"
                                        Text="{Binding LocalizedResources.AddVehiclePhotoText,
                                                       Source={StaticResource LocalizedStrings}}"
                                        TextWrapping="Wrap" />
                         </Grid>
                     </StackPanel>
-                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="Licence Plate"
+                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="Licence Plate"
                                ui:DockPanel.Dock="Top" />
                     <TextBox MaxLength="32"
                              Text="{Binding LicencePlate,
                                             Mode=TwoWay,
                                             ValidatesOnNotifyDataErrors=True,
                                             NotifyOnValidationError=True}"
-                             TextChanged="OnLicencePlateTextChanged"
-                             ui:DockPanel.Dock="Top" />
+                             TextChanged="OnLicencePlateTextChanged" ui:DockPanel.Dock="Top" />
                     <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
                                Text="{Binding LocalizedResources.MileageLabel, Converter={StaticResource MileageTextConverter},
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
-                    <TextBox InputScope="Number"
-                             MaxLength="10"
+                    <TextBox InputScope="Number" MaxLength="10"
                              Text="{Binding Mileage,
                                             Converter={StaticResource MileageUnitConverter},
                                             Mode=TwoWay,
@@ -110,16 +90,10 @@
                                             NotifyOnValidationError=True}"
                              ui:DockPanel.Dock="Top" />
 
-                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
-                               Text="Notes"
-                               ui:DockPanel.Dock="Top" />
-                    <TextBox Grid.Row="1"
-                             Height="300"
-                             VerticalAlignment="Stretch"
-                             AcceptsReturn="True"
+                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="Notes" ui:DockPanel.Dock="Top" />
+                    <TextBox Grid.Row="1" Height="300" VerticalAlignment="Stretch" AcceptsReturn="True"
                              Text="{Binding Notes,
-                                            Mode=TwoWay}"
-                             TextChanged="OnNotesTextChanged"
+                                            Mode=TwoWay}" TextChanged="OnNotesTextChanged"
                              ui:DockPanel.Dock="Top" />
                 </ui:DockPanel>
             </Grid>

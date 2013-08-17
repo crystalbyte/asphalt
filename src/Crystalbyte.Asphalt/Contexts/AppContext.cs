@@ -6,8 +6,8 @@ using System.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Commands;
+using Crystalbyte.Asphalt.Data;
 
 #endregion
 
@@ -77,7 +77,7 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         private void CheckSetupState() {
             var isCompleted = Vehicles.Any(x => x.IsSelected)
-                    && Drivers.Any(x => x.IsSelected);
+                              && Drivers.Any(x => x.IsSelected);
 
             SetupState = isCompleted ? SetupState.Completed : SetupState.NotCompleted;
         }
@@ -107,7 +107,7 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             // Attach monitoring event handler
             AppSettings.SettingsChanged += (sender, e) =>
-                NotifyIsMovementDetectionEnabledChanged();
+                                           NotifyIsMovementDetectionEnabledChanged();
 
             // Trigger initial update
             NotifyIsMovementDetectionEnabledChanged();

@@ -1,7 +1,6 @@
 ﻿#region Using directives
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -38,7 +37,7 @@ namespace Crystalbyte.Asphalt {
                 RaisePropertyChanging(() => Selection);
                 Selections.Clear();
                 if (value != null) {
-                    Selections.Add(value);    
+                    Selections.Add(value);
                 }
                 RaisePropertyChanged(() => Selection);
             }

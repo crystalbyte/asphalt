@@ -1,6 +1,7 @@
 ﻿#region Using directives
 
 using System;
+using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
 
 #endregion
@@ -22,13 +23,13 @@ namespace Crystalbyte.Asphalt.Pages {
             set { DataContext = value; }
         }
 
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
             CalculateEntryChecksum();
             this.UpdateApplicationBar();
         }
 
-        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e) {
+        protected override void OnNavigatedFrom(NavigationEventArgs e) {
             base.OnNavigatedFrom(e);
 
             CalculateExitChecksum();
@@ -40,13 +41,13 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void CalculateEntryChecksum() {
-            _entryChecksum = AppSettings.ReportInterval + AppSettings.RecordingTimeout * 2 + AppSettings.SpeedThreshold * 3
-                + AppSettings.RequiredAccuracy * 4 + AppSettings.SpeedExceedances * 5;
+            _entryChecksum = AppSettings.ReportInterval + AppSettings.RecordingTimeout*2 + AppSettings.SpeedThreshold*3
+                             + AppSettings.RequiredAccuracy*4 + AppSettings.SpeedExceedances*5;
         }
 
         private void CalculateExitChecksum() {
-            _exitChecksum = AppSettings.ReportInterval + AppSettings.RecordingTimeout * 2 + AppSettings.SpeedThreshold * 3
-                + AppSettings.RequiredAccuracy * 4 + AppSettings.SpeedExceedances * 5;
+            _exitChecksum = AppSettings.ReportInterval + AppSettings.RecordingTimeout*2 + AppSettings.SpeedThreshold*3
+                            + AppSettings.RequiredAccuracy*4 + AppSettings.SpeedExceedances*5;
         }
     }
 }

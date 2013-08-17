@@ -12,7 +12,6 @@ using Crystalbyte.Asphalt.Resources;
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
     public sealed class StopTrackingCommand : ICommand {
-
         [Import]
         public LocationTracker LocationTracker { get; set; }
 

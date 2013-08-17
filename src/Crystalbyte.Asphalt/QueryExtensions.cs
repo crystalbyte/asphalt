@@ -18,15 +18,15 @@ namespace Crystalbyte.Asphalt {
             EventHandler<QueryCompletedEventArgs<T>> handler = null;
 
             handler = (s, e) => {
-                query.QueryCompleted -= handler;
+                          query.QueryCompleted -= handler;
 
-                if (e.Cancelled)
-                    taskSource.SetCanceled();
-                else if (e.Error != null)
-                    taskSource.SetException(e.Error);
-                else
-                    taskSource.SetResult(e.Result);
-            };
+                          if (e.Cancelled)
+                              taskSource.SetCanceled();
+                          else if (e.Error != null)
+                              taskSource.SetException(e.Error);
+                          else
+                              taskSource.SetResult(e.Result);
+                      };
 
             query.QueryCompleted += handler;
 

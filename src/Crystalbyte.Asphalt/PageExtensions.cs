@@ -28,9 +28,9 @@ namespace Crystalbyte.Asphalt {
             page.ApplicationBar.IsVisible = page.ApplicationBar.MenuItems.Count > 0 ||
                                             page.ApplicationBar.Buttons.Count > 0;
 
-            page.ApplicationBar.Mode = page.ApplicationBar.Buttons.Count > 0 
-                ? ApplicationBarMode.Default 
-                : ApplicationBarMode.Minimized;
+            page.ApplicationBar.Mode = page.ApplicationBar.Buttons.Count > 0
+                                           ? ApplicationBarMode.Default
+                                           : ApplicationBarMode.Minimized;
         }
 
         private static readonly SolidColorBrush ErrorBackgroundBrush =

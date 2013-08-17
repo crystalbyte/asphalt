@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region Using directives
+
+using System;
+using System.Composition;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Pages;
 using Crystalbyte.Asphalt.Resources;
 using Microsoft.Phone.Shell;
-using System.Composition;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof(IAppBarButtonCommand))]
+    [Export(typeof (IAppBarButtonCommand))]
     public sealed class CommitSettingsCommand : IAppBarButtonCommand {
-
         public CommitSettingsCommand() {
-            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Check.png", UriKind.Relative)) {
-                Text = AppResources.CommitSettingsButtonText
-            };
+            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Check.png", UriKind.Relative))
+                         {
+                             Text = AppResources.CommitSettingsButtonText
+                         };
             Button.Click += (sender, e) => Execute(null);
         }
 
@@ -50,6 +50,7 @@ namespace Crystalbyte.Asphalt.Commands {
         #region Implementation of IAppBarButtonCommand
 
         public ApplicationBarIconButton Button { get; private set; }
+
         public bool IsApplicable {
             get {
                 var page = Navigator.GetCurrentPage<SettingsPage>();

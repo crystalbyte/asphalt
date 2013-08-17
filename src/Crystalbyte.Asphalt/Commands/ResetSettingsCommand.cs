@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Phone.Shell;
+﻿#region Using directives
+
+using System;
 using System.Composition;
-using Crystalbyte.Asphalt.Resources;
-using Crystalbyte.Asphalt.Pages;
 using Crystalbyte.Asphalt.Contexts;
+using Crystalbyte.Asphalt.Pages;
+using Crystalbyte.Asphalt.Resources;
+using Microsoft.Phone.Shell;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof(IAppBarMenuCommand))]
+    [Export(typeof (IAppBarMenuCommand))]
     public sealed class ResetSettingsCommand : IAppBarMenuCommand {
-
         [Import]
         public Navigator Navigator { get; set; }
 
@@ -51,9 +50,7 @@ namespace Crystalbyte.Asphalt.Commands {
 
         #region Implementation of IAppBarMenuCommand
 
-        public ApplicationBarMenuItem MenuItem {
-            get; private set;
-        }
+        public ApplicationBarMenuItem MenuItem { get; private set; }
 
         public bool IsApplicable {
             get {

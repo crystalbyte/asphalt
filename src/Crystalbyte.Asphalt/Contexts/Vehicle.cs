@@ -4,20 +4,17 @@ using System;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
-using System.Runtime.Serialization;
-using System.Windows.Media;
-using System.Windows.Input;
 
 #endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
-
     [DataContract, Table]
     public sealed class Vehicle : BindingModelBase<Vehicle> {
-
         private int _id;
         private double _mileage;
         private string _licencePlate;
@@ -62,15 +59,15 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
 
             SmartDispatcher.InvokeAsync(() => {
-                var image = new BitmapImage();
-                image.SetSource(stream);
-                Image = image;
-            });
+                                            var image = new BitmapImage();
+                                            image.SetSource(stream);
+                                            Image = image;
+                                        });
         }
 
         public void CommitChanges() {
             Channels.Database.Enqueue(() =>
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+                                      LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
         }
 
         private void Construct() {
@@ -97,9 +94,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public ImageSource Image {
-            get {
-                return _image;
-            }
+            get { return _image; }
             set {
                 if (_image == value) {
                     return;
@@ -144,7 +139,8 @@ namespace Crystalbyte.Asphalt.Contexts {
 
                 if (string.IsNullOrWhiteSpace(value)) {
                     Image = null;
-                } else {
+                }
+                else {
                     RestoreImageFromPath();
                 }
             }
@@ -212,7 +208,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         public bool IsSelected {
             get {
                 return AppContext.Vehicles
-                    .Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this;
+                           .Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this;
             }
         }
 
@@ -221,9 +217,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public string PageHeaderText {
-            get {
-                return Id == 0 ? AppResources.AddVehiclePageTitle : LicencePlate;
-            }
+            get { return Id == 0 ? AppResources.AddVehiclePageTitle : LicencePlate; }
         }
     }
 }

@@ -17,7 +17,6 @@ using Microsoft.Phone.Maps.Services;
 #endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
-
     [DataContract, Table]
     [DebuggerDisplay("Tour, Id = {Id}")]
     public sealed class Tour : NotificationObject {
@@ -107,7 +106,8 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             var first = Positions.First();
             var startQuery =
-                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate { Latitude = first.Latitude, Longitude = first.Longitude });
+                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate
+                                                         {Latitude = first.Latitude, Longitude = first.Longitude});
             var start = await startQuery.ExecuteAsync();
 
             QueryPool.Drop(startQuery);
@@ -115,7 +115,8 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             var last = Positions.Last();
             var stopQuery =
-                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate { Latitude = last.Latitude, Longitude = last.Longitude });
+                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate
+                                                         {Latitude = last.Latitude, Longitude = last.Longitude});
             var stop = await stopQuery.ExecuteAsync();
 
             QueryPool.Drop(stopQuery);
@@ -295,10 +296,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             OnPositionsRestored(EventArgs.Empty);
         }
 
-        public ObservableCollection<Position> Positions {
-            get;
-            private set;
-        }
+        public ObservableCollection<Position> Positions { get; private set; }
 
         public ObservableCollection<Vehicle> Vehicles {
             get { return AppContext.Vehicles; }
@@ -392,7 +390,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// Gets or sets the accumulated distance of all recorded waypoints.
+        ///   Gets or sets the accumulated distance of all recorded waypoints.
         /// </summary>
         [DataMember, Column(CanBeNull = false)]
         public double Distance {
@@ -410,7 +408,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// Gets or sets the inital mileage of the car on tour start.
+        ///   Gets or sets the inital mileage of the car on tour start.
         /// </summary>
         [DataMember, Column(CanBeNull = false)]
         public double InitialMileage {
@@ -427,13 +425,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// Gets the destination street and house number.
+        ///   Gets the destination street and house number.
         /// </summary>
         public string DestinationShort {
             get {
                 return string.IsNullOrWhiteSpace(Destination)
-                    ? string.Empty
-                    : Destination.Split(',').FirstOrDefault();
+                           ? string.Empty
+                           : Destination.Split(',').FirstOrDefault();
             }
         }
 
@@ -469,24 +467,20 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public Vehicle ActiveVehicle {
-            get {
-                return App.Context.Vehicles.FirstOrDefault(x => x.Id == VehicleId);
-            }
+            get { return App.Context.Vehicles.FirstOrDefault(x => x.Id == VehicleId); }
         }
 
         public Driver ActiveDriver {
-            get {
-                return App.Context.Drivers.FirstOrDefault(x => x.Id == DriverId);
-            }
+            get { return App.Context.Drivers.FirstOrDefault(x => x.Id == DriverId); }
         }
 
         private void CommitChanges() {
             Channels.Database.Enqueue(() =>
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+                                      LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
         }
 
         public IEnumerable<TourType> TourTypeSource {
-            get { return Enum.GetValues(typeof(TourType)).OfType<TourType>(); }
+            get { return Enum.GetValues(typeof (TourType)).OfType<TourType>(); }
         }
 
         public Route CachedRoute { get; set; }

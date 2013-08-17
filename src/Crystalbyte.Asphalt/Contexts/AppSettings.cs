@@ -11,19 +11,17 @@ using System.Linq.Expressions;
 #endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
-
     [Export, Shared]
     public sealed class AppSettings : NotificationObject {
         private readonly IsolatedStorageSettings _isolatedStorage;
         private bool _isEditing;
-        
+
 
         [Import]
         public LocationTracker LocationTracker { get; set; }
 
         public AppSettings() {
             _isolatedStorage = IsolatedStorageSettings.ApplicationSettings;
-            
         }
 
         public IEnumerable<UnitOfLength> UnitOfLengthItemsSource {
@@ -61,7 +59,8 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             if (IsMovementDetectionEnabled && !App.IsGeolocatorAlive) {
                 App.InitializeGeolocator();
-            } else {
+            }
+            else {
                 // Don't interrupt active recording.
                 if (!LocationTracker.IsTracking) {
                     // Reset geolocator to new values
@@ -74,13 +73,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// Gets or sets whether the app should automatically start and stop recordings based on its heuristics.
+        ///   Gets or sets whether the app should automatically start and stop recordings based on its heuristics.
         /// </summary>
         public bool IsMovementDetectionEnabled {
             get {
                 var name = NameOf(() => IsMovementDetectionEnabled);
                 if (_isolatedStorage.Contains(name)) {
-                    return (bool)_isolatedStorage[name];
+                    return (bool) _isolatedStorage[name];
                 }
                 return true;
             }
@@ -111,7 +110,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             get {
                 var name = NameOf(() => UnitOfLength);
                 if (_isolatedStorage.Contains(name)) {
-                    return (UnitOfLength)_isolatedStorage[name];
+                    return (UnitOfLength) _isolatedStorage[name];
                 }
                 return UnitOfLength.Kilometer;
             }
@@ -141,13 +140,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// Gets or sets the amount of positive speed samples, before a new recording is invoked.
+        ///   Gets or sets the amount of positive speed samples, before a new recording is invoked.
         /// </summary>
         public int SpeedExceedances {
             get {
                 var name = NameOf(() => SpeedExceedances);
                 if (_isolatedStorage.Contains(name)) {
-                    return (int)_isolatedStorage[name];
+                    return (int) _isolatedStorage[name];
                 }
                 return 2;
             }
@@ -171,13 +170,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// Gets or sets the required accuracy of a GPS reading in meters, before it is passed to the location tracker.
+        ///   Gets or sets the required accuracy of a GPS reading in meters, before it is passed to the location tracker.
         /// </summary>
         public double RequiredAccuracy {
             get {
                 var name = NameOf(() => RequiredAccuracy);
                 if (_isolatedStorage.Contains(name)) {
-                    return (double)_isolatedStorage[name];
+                    return (double) _isolatedStorage[name];
                 }
                 return 55.0d;
             }
@@ -201,13 +200,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// Gets or sets the reporting interval for the Geolocator instance in milliseconds.
+        ///   Gets or sets the reporting interval for the Geolocator instance in milliseconds.
         /// </summary>
         public uint ReportInterval {
             get {
                 var name = NameOf(() => ReportInterval);
                 if (_isolatedStorage.Contains(name)) {
-                    return (uint)_isolatedStorage[name];
+                    return (uint) _isolatedStorage[name];
                 }
                 return 2000;
             }
@@ -231,14 +230,14 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// Gets or sets the timeout used to stop an active recording in minutes. 
-        /// Everytime the speed threshold is crossed the timer is reset.
+        ///   Gets or sets the timeout used to stop an active recording in minutes. 
+        ///   Everytime the speed threshold is crossed the timer is reset.
         /// </summary>
         public double RecordingTimeout {
             get {
                 var name = NameOf(() => RecordingTimeout);
                 if (_isolatedStorage.Contains(name)) {
-                    return (double)_isolatedStorage[name];
+                    return (double) _isolatedStorage[name];
                 }
                 return 3.5;
             }
@@ -262,13 +261,13 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         /// <summary>
-        /// Gets or sets the speed threshold to start a new recording or reset the recording timer in m/s.
+        ///   Gets or sets the speed threshold to start a new recording or reset the recording timer in m/s.
         /// </summary>
         public double SpeedThreshold {
             get {
                 var name = NameOf(() => SpeedThreshold);
                 if (_isolatedStorage.Contains(name)) {
-                    return (double)_isolatedStorage[name];
+                    return (double) _isolatedStorage[name];
                 }
                 return 7.22; // (26 km/h)
             }

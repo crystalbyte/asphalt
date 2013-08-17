@@ -1,6 +1,5 @@
 ﻿#region Using directives
 
-using Crystalbyte.Asphalt.Resources;
 using System;
 using System.Composition;
 using System.Diagnostics;
@@ -9,12 +8,12 @@ using System.IO.IsolatedStorage;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Crystalbyte.Asphalt.Resources;
 using Windows.Storage;
 
 #endregion
 
 namespace Crystalbyte.Asphalt.Data {
-
     [Export, Shared]
     public sealed class LocalStorage {
         private const string ImagePath = "Images";
@@ -25,7 +24,6 @@ namespace Crystalbyte.Asphalt.Data {
         public AsphaltDataContext DataContext { get; private set; }
 
         public async Task DeleteImageAsync(string name) {
-
             try {
                 var local = ApplicationData.Current.LocalFolder;
                 var imageFolder = await local.GetFolderAsync(ImagePath);
@@ -68,7 +66,6 @@ namespace Crystalbyte.Asphalt.Data {
                 var caption = AppResources.ErrorStoringImageCaption;
                 MessageBox.Show(ex.ToString(), caption, MessageBoxButton.OK);
             }
-            
         }
 
         public async Task<Stream> GetImageStreamAsync(string name) {
@@ -97,7 +94,7 @@ namespace Crystalbyte.Asphalt.Data {
         }
 
         private async Task InitializeStorage() {
-            var connectionString = (string)Application.Current.Resources["DefaultConnectionString"];
+            var connectionString = (string) Application.Current.Resources["DefaultConnectionString"];
             await IntializeDatabaseAsync(connectionString);
 
             var local = ApplicationData.Current.LocalFolder;
@@ -106,13 +103,13 @@ namespace Crystalbyte.Asphalt.Data {
 
         private Task IntializeDatabaseAsync(string connectionString) {
             return Channels.Database.Enqueue(() => {
-                Debug.WriteLine("ThreadId: {0}", Thread.CurrentThread.ManagedThreadId);
+                                                 Debug.WriteLine("ThreadId: {0}", Thread.CurrentThread.ManagedThreadId);
 
-                DataContext = new AsphaltDataContext(connectionString);
-                if (!DataContext.DatabaseExists()) {
-                    DataContext.CreateDatabase();
-                }
-            });
+                                                 DataContext = new AsphaltDataContext(connectionString);
+                                                 if (!DataContext.DatabaseExists()) {
+                                                     DataContext.CreateDatabase();
+                                                 }
+                                             });
         }
     }
 }

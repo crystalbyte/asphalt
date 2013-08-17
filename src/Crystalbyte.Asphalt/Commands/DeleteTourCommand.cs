@@ -1,4 +1,7 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
+using System.Composition;
 using System.Data.Linq;
 using System.Diagnostics;
 using System.Linq;
@@ -6,15 +9,15 @@ using System.Windows;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Pages;
-using Microsoft.Phone.Shell;
 using Crystalbyte.Asphalt.Resources;
-using System.Composition;
+using Microsoft.Phone.Shell;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof(IAppBarMenuCommand))]
+    [Export(typeof (IAppBarMenuCommand))]
     public sealed class DeleteTourCommand : IAppBarMenuCommand {
-
         [Import]
         public AppContext AppContext { get; set; }
 
@@ -50,14 +53,10 @@ namespace Crystalbyte.Asphalt.Commands {
 
         #region IAppBarMenuCommand implementation
 
-        public ApplicationBarMenuItem MenuItem {
-            get;
-            private set;
-        }
+        public ApplicationBarMenuItem MenuItem { get; private set; }
 
         public bool IsApplicable {
             get {
-
                 // Don't display delete button if there is nothing to delete.
                 if (AppContext.IsDataLoaded && AppContext.Tours.Count == 0) {
                     return false;
@@ -109,9 +108,9 @@ namespace Crystalbyte.Asphalt.Commands {
             var tours = TourSelectionSource.Selections;
 
             await Channels.Database.Enqueue(() => {
-                LocalStorage.DataContext.Tours.DeleteAllOnSubmit(tours);
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-            });
+                                                LocalStorage.DataContext.Tours.DeleteAllOnSubmit(tours);
+                                                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+                                            });
 
             OnDeletionCompleted(EventArgs.Empty);
 
@@ -123,7 +122,8 @@ namespace Crystalbyte.Asphalt.Commands {
 
             if (Navigator.Frame.CanGoBack) {
                 Navigator.Frame.GoBack();
-            } else {
+            }
+            else {
                 Navigator.Navigate<LandingPage>();
             }
         }

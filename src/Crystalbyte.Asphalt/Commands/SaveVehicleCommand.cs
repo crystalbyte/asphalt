@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Linq;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
-using Crystalbyte.Asphalt.Pages;
-using Microsoft.Phone.Shell;
+﻿#region Using directives
+
+using System;
 using System.Composition;
+using System.Data.Linq;
 using Crystalbyte.Asphalt.Contexts;
-using Crystalbyte.Asphalt.Resources;
 using Crystalbyte.Asphalt.Data;
-using System.Windows;
+using Crystalbyte.Asphalt.Pages;
+using Crystalbyte.Asphalt.Resources;
+using Microsoft.Phone.Shell;
+
+#endregion
 
 namespace Crystalbyte.Asphalt.Commands {
-
     [Export, Shared]
-    [Export(typeof(IAppBarButtonCommand))]
+    [Export(typeof (IAppBarButtonCommand))]
     public sealed class SaveVehicleCommand : IAppBarButtonCommand {
-
         public SaveVehicleCommand() {
-            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Save.png", UriKind.Relative)) {
-                Text = AppResources.SaveVehicleButtonText
-            };
+            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Save.png", UriKind.Relative))
+                         {
+                             Text = AppResources.SaveVehicleButtonText
+                         };
             Button.Click += (sender, e) => Execute(null);
         }
 
@@ -60,17 +57,18 @@ namespace Crystalbyte.Asphalt.Commands {
             var id = vehicle.Id;
 
             await Channels.Database.Enqueue(() => {
-                if (id == 0) {
-                    LocalStorage.DataContext.Vehicles.InsertOnSubmit(vehicle);
-                }
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-            });
+                                                if (id == 0) {
+                                                    LocalStorage.DataContext.Vehicles.InsertOnSubmit(vehicle);
+                                                }
+                                                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+                                            });
 
             OnVehicleSaved(EventArgs.Empty);
 
             if (Navigator.Frame.CanGoBack) {
                 Navigator.Frame.GoBack();
-            } else {
+            }
+            else {
                 Navigator.Navigate<LandingPage>();
             }
         }
@@ -87,10 +85,7 @@ namespace Crystalbyte.Asphalt.Commands {
 
         #region Implementation of IAppBarButtonCommand
 
-        public ApplicationBarIconButton Button {
-            get;
-            private set;
-        }
+        public ApplicationBarIconButton Button { get; private set; }
 
         public bool IsApplicable {
             get {

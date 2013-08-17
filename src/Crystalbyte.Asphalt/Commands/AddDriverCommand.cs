@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
 using System.Composition;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
@@ -6,11 +8,12 @@ using Crystalbyte.Asphalt.Pages;
 using Crystalbyte.Asphalt.Resources;
 using Microsoft.Phone.Shell;
 
+#endregion
+
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof(IAppBarButtonCommand))]
+    [Export(typeof (IAppBarButtonCommand))]
     public sealed class AddDriverCommand : IAppBarButtonCommand {
-
         [Import]
         public Navigator Navigator { get; set; }
 
@@ -24,9 +27,10 @@ namespace Crystalbyte.Asphalt.Commands {
         public DriverSelectionSource DriverSelectionSource { get; set; }
 
         public AddDriverCommand() {
-            Button = new ApplicationBarIconButton(new Uri(@"Assets/ApplicationBar/Add.png", UriKind.Relative)) {
-                Text = AppResources.AddVehicleButtonText,
-            };
+            Button = new ApplicationBarIconButton(new Uri(@"Assets/ApplicationBar/Add.png", UriKind.Relative))
+                         {
+                             Text = AppResources.AddVehicleButtonText,
+                         };
             Button.Click += (sender, e) => Execute(this);
         }
 
@@ -39,7 +43,9 @@ namespace Crystalbyte.Asphalt.Commands {
             }
         }
 
-        public int Position { get { return 0; } }
+        public int Position {
+            get { return 0; }
+        }
 
         public bool CanExecute(object parameter) {
             return true;
@@ -59,4 +65,3 @@ namespace Crystalbyte.Asphalt.Commands {
         }
     }
 }
-

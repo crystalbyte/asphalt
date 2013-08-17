@@ -162,7 +162,8 @@ namespace Crystalbyte.Asphalt.Contexts {
                 }
 
                 OnUpdated(EventArgs.Empty);
-            } else {
+            }
+            else {
                 var success = CheckTrackingStartCondition();
                 if (success) {
                     _speedExceedances += 1;
@@ -170,7 +171,8 @@ namespace Crystalbyte.Asphalt.Contexts {
                         StartTracking();
                         _speedExceedances = 0;
                     }
-                } else {
+                }
+                else {
                     _speedExceedances = 0;
                 }
             }
@@ -196,12 +198,13 @@ namespace Crystalbyte.Asphalt.Contexts {
             var driver = AppContext.Drivers.First(x => x.IsSelected);
             Debug.Assert(driver != null);
 
-            CurrentTour = new Tour {
-                StartTime = DateTime.Now,
-                VehicleId = vehicle.Id,
-                DriverId = driver.Id,
-                InitialMileage = vehicle.Mileage
-            };
+            CurrentTour = new Tour
+                              {
+                                  StartTime = DateTime.Now,
+                                  VehicleId = vehicle.Id,
+                                  DriverId = driver.Id,
+                                  InitialMileage = vehicle.Mileage
+                              };
 
             Debug.WriteLine("Submitting tour (Id = {0}) ...", CurrentTour.Id);
 
@@ -231,9 +234,9 @@ namespace Crystalbyte.Asphalt.Contexts {
             tour.UniqueId = Guid.NewGuid();
 
             await Channels.Database.Enqueue(() => {
-                LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-            });
+                                                LocalStorage.DataContext.Tours.InsertOnSubmit(CurrentTour);
+                                                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+                                            });
 
             Debug.WriteLine("Submitting positions ...");
             foreach (var pos in tour.Positions) {
@@ -241,9 +244,9 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
 
             await Channels.Database.Enqueue(() => {
-                LocalStorage.DataContext.Positions.InsertAllOnSubmit(tour.Positions);
-                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-            });
+                                                LocalStorage.DataContext.Positions.InsertAllOnSubmit(tour.Positions);
+                                                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+                                            });
 
             Debug.WriteLine("Changes successfully submitted.");
 
@@ -272,7 +275,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private async void OnCivicAddressesResolved(object sender, EventArgs e) {
-            var tour = (Tour)sender;
+            var tour = (Tour) sender;
             tour.CivicAddressesResolved -= OnCivicAddressesResolved;
             await Channels.Database.Enqueue(() =>
                                             LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
@@ -305,24 +308,25 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private void UpdateCurrentTour() {
-            CurrentTour.Positions.Add(new Position {
-                TimeStamp = CurrentPosition.Coordinate.Timestamp.Date,
-                Latitude = CurrentPosition.Coordinate.Latitude,
-                Longitude = CurrentPosition.Coordinate.Longitude
-            });
+            CurrentTour.Positions.Add(new Position
+                                          {
+                                              TimeStamp = CurrentPosition.Coordinate.Timestamp.Date,
+                                              Latitude = CurrentPosition.Coordinate.Latitude,
+                                              Longitude = CurrentPosition.Coordinate.Longitude
+                                          });
 
             if (App.IsRunningInBackground)
                 return;
 
             SmartDispatcher.InvokeAsync(() => {
-                var current = CurrentPosition;
-                if (current == null) {
-                    return;
-                }
+                                            var current = CurrentPosition;
+                                            if (current == null) {
+                                                return;
+                                            }
 
-                CurrentLatitude = CurrentPosition.Coordinate.Latitude;
-                CurrentLongitude = CurrentPosition.Coordinate.Longitude;
-            });
+                                            CurrentLatitude = CurrentPosition.Coordinate.Latitude;
+                                            CurrentLongitude = CurrentPosition.Coordinate.Longitude;
+                                        });
         }
 
         private double CalculateSpeed() {
@@ -332,23 +336,23 @@ namespace Crystalbyte.Asphalt.Contexts {
             var lLon = LastPosition.Coordinate.Longitude;
 
             Debug.WriteLine("LastPosition: {0} - {1}",
-                AngleFormatter.Convert(lLat, typeof(string), "lat", null),
-                AngleFormatter.Convert(lLon, typeof(string), "lon", null));
+                            AngleFormatter.Convert(lLat, typeof (string), "lat", null),
+                            AngleFormatter.Convert(lLon, typeof (string), "lon", null));
 
             var cLat = CurrentPosition.Coordinate.Latitude;
             var cLon = CurrentPosition.Coordinate.Longitude;
 
             Debug.WriteLine("CurrentPosition: {0} - {1}",
-                AngleFormatter.Convert(cLat, typeof(string), "lat", null),
-                AngleFormatter.Convert(cLon, typeof(string), "lon", null));
+                            AngleFormatter.Convert(cLat, typeof (string), "lat", null),
+                            AngleFormatter.Convert(cLon, typeof (string), "lon", null));
 
             Debug.WriteLine("Distance: {0} km", distance);
 
             var timeElapsed = CurrentPosition.Coordinate.Timestamp.Subtract(LastPosition.Coordinate.Timestamp);
 
-            var distanceInMeters = distance * 1000;
+            var distanceInMeters = distance*1000;
             var timeElapsedInSeconds = timeElapsed.TotalSeconds;
-            var speed = distanceInMeters / timeElapsedInSeconds;
+            var speed = distanceInMeters/timeElapsedInSeconds;
 
             Debug.WriteLine("Speed: {0} m/s", speed);
             Debug.WriteLine("******************************************");

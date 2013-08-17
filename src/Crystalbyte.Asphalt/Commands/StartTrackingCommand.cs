@@ -12,7 +12,6 @@ using Crystalbyte.Asphalt.Resources;
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
     public sealed class StartTrackingCommand : ICommand {
-
         [Import]
         public LocationTracker LocationTracker { get; set; }
 
@@ -20,8 +19,8 @@ namespace Crystalbyte.Asphalt.Commands {
         public AppContext AppContext { get; set; }
 
         public bool CanExecute(object parameter) {
-            return !LocationTracker.IsTracking 
-                && AppContext.SetupState == SetupState.Completed;
+            return !LocationTracker.IsTracking
+                   && AppContext.SetupState == SetupState.Completed;
         }
 
 
