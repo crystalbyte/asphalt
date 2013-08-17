@@ -7,7 +7,6 @@
                             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
                             xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-                            xmlns:ui="clr-namespace:Crystalbyte.Asphalt.UI"
                             FontFamily="{StaticResource PhoneFontFamilyNormal}"
                             FontSize="{StaticResource PhoneFontSizeNormal}"
                             Foreground="{StaticResource PhoneForegroundBrush}"
@@ -16,6 +15,7 @@
                             d:DataContext="{d:DesignInstance Type=contexts:AppSettings}"
                             shell:SystemTray.IsVisible="True"
                             mc:Ignorable="d">
+
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
             <toolkit:NavigationInTransition.Backward>
@@ -38,7 +38,10 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <!--  LayoutRoot is the root grid where all page content is placed  -->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/VerticalBackground.jpg" />
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -59,27 +62,27 @@
               Margin="12,0,12,0">
             <ScrollViewer>
                 <StackPanel>
-                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                                Text="{Binding LocalizedResources.MovementDetectionLabel,
                                               Source={StaticResource LocalizedStrings}}"
                                TextWrapping="Wrap" />
-                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
                                Text="{Binding LocalizedResources.MovementDetectionDescription,
                                               Source={StaticResource LocalizedStrings}}"
                                TextWrapping="Wrap" />
                     <Grid>
                         <toolkit:ToggleSwitch IsChecked="{Binding IsMovementDetectionEnabled, Mode=TwoWay}" />
                     </Grid>
-                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                                Text="{Binding LocalizedResources.UnitOfLengthSettingsText,
                                               Source={StaticResource LocalizedStrings}}"
                                TextWrapping="Wrap" />
-                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}"
                                Text="{Binding LocalizedResources.UnitOfLengthDescriptionText,
                                               Source={StaticResource LocalizedStrings}}"
                                TextWrapping="Wrap" />
                     <Grid>
-                        <toolkit:ListPicker ItemsSource="{Binding UnitOfLengthItemsSource}" SelectionChanged="OnUnitOfLengthSelectionChanged" SelectedItem="{Binding UnitOfLength, Mode=OneWay}">
+                        <toolkit:ListPicker ItemsSource="{Binding UnitOfLengthItemsSource}" SelectedItem="{Binding UnitOfLength, Mode=TwoWay}">
                             <toolkit:ListPicker.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" />

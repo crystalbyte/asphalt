@@ -371,7 +371,7 @@ Start recordings manually or let Asphalt handle it for you.</value>
     <value>Danger zone</value>
   </data>
   <data name="DoNotChangeText" xml:space="preserve">
-    <value>Do not change these values unless you know exactly what your doing. Invalid settings may decrease accuracy or impair functionality.</value>
+    <value>Do not change these values unless you know exactly what you're doing. Incorrect settings may decrease accuracy or impair functionality.</value>
   </data>
   <data name="EditSettingsButtonText" xml:space="preserve">
     <value>edit</value>
@@ -389,9 +389,18 @@ Start recordings manually or let Asphalt handle it for you.</value>
     <value>restore factory settings</value>
   </data>
   <data name="SpeedExceedancesLabel" xml:space="preserve">
-    <value>Necessary speed exceedances</value>
+    <value>Minimal required speed samples</value>
   </data>
   <data name="SpeedThresholdLabel" xml:space="preserve">
     <value>Speed exceedance threshold</value>
+  </data>
+  <data name="KilometreLabel" xml:space="preserve">
+    <value>Kilometres</value>
+  </data>
+  <data name="MileageOnStartLabel" xml:space="preserve">
+    <value>Mileage before</value>
+  </data>
+  <data name="MileageOnStopLabel" xml:space="preserve">
+    <value>Mileage after</value>
   </data>
 </root>

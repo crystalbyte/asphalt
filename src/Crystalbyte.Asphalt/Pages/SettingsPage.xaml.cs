@@ -1,8 +1,6 @@
 ﻿#region Using directives
 
 using System;
-using System.Linq;
-using System.Windows.Controls;
 using Crystalbyte.Asphalt.Contexts;
 
 #endregion
@@ -26,9 +24,7 @@ namespace Crystalbyte.Asphalt.Pages {
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
             base.OnNavigatedTo(e);
-
             CalculateEntryChecksum();
-
             this.UpdateApplicationBar();
         }
 
@@ -51,14 +47,6 @@ namespace Crystalbyte.Asphalt.Pages {
         private void CalculateExitChecksum() {
             _exitChecksum = AppSettings.ReportInterval + AppSettings.RecordingTimeout * 2 + AppSettings.SpeedThreshold * 3
                 + AppSettings.RequiredAccuracy * 4 + AppSettings.SpeedExceedances * 5;
-        }
-
-        private void OnUnitOfLengthSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (e.AddedItems.Count == 0) {
-                return;
-            }
-            var unit = e.AddedItems.Cast<UnitOfLength>().FirstOrDefault();
-            AppSettings.UnitOfLength = unit;    
         }
     }
 }

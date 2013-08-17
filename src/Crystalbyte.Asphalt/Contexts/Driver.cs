@@ -205,5 +205,11 @@ namespace Crystalbyte.Asphalt.Contexts {
                     .Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this;
             }
         }
+
+        public string PageHeaderText {
+            get {
+                return Id == 0 ? AppResources.AddDriverPageTitle : Forename;
+            }
+        }
     }
 }

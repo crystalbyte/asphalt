@@ -64,6 +64,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             } else {
                 // Don't interrupt active recording.
                 if (!LocationTracker.IsTracking) {
+                    // Reset geolocator to new values
                     App.TombstoneGeolocator();
                     if (IsMovementDetectionEnabled) {
                         App.InitializeGeolocator();
@@ -108,7 +109,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// </summary>
         public UnitOfLength UnitOfLength {
             get {
-                var name = NameOf(() => UnitOfLengthItemsSource);
+                var name = NameOf(() => UnitOfLength);
                 if (_isolatedStorage.Contains(name)) {
                     return (UnitOfLength)_isolatedStorage[name];
                 }

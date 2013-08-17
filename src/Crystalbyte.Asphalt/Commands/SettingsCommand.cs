@@ -2,8 +2,6 @@
 
 using System;
 using System.Composition;
-using System.Windows;
-using System.Windows.Controls;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Pages;
 using Crystalbyte.Asphalt.Resources;

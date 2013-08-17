@@ -41,7 +41,10 @@
 
 
     <!--  LayoutRoot is the root grid where all page content is placed  -->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/VerticalBackground.jpg" />
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -230,6 +233,28 @@
                         <Run Text=" - " />
                         <Run Text="{Binding DestinationLongitude, Converter={StaticResource AngleFormatter}}" />
                     </TextBlock>
+
+                    <!--  Initial mileage  -->
+                    <TextBlock Margin="12,12,0,0"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.MileageOnStartLabel,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               Text="{Binding InitialMileage,
+                                              Converter={StaticResource DistanceFormatter}}"
+                               ui:DockPanel.Dock="Top" />
+
+                    <!--  Final mileage  -->
+                    <TextBlock Margin="12,12,0,0"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.MileageOnStopLabel,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               Text="{Binding FinalMileage,
+                                              Converter={StaticResource DistanceFormatter}}"
+                               ui:DockPanel.Dock="Top" />
 
                     <!--  Distance  -->
                     <TextBlock Margin="12,12,0,0"

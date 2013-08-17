@@ -7,7 +7,7 @@ using System.Reflection;
 
 #endregion
 
-namespace Crystalbyte.Asphalt.Contexts {
+namespace Crystalbyte.Asphalt {
     ///<summary>
     ///  Provides support for extracting property information based on a property expression.
     ///</summary>

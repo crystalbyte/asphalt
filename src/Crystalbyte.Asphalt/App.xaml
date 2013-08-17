@@ -84,7 +84,7 @@
         <converters:SpeedFormatter x:Key="SpeedFormatter" />
         <converters:AngleFormatter x:Key="AngleFormatter" />
         <converters:NullTextConverter x:Key="NullTextConverter" />
-        <!--  <converters:UnitOfLengthFormatter x:Key="UnitOfLengthFormatter" />  -->
+        <converters:MileageTextConverter x:Key="MileageTextConverter" />
         <converters:BooleanToTextConverter x:Key="BooleanEnabledDisabledConverter"
                                            TextForFalse="{Binding LocalizedResources.Disabled,
                                                                   Source={StaticResource LocalizedStrings}}"
@@ -92,6 +92,7 @@
                                                                  Source={StaticResource LocalizedStrings}}" />
         <converters:TourTypeToColorConverter x:Key="TourTypeToColorConverter" />
         <converters:MathRoundDoubleConverter x:Key="MathRoundDoubleConverter" />
+        <converters:MileageUnitConverter x:Key="MileageUnitConverter" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

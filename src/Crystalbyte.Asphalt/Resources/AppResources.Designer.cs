@@ -286,7 +286,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do not change these values unless you know exactly what your doing. Invalid settings may decrease accuracy or impair functionality..
+        ///   Looks up a localized string similar to Do not change these values unless you know exactly what you&apos;re doing. Incorrect settings may decrease accuracy or impair functionality..
         /// </summary>
         public static string DoNotChangeText {
             get {
@@ -448,6 +448,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kilometres.
+        /// </summary>
+        public static string KilometreLabel {
+            get {
+                return ResourceManager.GetString("KilometreLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The label must not be empty.
         /// </summary>
         public static string LabelNotNullOrEmpty {
@@ -489,6 +498,24 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string MileageLabel {
             get {
                 return ResourceManager.GetString("MileageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mileage before.
+        /// </summary>
+        public static string MileageOnStartLabel {
+            get {
+                return ResourceManager.GetString("MileageOnStartLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mileage after.
+        /// </summary>
+        public static string MileageOnStopLabel {
+            get {
+                return ResourceManager.GetString("MileageOnStopLabel", resourceCulture);
             }
         }
         
@@ -682,7 +709,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Necessary speed exceedances.
+        ///   Looks up a localized string similar to Minimal required speed samples.
         /// </summary>
         public static string SpeedExceedancesLabel {
             get {

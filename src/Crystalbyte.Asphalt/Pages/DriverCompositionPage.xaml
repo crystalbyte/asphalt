@@ -13,8 +13,10 @@
                             Foreground="{StaticResource PhoneForegroundBrush}"
                             Orientation="Portrait"
                             SupportedOrientations="Portrait"
+                            d:DataContext="{d:DesignInstance contexts:Driver}"
                             shell:SystemTray.IsVisible="True"
                             mc:Ignorable="d">
+
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -38,7 +40,10 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <!--  LayoutRoot is the root grid where all page content is placed  -->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/VerticalBackground.jpg" />
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -49,13 +54,14 @@
             <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding LocalizedResources.ApplicationTitleCapital, Source={StaticResource LocalizedStrings}}" />
             <TextBlock Margin="9,-7,0,0"
                        Style="{StaticResource PhoneTextTitle1Style}"
-                       Text="{Binding LocalizedResources.AddDriverPageTitle,
-                                      Source={StaticResource LocalizedStrings}}" />
+                       Text="{Binding PageHeaderText}" />
         </StackPanel>
 
         <!--  ContentPanel - place additional content here  -->
-        <ScrollViewer Grid.Row="1" d:DataContext="{d:DesignInstance Type=contexts:Driver}">
-            <Grid x:Name="ContentPanel" Margin="12,0">
+        <ScrollViewer Grid.Row="1">
+            <Grid x:Name="ContentPanel"
+                  Margin="12,0"
+                  d:DataContext="{d:DesignInstance Type=contexts:Driver}">
                 <ui:DockPanel LastChildFill="False">
                     <StackPanel Margin="12,0,0,20"
                                 HorizontalAlignment="Left"

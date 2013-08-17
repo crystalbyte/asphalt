@@ -123,7 +123,7 @@
                 </phone:PanoramaItem>
                 <phone:PanoramaItem Header="{Binding LocalizedResources.ToursPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
                     <!--  Single line list with text wrapping  -->
-                    <toolkit:LongListMultiSelector Margin="-12,0,0,0"
+                    <toolkit:LongListMultiSelector Margin="-12,0,0,60"
                                                    IsGroupingEnabled="True"
                                                    IsSelectionEnabled="{Binding IsSelectionEnabled,
                                                                                 Mode=TwoWay}"
@@ -192,7 +192,9 @@
                     </toolkit:LongListMultiSelector>
                 </phone:PanoramaItem>
                 <phone:PanoramaItem Header="{Binding LocalizedResources.VehiclesPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
-                    <phone:LongListSelector ItemsSource="{Binding Vehicles}" SelectionChanged="OnVehicleSelectionChanged">
+                    <phone:LongListSelector Margin="0,0,0,60"
+                                            ItemsSource="{Binding Vehicles}"
+                                            SelectionChanged="OnVehicleSelectionChanged">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -272,7 +274,9 @@
                     </phone:LongListSelector>
                 </phone:PanoramaItem>
                 <phone:PanoramaItem Header="{Binding LocalizedResources.DriversPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
-                    <phone:LongListSelector ItemsSource="{Binding Drivers}" SelectionChanged="OnDriverSelectionChanged">
+                    <phone:LongListSelector Margin="0,0,0,60"
+                                            ItemsSource="{Binding Drivers}"
+                                            SelectionChanged="OnDriverSelectionChanged">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <Grid>

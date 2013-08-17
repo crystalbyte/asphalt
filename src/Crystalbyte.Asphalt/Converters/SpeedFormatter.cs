@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using Crystalbyte.Asphalt.Contexts;
 
@@ -19,6 +15,9 @@ namespace Crystalbyte.Asphalt.Converters {
         #region Implementation of IValueConverter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+            if (value == null) {
+                return null;
+            }
             var p = parameter as string;
             if (!string.IsNullOrWhiteSpace(p) && p == "ms") {
                 return Format((double)value * 3.6);

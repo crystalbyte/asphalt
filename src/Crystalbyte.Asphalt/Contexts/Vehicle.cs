@@ -39,7 +39,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public LocalStorage LocalStorage {
-            get { return App.Composition.GetExport<LocalStorage >(); }
+            get { return App.Composition.GetExport<LocalStorage>(); }
         }
 
         public AppContext AppContext {
@@ -213,6 +213,16 @@ namespace Crystalbyte.Asphalt.Contexts {
             get {
                 return AppContext.Vehicles
                     .Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this;
+            }
+        }
+
+        public bool IsNew {
+            get { return Id == 0; }
+        }
+
+        public string PageHeaderText {
+            get {
+                return Id == 0 ? AppResources.AddVehiclePageTitle : LicencePlate;
             }
         }
     }

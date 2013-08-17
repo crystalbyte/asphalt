@@ -405,6 +405,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Distance);
                 _distance = value;
                 RaisePropertyChanged(() => Distance);
+                RaisePropertyChanged(() => FinalMileage);
             }
         }
 
@@ -491,7 +492,11 @@ namespace Crystalbyte.Asphalt.Contexts {
         public Route CachedRoute { get; set; }
 
         public void UpdateUnitsOfLength() {
-           RaisePropertyChanged(() => Distance); 
+            RaisePropertyChanged(() => Distance);
+        }
+
+        public double FinalMileage {
+            get { return InitialMileage + Distance; }
         }
     }
 }
