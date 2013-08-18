@@ -1,21 +1,15 @@
 ﻿<phone:PhoneApplicationPage x:Class="Crystalbyte.Asphalt.Pages.LandingPage"
                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                            xmlns:contexts="clr-namespace:Crystalbyte.Asphalt.Contexts"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:contexts="clr-namespace:Crystalbyte.Asphalt.Contexts"
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
                             xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-                            xmlns:ui="clr-namespace:Crystalbyte.Asphalt.UI"
-                            FontFamily="{StaticResource PhoneFontFamilyNormal}"
-                            FontSize="{StaticResource PhoneFontSizeNormal}"
-                            Foreground="{StaticResource PhoneForegroundBrush}"
-                            Orientation="Portrait"
-                            SupportedOrientations="Portrait"
-                            d:DataContext="{d:DesignInstance Type=contexts:AppContext}"
-                            shell:SystemTray.IsVisible="False"
-                            mc:Ignorable="d">
+                            xmlns:ui="clr-namespace:Crystalbyte.Asphalt.UI" FontFamily="{StaticResource PhoneFontFamilyNormal}"
+                            FontSize="{StaticResource PhoneFontSizeNormal}" Foreground="{StaticResource PhoneForegroundBrush}"
+                            Orientation="Portrait" SupportedOrientations="Portrait" d:DataContext="{d:DesignInstance Type=contexts:AppContext}"
+                            shell:SystemTray.IsVisible="False" mc:Ignorable="d">
 
     <!--  LayoutRoot is the root grid where all page content is placed  -->
     <Grid x:Name="LayoutRoot" Background="Black">
@@ -47,58 +41,55 @@
 
         <!--  Panorama control  -->
         <Border>
-            <phone:Panorama Title="{Binding LocalizedResources.ApplicationTitle,
+            <phone:Panorama
+                Title="{Binding LocalizedResources.ApplicationTitle,
                                             Source={StaticResource LocalizedStrings}}"
-                            Grid.Row="1"
-                            SelectionChanged="OnPanoramaSelectionChanged">
+                Grid.Row="1" SelectionChanged="OnPanoramaSelectionChanged">
 
                 <phone:Panorama.Background>
                     <ImageBrush ImageSource="/Crystalbyte.Asphalt.App;component/Assets/Background.jpg" />
                 </phone:Panorama.Background>
 
                 <!--  Panorama item one  -->
-                <phone:PanoramaItem Header="{Binding LocalizedResources.TrackingPanoramaItemTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:PanoramaItem
+                    Header="{Binding LocalizedResources.TrackingPanoramaItemTitle, Source={StaticResource LocalizedStrings}}">
                     <!--  Single line list with text wrapping  -->
                     <ui:DockPanel>
                         <TextBlock FontSize="{StaticResource PhoneFontSizeMediumLarge}"
                                    Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding LocalizedResources.WelcomeText,
                                                   Source={StaticResource LocalizedStrings}}"
-                                   TextWrapping="Wrap"
-                                   ui:DockPanel.Dock="Top" />
+                                   TextWrapping="Wrap" ui:DockPanel.Dock="Top" />
                         <Border Margin="0,36,0,0" ui:DockPanel.Dock="Top">
-                            <StackPanel DataContext="{Binding LocationTracker}"
-                                        Orientation="Horizontal"
+                            <StackPanel DataContext="{Binding LocationTracker}" Orientation="Horizontal"
                                         RenderTransformOrigin="0.5,0.5">
 
-                                <Button Margin="12,0,0,0"
-                                        Command="{Binding StartTrackingCommand}"
+                                <Button Margin="12,0,0,0" Command="{Binding StartTrackingCommand}"
                                         Style="{StaticResource TextButtonStyle}"
                                         Visibility="{Binding IsTracking,
                                                              Converter={StaticResource BooleanToVisibilityConverter},
                                                              ConverterParameter=!}"
                                         toolkit:TiltEffect.IsTiltEnabled="True">
                                     <StackPanel Margin="2,-6,0,0">
-                                        <TextBlock Text="{Binding LocalizedResources.StartButtonText, Source={StaticResource LocalizedStrings}}" />
+                                        <TextBlock
+                                            Text="{Binding LocalizedResources.StartButtonText, Source={StaticResource LocalizedStrings}}" />
                                         <TextBlock FontFamily="{StaticResource PhoneFontFamilyNormal}"
-                                                   FontSize="{StaticResource PhoneFontSizeSmall}"
-                                                   Foreground="{StaticResource PhoneAccentBrush}"
+                                                   FontSize="{StaticResource PhoneFontSizeSmall}" Foreground="{StaticResource PhoneAccentBrush}"
                                                    RenderTransformOrigin="0.5,0.5"
                                                    Text="{Binding LocalizedResources.StartButtonDescriptionText,
                                                                   Source={StaticResource LocalizedStrings}}" />
                                     </StackPanel>
                                 </Button>
-                                <Button Margin="12,0,0,0"
-                                        Command="{Binding StopTrackingCommand}"
+                                <Button Margin="12,0,0,0" Command="{Binding StopTrackingCommand}"
                                         Style="{StaticResource TextButtonStyle}"
                                         Visibility="{Binding IsTracking,
                                                              Converter={StaticResource BooleanToVisibilityConverter}}"
                                         toolkit:TiltEffect.IsTiltEnabled="True">
                                     <StackPanel Margin="2,-6,0,0">
-                                        <TextBlock Text="{Binding LocalizedResources.StopButtonText, Source={StaticResource LocalizedStrings}}" />
+                                        <TextBlock
+                                            Text="{Binding LocalizedResources.StopButtonText, Source={StaticResource LocalizedStrings}}" />
                                         <TextBlock FontFamily="{StaticResource PhoneFontFamilyNormal}"
-                                                   FontSize="{StaticResource PhoneFontSizeSmall}"
-                                                   Foreground="{StaticResource PhoneAccentBrush}"
+                                                   FontSize="{StaticResource PhoneFontSizeSmall}" Foreground="{StaticResource PhoneAccentBrush}"
                                                    RenderTransformOrigin="0.5,0.5"
                                                    Text="{Binding LocalizedResources.StopButtonDescriptionText,
                                                                   Source={StaticResource LocalizedStrings}}" />
@@ -109,32 +100,31 @@
                         <Border Margin="12,36,0,0" ui:DockPanel.Dock="Top">
                             <StackPanel>
                                 <Button Command="{Binding AddVehicleCommand}" Style="{StaticResource TextButtonStyle}">
-                                    <TextBlock FontSize="{StaticResource PhoneFontSizeLarge}" Text="{Binding LocalizedResources.AddVehicleLandingButtonText, Source={StaticResource LocalizedStrings}}" />
+                                    <TextBlock FontSize="{StaticResource PhoneFontSizeLarge}"
+                                               Text="{Binding LocalizedResources.AddVehicleLandingButtonText, Source={StaticResource LocalizedStrings}}" />
                                 </Button>
-                                <Button Margin="0,20,0,0"
-                                        Command="{Binding AddDriverCommand}"
+                                <Button Margin="0,20,0,0" Command="{Binding AddDriverCommand}"
                                         Style="{StaticResource TextButtonStyle}">
-                                    <TextBlock FontSize="{StaticResource PhoneFontSizeLarge}" Text="{Binding LocalizedResources.AddDriverLandingButtonText, Source={StaticResource LocalizedStrings}}" />
+                                    <TextBlock FontSize="{StaticResource PhoneFontSizeLarge}"
+                                               Text="{Binding LocalizedResources.AddDriverLandingButtonText, Source={StaticResource LocalizedStrings}}" />
                                 </Button>
                             </StackPanel>
                         </Border>
 
                     </ui:DockPanel>
                 </phone:PanoramaItem>
-                <phone:PanoramaItem Header="{Binding LocalizedResources.ToursPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
+                <phone:PanoramaItem
+                    Header="{Binding LocalizedResources.ToursPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
                     <!--  Single line list with text wrapping  -->
-                    <toolkit:LongListMultiSelector Margin="-12,0,0,60"
-                                                   IsGroupingEnabled="True"
+                    <toolkit:LongListMultiSelector Margin="-12,0,0,60" IsGroupingEnabled="True"
                                                    IsSelectionEnabled="{Binding IsSelectionEnabled,
                                                                                 Mode=TwoWay}"
                                                    ItemsSource="{Binding GroupedTours,
                                                                          Mode=OneWay}"
-                                                   ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                                   SelectionChanged="OnToursSelectionChanged"
-                                                   Tap="OnTourTapped">
+                                                   ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionChanged="OnToursSelectionChanged" Tap="OnTourTapped">
                         <toolkit:LongListMultiSelector.ItemTemplate>
                             <DataTemplate>
-                                <Border Margin="-12,-8,24,12" d:DataContext="{d:DesignInstance Type=contexts:Tour}">
+                                <Border Margin="-12,-8,24,12" d:DataContext="{d:DesignInstance contexts:Tour}">
                                     <Grid toolkit:TiltEffect.IsTiltEnabled="True">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
@@ -142,46 +132,41 @@
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0" VerticalAlignment="Top">
                                             <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                                       FontSize="{StaticResource PhoneFontSizeLarge}"
-                                                       Style="{StaticResource PhoneTextLargeStyle}"
+                                                       FontSize="{StaticResource PhoneFontSizeLarge}" Style="{StaticResource PhoneTextLargeStyle}"
                                                        Text="{Binding DestinationShort,
                                                                       Converter={StaticResource NullTextConverter},
                                                                       ConverterParameter=LoadingText}"
                                                        TextTrimming="WordEllipsis" />
                                             <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiBold}"
                                                        FontSize="{StaticResource PhoneFontSizeNormal}"
-                                                       Style="{StaticResource PhoneTextAccentStyle}"
+                                                       Style="{Binding IsExported,
+                                                                       Converter={StaticResource BooleanToTextStyleConverter}}"
                                                        Text="{Binding Reason,
                                                                       Mode=OneWay,
                                                                       Converter={StaticResource NullTextConverter},
                                                                       ConverterParameter=ReasonNotSpecified}"
                                                        TextTrimming="WordEllipsis" />
                                             <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                                       FontSize="{StaticResource PhoneFontSizeSmall}"
-                                                       Style="{StaticResource PhoneTextSmallStyle}"
+                                                       FontSize="{StaticResource PhoneFontSizeSmall}" Style="{StaticResource PhoneTextSmallStyle}"
                                                        Text="{Binding StartTime,
                                                                       StringFormat=R}"
                                                        TextTrimming="WordEllipsis" />
                                             <Border Height="10">
-                                                <ProgressBar IsIndeterminate="True" Visibility="{Binding IsQuerying, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                <ProgressBar IsIndeterminate="True"
+                                                             Visibility="{Binding IsQuerying, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                             </Border>
                                         </StackPanel>
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="0,9,0,0"
-                                                   HorizontalAlignment="Right"
-                                                   VerticalAlignment="Top"
-                                                   FontSize="{StaticResource PhoneFontSizeSmall}"
-                                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                        <TextBlock Grid.Column="1" Margin="0,9,0,0" HorizontalAlignment="Right"
+                                                   VerticalAlignment="Top" FontSize="{StaticResource PhoneFontSizeSmall}" Style="{StaticResource PhoneTextNormalStyle}"
                                                    Text="{Binding Distance,
                                                                   Converter={StaticResource DistanceFormatter}}"
                                                    TextWrapping="Wrap" />
-                                        <Rectangle HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Stretch"
-                                                   Fill="Transparent"
-                                                   Stroke="Transparent">
+                                        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                   Fill="Transparent" Stroke="Transparent">
                                             <toolkit:ContextMenuService.ContextMenu>
                                                 <toolkit:ContextMenu>
-                                                    <toolkit:MenuItem Click="OnDeleteTourMenuItemClicked" Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
+                                                    <toolkit:MenuItem Click="OnDeleteTourMenuItemClicked"
+                                                                      Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
                                                 </toolkit:ContextMenu>
                                             </toolkit:ContextMenuService.ContextMenu>
                                         </Rectangle>
@@ -191,54 +176,41 @@
                         </toolkit:LongListMultiSelector.ItemTemplate>
                     </toolkit:LongListMultiSelector>
                 </phone:PanoramaItem>
-                <phone:PanoramaItem Header="{Binding LocalizedResources.VehiclesPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
-                    <phone:LongListSelector Margin="0,0,0,60"
-                                            ItemsSource="{Binding Vehicles}"
+                <phone:PanoramaItem
+                    Header="{Binding LocalizedResources.VehiclesPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
+                    <phone:LongListSelector Margin="0,0,0,60" ItemsSource="{Binding Vehicles}"
                                             SelectionChanged="OnVehicleSelectionChanged">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <StackPanel Margin="0,0,0,6"
-                                                Orientation="Horizontal"
-                                                d:DataContext="{d:DesignInstance Type=contexts:Vehicle}"
-                                                toolkit:TiltEffect.IsTiltEnabled="True">
+                                    <StackPanel Margin="0,0,0,6" Orientation="Horizontal"
+                                                d:DataContext="{d:DesignInstance Type=contexts:Vehicle}" toolkit:TiltEffect.IsTiltEnabled="True">
                                         <Border Style="{StaticResource DefaultTile128x128}">
                                             <Grid>
-                                                <Image HorizontalAlignment="Stretch"
-                                                       VerticalAlignment="Stretch"
+                                                <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                        Source="{Binding Image}"
                                                        Visibility="{Binding HasImage,
                                                                             Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                                <Image HorizontalAlignment="Stretch"
-                                                       VerticalAlignment="Stretch"
+                                                <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                        Source="/Assets/Vehicle.jpg"
                                                        Visibility="{Binding HasImage,
                                                                             Converter={StaticResource BooleanToVisibilityConverter},
                                                                             ConverterParameter=!}" />
 
-                                                <Border HorizontalAlignment="Stretch"
-                                                        VerticalAlignment="Stretch"
-                                                        BorderBrush="{StaticResource PhoneAccentBrush}"
-                                                        BorderThickness="6"
+                                                <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                        BorderBrush="{StaticResource PhoneAccentBrush}" BorderThickness="6"
                                                         Visibility="{Binding IsSelected,
                                                                              Converter={StaticResource BooleanToVisibilityConverter}}">
                                                     <Grid>
                                                         <Polygon Fill="{StaticResource PhoneAccentBrush}"
-                                                                 Points="60,0 128,0 128,65"
-                                                                 Stroke="{StaticResource PhoneAccentBrush}" />
-                                                        <Border Width="100"
-                                                                Height="100"
-                                                                Margin="-4"
-                                                                HorizontalAlignment="Right"
-                                                                VerticalAlignment="Top">
-                                                            <Polyline Points="30,50 50,70 80,20"
-                                                                      Stroke="White"
+                                                                 Points="60,0 128,0 128,65" Stroke="{StaticResource PhoneAccentBrush}" />
+                                                        <Border Width="100" Height="100" Margin="-4"
+                                                                HorizontalAlignment="Right" VerticalAlignment="Top">
+                                                            <Polyline Points="30,50 50,70 80,20" Stroke="White"
                                                                       StrokeThickness="10">
                                                                 <Polyline.RenderTransform>
-                                                                    <ScaleTransform CenterX="100"
-                                                                                    CenterY="0"
-                                                                                    ScaleX="0.4"
-                                                                                    ScaleY="0.4" />
+                                                                    <ScaleTransform CenterX="100" CenterY="0"
+                                                                                    ScaleX="0.4" ScaleY="0.4" />
                                                                 </Polyline.RenderTransform>
                                                             </Polyline>
                                                         </Border>
@@ -249,22 +221,18 @@
                                         </Border>
                                         <StackPanel Margin="12,0,0,0">
                                             <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                                       FontSize="{StaticResource PhoneFontSizeExtraLarge}"
-                                                       Style="{StaticResource PhoneTextNormalStyle}"
+                                                       FontSize="{StaticResource PhoneFontSizeExtraLarge}" Style="{StaticResource PhoneTextNormalStyle}"
                                                        Text="{Binding LicencePlate}" />
                                             <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                                       FontSize="{StaticResource PhoneFontSizeSmall}"
-                                                       Style="{StaticResource PhoneTextSmallStyle}"
-                                                       Text="{Binding Notes}" />
+                                                       FontSize="{StaticResource PhoneFontSizeSmall}" Style="{StaticResource PhoneTextSmallStyle}" Text="{Binding Notes}" />
                                         </StackPanel>
                                     </StackPanel>
-                                    <Rectangle HorizontalAlignment="Stretch"
-                                               VerticalAlignment="Stretch"
-                                               Fill="Transparent"
-                                               Stroke="Transparent">
+                                    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                               Fill="Transparent" Stroke="Transparent">
                                         <toolkit:ContextMenuService.ContextMenu>
                                             <toolkit:ContextMenu>
-                                                <toolkit:MenuItem Click="OnDeleteVehicleMenuItemClicked" Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
+                                                <toolkit:MenuItem Click="OnDeleteVehicleMenuItemClicked"
+                                                                  Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
                                             </toolkit:ContextMenu>
                                         </toolkit:ContextMenuService.ContextMenu>
                                     </Rectangle>
@@ -273,53 +241,40 @@
                         </phone:LongListSelector.ItemTemplate>
                     </phone:LongListSelector>
                 </phone:PanoramaItem>
-                <phone:PanoramaItem Header="{Binding LocalizedResources.DriversPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
-                    <phone:LongListSelector Margin="0,0,0,60"
-                                            ItemsSource="{Binding Drivers}"
+                <phone:PanoramaItem
+                    Header="{Binding LocalizedResources.DriversPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
+                    <phone:LongListSelector Margin="0,0,0,60" ItemsSource="{Binding Drivers}"
                                             SelectionChanged="OnDriverSelectionChanged">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <StackPanel Margin="0,0,0,6"
-                                                Orientation="Horizontal"
-                                                d:DataContext="{d:DesignInstance Type=contexts:Driver}"
-                                                toolkit:TiltEffect.IsTiltEnabled="True">
+                                    <StackPanel Margin="0,0,0,6" Orientation="Horizontal"
+                                                d:DataContext="{d:DesignInstance Type=contexts:Driver}" toolkit:TiltEffect.IsTiltEnabled="True">
                                         <Border Style="{StaticResource DefaultTile128x128}">
                                             <Grid>
-                                                <Image HorizontalAlignment="Stretch"
-                                                       VerticalAlignment="Stretch"
+                                                <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                        Source="{Binding Image}"
                                                        Visibility="{Binding HasImage,
                                                                             Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                                <Image HorizontalAlignment="Stretch"
-                                                       VerticalAlignment="Stretch"
+                                                <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                        Source="/Assets/Driver.jpg"
                                                        Visibility="{Binding HasImage,
                                                                             Converter={StaticResource BooleanToVisibilityConverter},
                                                                             ConverterParameter=!}" />
-                                                <Border HorizontalAlignment="Stretch"
-                                                        VerticalAlignment="Stretch"
-                                                        BorderBrush="{StaticResource PhoneAccentBrush}"
-                                                        BorderThickness="6"
+                                                <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                        BorderBrush="{StaticResource PhoneAccentBrush}" BorderThickness="6"
                                                         Visibility="{Binding IsSelected,
                                                                              Converter={StaticResource BooleanToVisibilityConverter}}">
                                                     <Grid>
                                                         <Polygon Fill="{StaticResource PhoneAccentBrush}"
-                                                                 Points="60,0 128,0 128,65"
-                                                                 Stroke="{StaticResource PhoneAccentBrush}" />
-                                                        <Border Width="100"
-                                                                Height="100"
-                                                                Margin="-4"
-                                                                HorizontalAlignment="Right"
-                                                                VerticalAlignment="Top">
-                                                            <Polyline Points="30,50 50,70 80,20"
-                                                                      Stroke="White"
+                                                                 Points="60,0 128,0 128,65" Stroke="{StaticResource PhoneAccentBrush}" />
+                                                        <Border Width="100" Height="100" Margin="-4"
+                                                                HorizontalAlignment="Right" VerticalAlignment="Top">
+                                                            <Polyline Points="30,50 50,70 80,20" Stroke="White"
                                                                       StrokeThickness="10">
                                                                 <Polyline.RenderTransform>
-                                                                    <ScaleTransform CenterX="100"
-                                                                                    CenterY="0"
-                                                                                    ScaleX="0.4"
-                                                                                    ScaleY="0.4" />
+                                                                    <ScaleTransform CenterX="100" CenterY="0"
+                                                                                    ScaleX="0.4" ScaleY="0.4" />
                                                                 </Polyline.RenderTransform>
                                                             </Polyline>
                                                         </Border>
@@ -330,23 +285,20 @@
                                         </Border>
                                         <StackPanel Margin="12,0,0,0">
                                             <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                                                       FontSize="{StaticResource PhoneFontSizeExtraLarge}"
-                                                       Style="{StaticResource PhoneTextNormalStyle}">
+                                                       FontSize="{StaticResource PhoneFontSizeExtraLarge}" Style="{StaticResource PhoneTextNormalStyle}">
                                                 <Run Text="{Binding Forename}" />
                                                 <LineBreak />
-                                                <Run FontSize="{StaticResource PhoneFontSizeMedium}"
-                                                     Foreground="Gray"
+                                                <Run FontSize="{StaticResource PhoneFontSizeMedium}" Foreground="Gray"
                                                      Text="{Binding Surname}" />
                                             </TextBlock>
                                         </StackPanel>
                                     </StackPanel>
-                                    <Rectangle HorizontalAlignment="Stretch"
-                                               VerticalAlignment="Stretch"
-                                               Fill="Transparent"
-                                               Stroke="Transparent">
+                                    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                               Fill="Transparent" Stroke="Transparent">
                                         <toolkit:ContextMenuService.ContextMenu>
                                             <toolkit:ContextMenu>
-                                                <toolkit:MenuItem Click="OnDeleteDriverMenuItemClicked" Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
+                                                <toolkit:MenuItem Click="OnDeleteDriverMenuItemClicked"
+                                                                  Header="{Binding LocalizedResources.DeleteMenuHeader, Source={StaticResource LocalizedStrings}}" />
                                             </toolkit:ContextMenu>
                                         </toolkit:ContextMenuService.ContextMenu>
                                     </Rectangle>

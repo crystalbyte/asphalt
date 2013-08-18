@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Device.Location;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -29,6 +30,10 @@ namespace Crystalbyte.Asphalt.Pages {
             InitializeComponent();
             TourMap.ZoomLevelChanged += OnTourMapZoomLevelChanged;
 
+            if (DesignerProperties.IsInDesignTool) {
+                return;
+            }
+
             _isNewPageInstance = true;
         }
 
@@ -44,7 +49,6 @@ namespace Crystalbyte.Asphalt.Pages {
         private void HandleEnterKey() {
             Focus();
         }
-
 
         private void OnTourMapZoomLevelChanged(object sender, MapZoomLevelChangedEventArgs e) {
             _isMapReady = true;
@@ -63,7 +67,6 @@ namespace Crystalbyte.Asphalt.Pages {
             ZoomToFit(Tour.Positions);
         }
 
-        // [Import]
         protected TourSelectionSource TourSelectionSource {
             get { return App.Composition.GetExport<TourSelectionSource>(); }
         }

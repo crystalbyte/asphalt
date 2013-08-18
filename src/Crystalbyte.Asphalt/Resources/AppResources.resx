@@ -356,13 +356,13 @@
 Start recordings manually or let Asphalt handle it for you.</value>
   </data>
   <data name="ErrorDeletingImageCaption" xml:space="preserve">
-    <value>Unable to delete image.</value>
+    <value>Unable to delete image</value>
   </data>
   <data name="ErrorLoadingImageCaption" xml:space="preserve">
-    <value>Unable to load image.</value>
+    <value>Unable to load image</value>
   </data>
   <data name="ErrorStoringImageCaption" xml:space="preserve">
-    <value>Unable to save image.</value>
+    <value>Unable to save image</value>
   </data>
   <data name="CommitSettingsButtonText" xml:space="preserve">
     <value>commit</value>
@@ -402,5 +402,44 @@ Start recordings manually or let Asphalt handle it for you.</value>
   </data>
   <data name="MileageOnStopLabel" xml:space="preserve">
     <value>Mileage after</value>
+  </data>
+  <data name="ExportDestinationLabel" xml:space="preserve">
+    <value>Export location</value>
+  </data>
+  <data name="ExportFormatLabel" xml:space="preserve">
+    <value>File format</value>
+  </data>
+  <data name="ErrorSavingFileCaption" xml:space="preserve">
+    <value>Unable to save file</value>
+  </data>
+  <data name="ErrorUpdatingDatabase" xml:space="preserve">
+    <value>Unable to update database</value>
+  </data>
+  <data name="ExportStateCollectingText" xml:space="preserve">
+    <value>Collecting data ...</value>
+  </data>
+  <data name="ExportStateCompletedText" xml:space="preserve">
+    <value>Upload successfully completed</value>
+  </data>
+  <data name="ExportStateCompletedWithErrorsText" xml:space="preserve">
+    <value>Upload failed</value>
+  </data>
+  <data name="ExportStateUploadingText" xml:space="preserve">
+    <value>Uploading ...</value>
+  </data>
+  <data name="NoExportText" xml:space="preserve">
+    <value>There are no tours selected for export.</value>
+  </data>
+  <data name="SingleExportText" xml:space="preserve">
+    <value>There is 1 tour selected for export.</value>
+  </data>
+  <data name="SkyDriveLoginText" xml:space="preserve">
+    <value>Please sign in using your SkyDrive credentials.</value>
+  </data>
+  <data name="StartExportButtonText" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="TourExportsFormatString" xml:space="preserve">
+    <value>There are {0} tours selected for export.</value>
   </data>
 </root>
