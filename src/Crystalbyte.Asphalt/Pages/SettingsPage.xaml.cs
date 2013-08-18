@@ -1,7 +1,6 @@
 ﻿#region Using directives
 
 using System;
-using System.ComponentModel;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
 
@@ -14,10 +13,6 @@ namespace Crystalbyte.Asphalt.Pages {
 
         public SettingsPage() {
             InitializeComponent();
-
-            if (DesignerProperties.IsInDesignTool) {
-                return;
-            }
 
             AppSettings = App.Composition.GetExport<AppSettings>();
             AppSettings.IsEditingChanged += (sender, e) => this.UpdateApplicationBar();

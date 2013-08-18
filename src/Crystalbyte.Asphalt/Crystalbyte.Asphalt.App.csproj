@@ -100,7 +100,6 @@
     <Compile Include="Commands\CommitSettingsCommand.cs" />
     <Compile Include="Commands\DeleteSelectedToursCommand.cs" />
     <Compile Include="Commands\EditSettingsCommand.cs" />
-    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\ResetSettingsCommand.cs" />
     <Compile Include="Commands\SaveDriverCommand.cs" />
     <Compile Include="Commands\DeleteVehicleCommand.cs" />
@@ -120,31 +119,19 @@
     <Compile Include="Contexts\AppSettings.cs" />
     <Compile Include="Contexts\BindingModelBase.cs" />
     <Compile Include="Contexts\Driver.cs" />
-    <Compile Include="Contexts\ExportContext.cs" />
     <Compile Include="Contexts\Position.cs" />
     <Compile Include="Contexts\LocationTracker.cs" />
     <Compile Include="Contexts\Vehicle.cs" />
     <Compile Include="Converters\AngleFormatter.cs" />
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
-    <Compile Include="Converters\BooleanToTextStyleConverter.cs" />
-    <Compile Include="Converters\ExportStateToTextConverter.cs" />
-    <Compile Include="Converters\ExportStateToVisibilityConverter.cs" />
+    <Compile Include="Converters\BooleanToTextConverter.cs" />
     <Compile Include="Converters\MathRoundDoubleConverter.cs" />
     <Compile Include="Converters\MileageTextConverter.cs" />
     <Compile Include="Converters\MileageUnitConverter.cs" />
     <Compile Include="Converters\NullTextConverter.cs" />
-    <Compile Include="Converters\TourExportsFormatter.cs" />
     <Compile Include="Converters\TourTypeToColorConverter.cs" />
     <Compile Include="Converters\SpeedFormatter.cs" />
     <Compile Include="Converters\DistanceFormatter.cs" />
-    <Compile Include="Data\CsvExportSerializer.cs" />
-    <Compile Include="Data\DataExportAttribute.cs" />
-    <Compile Include="Data\ExportState.cs" />
-    <Compile Include="Data\IExportSerializer.cs" />
-    <Compile Include="Data\IExportStrategy.cs" />
-    <Compile Include="Data\IProgressAware.cs" />
-    <Compile Include="Data\LiveProgressConverter.cs" />
-    <Compile Include="Data\SkyDriveExportStrategy.cs" />
     <Compile Include="DriverSelectionSource.cs" />
     <Compile Include="Pages\DriverCompositionPage.xaml.cs">
       <DependentUpon>DriverCompositionPage.xaml</DependentUpon>
@@ -238,10 +225,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Crystalbyte.Asphalt.App_2013_08_19_00_48_07.sap" />
-    <None Include="Crystalbyte.Asphalt.App_2013_08_19_00_49_58.sap" />
-    <None Include="Crystalbyte.Asphalt.App_2013_08_19_00_51_50.sap" />
-    <None Include="Fonts\LiveSymbol.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
@@ -319,12 +302,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Live">
-      <HintPath>..\packages\LiveSDK.5.4\lib\WindowsPhone8\Microsoft.Live.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Live.Controls">
-      <HintPath>..\packages\LiveSDK.5.4\lib\WindowsPhone8\Microsoft.Live.Controls.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPToolkit.4.2013.06.11\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>

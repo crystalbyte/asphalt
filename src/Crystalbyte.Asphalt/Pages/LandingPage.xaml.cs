@@ -1,7 +1,6 @@
 ﻿#region Using directives
 
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,10 +22,6 @@ namespace Crystalbyte.Asphalt.Pages {
         // Constructor
         public LandingPage() {
             InitializeComponent();
-
-            if (DesignerProperties.IsInDesignTool) {
-                return;
-            }
 
             AppContext = App.Context;
             AppContext.SelectionEnabledChanged += AppContextOnSelectionEnabledChanged;

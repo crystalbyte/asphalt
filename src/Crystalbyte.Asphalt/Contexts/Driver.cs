@@ -85,10 +85,6 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        public string Fullname {
-            get { return string.Format("{0} {1}", Forename, Surname); }
-        }
-
         [DataMember]
         [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity")]
         public int Id {

@@ -1,7 +1,6 @@
 ﻿#region Using directives
 
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
@@ -24,10 +23,6 @@ namespace Crystalbyte.Asphalt.Pages {
         public VehicleCompositionPage() {
             InitializeComponent();
             BindingValidationError += OnBindingValidationError;
-
-            if (DesignerProperties.IsInDesignTool) {
-                return;
-            }
 
             _photoChooser = new PhotoChooserTask {ShowCamera = true, PixelHeight = 200, PixelWidth = 200};
             _photoChooser.Completed += OnPhotoChooserTaskCompleted;
@@ -138,7 +133,7 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             _chosenPhotoName = Guid.NewGuid().ToString();
-            await LocalStorage.SaveImageAsync(_chosenPhotoName, data);
+            await LocalStorage.StoreImageAsync(_chosenPhotoName, data);
         }
 
         private void OnNotesTextChanged(object sender, TextChangedEventArgs e) {

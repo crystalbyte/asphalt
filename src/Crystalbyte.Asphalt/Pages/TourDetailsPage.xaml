@@ -55,9 +55,13 @@
                 <ui:DockPanel>
 
                     <!--  Type  -->
+                    <TextBlock Margin="12,0,0,0" Style="{StaticResource PhoneTextSmallStyle}"
+                               Text="{Binding LocalizedResources.TourTypeLabel,
+                                              Source={StaticResource LocalizedStrings}}"
+                               ui:DockPanel.Dock="Top" />
+
+
                     <toolkit:ListPicker Margin="12,0" HorizontalAlignment="Stretch"
-                                        Header="{Binding LocalizedResources.TourTypeLabel,
-                                                         Source={StaticResource LocalizedStrings}}"
                                         ItemsSource="{Binding TourTypeSource}" SelectionChanged="OnTourTypeSelectionChanged" ui:DockPanel.Dock="Top" />
 
                     <!--  Reason  -->

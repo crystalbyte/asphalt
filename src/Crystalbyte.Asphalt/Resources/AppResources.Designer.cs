@@ -340,7 +340,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to delete image.
+        ///   Looks up a localized string similar to Unable to delete image..
         /// </summary>
         public static string ErrorDeletingImageCaption {
             get {
@@ -349,7 +349,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to load image.
+        ///   Looks up a localized string similar to Unable to load image..
         /// </summary>
         public static string ErrorLoadingImageCaption {
             get {
@@ -358,29 +358,11 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to save file.
-        /// </summary>
-        public static string ErrorSavingFileCaption {
-            get {
-                return ResourceManager.GetString("ErrorSavingFileCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to save image.
+        ///   Looks up a localized string similar to Unable to save image..
         /// </summary>
         public static string ErrorStoringImageCaption {
             get {
                 return ResourceManager.GetString("ErrorStoringImageCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to update database.
-        /// </summary>
-        public static string ErrorUpdatingDatabase {
-            get {
-                return ResourceManager.GetString("ErrorUpdatingDatabase", resourceCulture);
             }
         }
         
@@ -403,65 +385,11 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export location.
-        /// </summary>
-        public static string ExportDestinationLabel {
-            get {
-                return ResourceManager.GetString("ExportDestinationLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to File format.
-        /// </summary>
-        public static string ExportFormatLabel {
-            get {
-                return ResourceManager.GetString("ExportFormatLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to export.
         /// </summary>
         public static string ExportPageTitle {
             get {
                 return ResourceManager.GetString("ExportPageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Collecting data ....
-        /// </summary>
-        public static string ExportStateCollectingText {
-            get {
-                return ResourceManager.GetString("ExportStateCollectingText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Upload successfully completed.
-        /// </summary>
-        public static string ExportStateCompletedText {
-            get {
-                return ResourceManager.GetString("ExportStateCompletedText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Upload failed.
-        /// </summary>
-        public static string ExportStateCompletedWithErrorsText {
-            get {
-                return ResourceManager.GetString("ExportStateCompletedWithErrorsText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Uploading ....
-        /// </summary>
-        public static string ExportStateUploadingText {
-            get {
-                return ResourceManager.GetString("ExportStateUploadingText", resourceCulture);
             }
         }
         
@@ -606,15 +534,6 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string MovementDetectionLabel {
             get {
                 return ResourceManager.GetString("MovementDetectionLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There are no tours selected for export..
-        /// </summary>
-        public static string NoExportText {
-            get {
-                return ResourceManager.GetString("NoExportText", resourceCulture);
             }
         }
         
@@ -790,24 +709,6 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is 1 tour selected for export..
-        /// </summary>
-        public static string SingleExportText {
-            get {
-                return ResourceManager.GetString("SingleExportText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please sign in using your SkyDrive credentials..
-        /// </summary>
-        public static string SkyDriveLoginText {
-            get {
-                return ResourceManager.GetString("SkyDriveLoginText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Minimal required speed samples.
         /// </summary>
         public static string SpeedExceedancesLabel {
@@ -849,15 +750,6 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string StartButtonText {
             get {
                 return ResourceManager.GetString("StartButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export.
-        /// </summary>
-        public static string StartExportButtonText {
-            get {
-                return ResourceManager.GetString("StartExportButtonText", resourceCulture);
             }
         }
         
@@ -930,15 +822,6 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string TerminateRouteConfirmMessage {
             get {
                 return ResourceManager.GetString("TerminateRouteConfirmMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There are {0} tours selected for export..
-        /// </summary>
-        public static string TourExportsFormatString {
-            get {
-                return ResourceManager.GetString("TourExportsFormatString", resourceCulture);
             }
         }
         

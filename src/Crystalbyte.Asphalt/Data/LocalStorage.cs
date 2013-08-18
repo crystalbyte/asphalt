@@ -5,7 +5,6 @@ using System.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,8 +16,7 @@ using Windows.Storage;
 namespace Crystalbyte.Asphalt.Data {
     [Export, Shared]
     public sealed class LocalStorage {
-        public const string ImagePath = "Images";
-        public const string SharedTransfers = "/shared/transfers";
+        private const string ImagePath = "Images";
 
         [Import]
         public Channels Channels { get; set; }
@@ -43,31 +41,7 @@ namespace Crystalbyte.Asphalt.Data {
             }
         }
 
-        public async Task DeleteExportAsync(string name) {
-            var local = ApplicationData.Current.LocalFolder;
-            var shared = await local.GetFolderAsync("shared");
-            var transfers = await shared.GetFolderAsync("transfers");
-            var file = await transfers.GetFileAsync(name);
-            await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
-        }
-
-        public async Task SaveExportAsync(string name, string text) {
-            var local = ApplicationData.Current.LocalFolder;
-            var shared = await local.GetFolderAsync("shared");
-            var transfers = await shared.GetFolderAsync("transfers");
-            var file = await transfers.CreateFileAsync(name);
-
-            var bytes = Encoding.UTF8.GetBytes(text);
-            using (var sw = await file.OpenStreamForWriteAsync()) {
-                await sw.WriteAsync(bytes, 0, bytes.Length);
-
-                // Manually dispose stream, due to possible framework issue.
-                // http://social.msdn.microsoft.com/Forums/windowsapps/en-US/de83d7b1-2ef2-4e45-8e0c-a7334ecf1ee8/unauthorizedaccessexception-when-usig-storagefoldercreatefileasync-in-windows-8
-                sw.Dispose();
-            }
-        }
-
-        public async Task SaveImageAsync(string name, Stream stream) {
+        public async Task StoreImageAsync(string name, Stream stream) {
             try {
                 var local = ApplicationData.Current.LocalFolder;
                 var imageFolder = await local.GetFolderAsync(ImagePath);
