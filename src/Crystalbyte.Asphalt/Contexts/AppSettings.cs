@@ -100,6 +100,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 Save();
 
                 Debug.WriteLine("{0} = {1}", name, value);
+                OnSettingsChanged(EventArgs.Empty);
             }
         }
 
@@ -136,6 +137,8 @@ namespace Crystalbyte.Asphalt.Contexts {
 
                 // This one is necessary to update all the distance labels from all tours.
                 App.Context.Tours.ForEach(x => x.UpdateUnitsOfLength());
+
+                OnSettingsChanged(EventArgs.Empty);
             }
         }
 

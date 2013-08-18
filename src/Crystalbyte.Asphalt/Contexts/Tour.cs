@@ -164,6 +164,45 @@ namespace Crystalbyte.Asphalt.Contexts {
             get { return new DateTime(StartTime.Year, StartTime.Month, 1); }
         }
 
+        public bool IsDataLoaded {
+            get { return Positions.Count > 0; }
+        }
+
+        public async Task LoadData() {
+            var id = Id;
+
+            var positions = await Channels.Database.Enqueue(
+                () => LocalStorage.DataContext.Positions
+                          .Where(x => x.TourId == id)
+                          .Select(x => x)
+                          .OrderBy(x => x.TimeStamp)
+                          .ToArray());
+
+            Positions.Clear();
+            Positions.AddRange(positions);
+            OnPositionsRestored(EventArgs.Empty);
+        }
+
+        public ObservableCollection<Position> Positions { get; private set; }
+
+        public ObservableCollection<Vehicle> Vehicles {
+            get { return AppContext.Vehicles; }
+        }
+
+        public IEnumerable<TourType> TourTypeSource {
+            get { return Enum.GetValues(typeof (TourType)).OfType<TourType>(); }
+        }
+
+        public Vehicle ActiveVehicle {
+            get { return App.Context.Vehicles.FirstOrDefault(x => x.Id == VehicleId); }
+        }
+
+        public Driver ActiveDriver {
+            get { return App.Context.Drivers.FirstOrDefault(x => x.Id == DriverId); }
+        }
+
+        public Route CachedRoute { get; set; }
+
         [DataMember]
         public double DestinationLongitude {
             get { return _destinationLongitude; }
@@ -219,8 +258,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [DataMember]
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity")]
+        [DataMember, Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity")]
         public int Id {
             get { return _id; }
             set {
@@ -234,8 +272,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [DataMember]
-        [Column(CanBeNull = false)]
+        [DataMember, Column(CanBeNull = false)]
         public Guid UniqueId {
             get { return _uniqueId; }
             set {
@@ -249,6 +286,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
+        [DataExport]
         [DataMember, Column(CanBeNull = false)]
         public DateTime StartTime {
             get { return _startTime; }
@@ -263,6 +301,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
+        [DataExport]
         [DataMember, Column(CanBeNull = true)]
         public DateTime? StopTime {
             get { return _stopTime; }
@@ -277,29 +316,19 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        public bool IsDataLoaded {
-            get { return Positions.Count > 0; }
+        [DataExport]
+        public string Driver {
+            get { return ActiveDriver != null ? ActiveDriver.Fullname : "Unknown driver"; }
         }
 
-        public async Task LoadData() {
-            var id = Id;
-
-            var positions = await Channels.Database.Enqueue(
-                () => LocalStorage.DataContext.Positions
-                          .Where(x => x.TourId == id)
-                          .Select(x => x)
-                          .OrderBy(x => x.TimeStamp)
-                          .ToArray());
-
-            Positions.Clear();
-            Positions.AddRange(positions);
-            OnPositionsRestored(EventArgs.Empty);
+        [DataExport]
+        public string Vehicle {
+            get { return ActiveVehicle != null ? ActiveVehicle.LicencePlate : "Unknown vehicle"; }
         }
 
-        public ObservableCollection<Position> Positions { get; private set; }
-
-        public ObservableCollection<Vehicle> Vehicles {
-            get { return AppContext.Vehicles; }
+        [DataExport]
+        public double FinalMileage {
+            get { return InitialMileage + Distance; }
         }
 
         [DataMember, Column(CanBeNull = false)]
@@ -316,6 +345,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
+        [DataExport]
         [DataMember, Column(CanBeNull = true)]
         public string Origin {
             get { return _origin; }
@@ -358,6 +388,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
+        [DataExport]
         [DataMember, Column(CanBeNull = true)]
         public string Reason {
             get { return _reason; }
@@ -373,6 +404,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
+        [DataExport]
         [DataMember, Column(CanBeNull = true)]
         public string Destination {
             get { return _destination; }
@@ -392,6 +424,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// <summary>
         ///   Gets or sets the accumulated distance of all recorded waypoints.
         /// </summary>
+        [DataExport]
         [DataMember, Column(CanBeNull = false)]
         public double Distance {
             get { return _distance; }
@@ -410,6 +443,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// <summary>
         ///   Gets or sets the inital mileage of the car on tour start.
         /// </summary>
+        [DataExport]
         [DataMember, Column(CanBeNull = false)]
         public double InitialMileage {
             get { return _initialMileage; }
@@ -421,6 +455,21 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => InitialMileage);
                 _initialMileage = value;
                 RaisePropertyChanged(() => InitialMileage);
+            }
+        }
+
+        [DataExport]
+        [DataMember, Column(DbType = "TINYINT NOT NULL")]
+        public TourType Type {
+            get { return _type; }
+            set {
+                if (_type == value) {
+                    return;
+                }
+                RaisePropertyChanging(() => Type);
+                _type = value;
+                RaisePropertyChanged(() => Type);
+                CommitChanges();
             }
         }
 
@@ -452,45 +501,12 @@ namespace Crystalbyte.Asphalt.Contexts {
             Distance = distance;
         }
 
-        [DataMember, Column(DbType = "TINYINT NOT NULL")]
-        public TourType Type {
-            get { return _type; }
-            set {
-                if (_type == value) {
-                    return;
-                }
-                RaisePropertyChanging(() => Type);
-                _type = value;
-                RaisePropertyChanged(() => Type);
-                CommitChanges();
-            }
-        }
-
-        public Vehicle ActiveVehicle {
-            get { return App.Context.Vehicles.FirstOrDefault(x => x.Id == VehicleId); }
-        }
-
-        public Driver ActiveDriver {
-            get { return App.Context.Drivers.FirstOrDefault(x => x.Id == DriverId); }
-        }
-
-        private void CommitChanges() {
-            Channels.Database.Enqueue(() =>
-                                      LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
-        }
-
-        public IEnumerable<TourType> TourTypeSource {
-            get { return Enum.GetValues(typeof (TourType)).OfType<TourType>(); }
-        }
-
-        public Route CachedRoute { get; set; }
-
         public void UpdateUnitsOfLength() {
             RaisePropertyChanged(() => Distance);
         }
 
-        public double FinalMileage {
-            get { return InitialMileage + Distance; }
+        private void CommitChanges() {
+            Channels.Database.Enqueue(() => LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
         }
     }
 }

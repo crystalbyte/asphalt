@@ -1,6 +1,7 @@
 ﻿#region Using directives
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Data;
 using Crystalbyte.Asphalt.Contexts;
@@ -18,21 +19,24 @@ namespace Crystalbyte.Asphalt.Converters {
         #region Implementation of IValueConverter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            if (AppSettings.UnitOfLength == UnitOfLength.Kilometer) {
+            if (DesignerProperties.IsInDesignTool) {
                 return value;
             }
 
             var v = (double) value;
-            return Math.Round(v*MileRatio, 1);
+
+            return AppSettings.UnitOfLength == UnitOfLength.Kilometer
+                       ? Math.Round(v, 1)
+                       : Math.Round(v*MileRatio, 1);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-            if (AppSettings.UnitOfLength == UnitOfLength.Kilometer) {
-                return value;
-            }
 
-            var v = (double) value;
-            return Math.Round(v/MileRatio, 1);
+            var v = double.Parse((string)value);
+
+            return AppSettings.UnitOfLength == UnitOfLength.Kilometer
+                       ? Math.Round(v, 1)
+                       : Math.Round(v/MileRatio, 1);
         }
 
         #endregion

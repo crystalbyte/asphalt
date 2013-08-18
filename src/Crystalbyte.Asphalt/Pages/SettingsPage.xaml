@@ -8,7 +8,7 @@
                             xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
                             FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}"
                             Foreground="{StaticResource PhoneForegroundBrush}" Orientation="Portrait" SupportedOrientations="Portrait"
-                            d:DataContext="{d:DesignInstance Type=contexts:AppSettings}" shell:SystemTray.IsVisible="True" mc:Ignorable="d">
+                            d:DataContext="{d:DesignInstance contexts:AppSettings}" shell:SystemTray.IsVisible="True" mc:Ignorable="d">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>

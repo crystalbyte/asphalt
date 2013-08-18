@@ -1,0 +1,3 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=699E938E_002DB0DA_002D43C9_002DA5DD_002D8F55A3D722EB_002Fd_003AProperties_002Ff_003AWMAppManifest_002Exml/@EntryIndexedValue">699E938E-B0DA-43C9-A5DD-8F55A3D722EB/d:Properties/f:WMAppManifest.xml</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/INITIALIZER_BRACES/@EntryValue">END_OF_LINE</s:String></wpf:ResourceDictionary>

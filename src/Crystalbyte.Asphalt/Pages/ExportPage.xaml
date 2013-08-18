@@ -1,17 +1,14 @@
 ﻿<phone:PhoneApplicationPage x:Class="Crystalbyte.Asphalt.Pages.ExportPage"
                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:contexts="clr-namespace:Crystalbyte.Asphalt.Contexts"
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-                            FontFamily="{StaticResource PhoneFontFamilyNormal}"
-                            FontSize="{StaticResource PhoneFontSizeNormal}"
-                            Foreground="{StaticResource PhoneForegroundBrush}"
-                            Orientation="Portrait"
-                            SupportedOrientations="Portrait"
-                            shell:SystemTray.IsVisible="True"
-                            mc:Ignorable="d">
+                            xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+                            FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}"
+                            Foreground="{StaticResource PhoneForegroundBrush}" Orientation="Portrait" SupportedOrientations="Portrait"
+                            d:DataContext="{d:DesignInstance contexts:ExportContext}" shell:SystemTray.IsVisible="True" mc:Ignorable="d">
 
 
     <!--  LayoutRoot is the root grid where all page content is placed  -->
@@ -26,17 +23,67 @@
 
         <!--  TitlePanel contains the name of the application and page title  -->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding LocalizedResources.ApplicationTitleCapital, Source={StaticResource LocalizedStrings}}" />
-            <TextBlock Margin="9,-7,0,0"
-                       Style="{StaticResource PhoneTextTitle1Style}"
+            <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                       Text="{Binding LocalizedResources.ApplicationTitleCapital, Source={StaticResource LocalizedStrings}}" />
+            <TextBlock Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"
                        Text="{Binding LocalizedResources.ExportPageTitle,
                                       Source={StaticResource LocalizedStrings}}" />
         </StackPanel>
 
         <!--  ContentPanel - place additional content here  -->
-        <Grid x:Name="ContentPanel"
-              Grid.Row="1"
-              Margin="12,0,12,0" />
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <StackPanel
+                Visibility="{Binding ExportState, Converter={StaticResource ExportStateToVisibilityConverter}, ConverterParameter=!}">
+                <TextBlock Margin="12,24,0,6" Style="{StaticResource PhoneTextNormalStyle}"
+                           Text="{Binding ExportState,
+                                          Converter={StaticResource ExportStateToTextConverter}}" />
+                <ProgressBar Value="{Binding Progress}" />
+            </StackPanel>
+            <StackPanel Visibility="{Binding ExportState, Converter={StaticResource ExportStateToVisibilityConverter}}">
+                <toolkit:ListPicker x:Name="FormatPicker"
+                                    Header="{Binding LocalizedResources.ExportFormatLabel,
+                                                     Source={StaticResource LocalizedStrings}}"
+                                    ItemsSource="{Binding ExportSerializers}"
+                                    SelectedItem="{Binding SelectedSerializer,
+                                                           Mode=TwoWay}"
+                                    SelectionMode="Single">
+                    <toolkit:ListPicker.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" />
+                        </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                </toolkit:ListPicker>
+                <toolkit:ListPicker x:Name="StrategyPicker"
+                                    Header="{Binding LocalizedResources.ExportDestinationLabel,
+                                                     Source={StaticResource LocalizedStrings}}"
+                                    ItemsSource="{Binding ExportStrategies}"
+                                    SelectedItem="{Binding SelectedStrategy,
+                                                           Mode=TwoWay}"
+                                    SelectionMode="Single">
+                    <toolkit:ListPicker.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" />
+                        </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                </toolkit:ListPicker>
+                <TextBlock Margin="12,24,0,0" Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding LocalizedResources.DriverLabel,
+                                          Source={StaticResource LocalizedStrings}}" />
+                <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding ActiveDriver.Fullname}" />
+
+                <TextBlock Margin="12,12,0,0" Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding LocalizedResources.VehicleLabel,
+                                          Source={StaticResource LocalizedStrings}}" />
+                <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding ActiveVehicle.LicencePlate}" />
+
+                <TextBlock Margin="12,24,0,0" Style="{StaticResource PhoneTextAccentStyle}"
+                           Text="{Binding TourExports,
+                                          Converter={StaticResource TourExportsFormatter}}" />
+                <Button Command="{Binding StartExportCommand}"
+                        Content="{Binding LocalizedResources.StartExportButtonText, Source={StaticResource LocalizedStrings}}" />
+            </StackPanel>
+
+        </Grid>
     </Grid>
 
 </phone:PhoneApplicationPage>
