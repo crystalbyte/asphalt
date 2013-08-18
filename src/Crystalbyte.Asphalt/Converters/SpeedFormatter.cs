@@ -1,6 +1,7 @@
 ﻿#region Using directives
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Data;
 using Crystalbyte.Asphalt.Contexts;
@@ -18,6 +19,9 @@ namespace Crystalbyte.Asphalt.Converters {
         #region Implementation of IValueConverter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+            if (DesignerProperties.IsInDesignTool) {
+                return value;
+            }
             if (value == null) {
                 return null;
             }
