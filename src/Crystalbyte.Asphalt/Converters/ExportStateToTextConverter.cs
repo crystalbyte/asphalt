@@ -23,8 +23,6 @@ namespace Crystalbyte.Asphalt.Converters {
                     return AppResources.ExportStateUploadingText;
                 case ExportState.Completed:
                     return AppResources.ExportStateCompletedText;
-                case ExportState.CompletedWithErrors:
-                    return AppResources.ExportStateCompletedWithErrorsText;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

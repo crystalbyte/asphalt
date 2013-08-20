@@ -6,13 +6,13 @@
         Business = 0,
 
         /// <summary>
-        ///   Private denotes a non work releated trip.
-        /// </summary>
-        Private,
-
-        /// <summary>
         ///   Commute denotes the trip from home to work and vice versa.
         /// </summary>
-        Commute
+        Commute,
+
+        /// <summary>
+        ///   Private denotes a non work releated trip.
+        /// </summary>
+        Private
     }
 }

@@ -22,7 +22,6 @@ namespace Crystalbyte.Asphalt.Converters {
                 case ExportState.Collecting:
                 case ExportState.Uploading:
                 case ExportState.Completed:
-                case ExportState.CompletedWithErrors:
                     return inverse ? Visibility.Visible : Visibility.Collapsed;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
+using System.Threading.Tasks;
 
 #endregion
 
@@ -16,12 +17,10 @@ namespace Crystalbyte.Asphalt.Contexts {
     [DataContract, Table]
     public sealed class Driver : BindingModelBase<Driver> {
         private int _id;
-        private string _imagePath;
+        private string _imageName;
         private ImageSource _image;
-        private bool _hasImage;
         private string _forename;
         private string _surname;
-        private string _isDefault;
         private DateTime _selectionTime;
 
         public Driver() {
@@ -59,30 +58,18 @@ namespace Crystalbyte.Asphalt.Contexts {
                 .Show(AppResources.ForenameNotNullOrEmpty);
         }
 
-        private async void DeleteCurrentImageAsync() {
-            await LocalStorage.DeleteImageAsync(ImagePath);
-        }
-
-        public async void RestoreImageFromPath() {
-            var stream = await LocalStorage.GetImageStreamAsync(ImagePath);
-
-            SmartDispatcher.InvokeAsync(() => {
-                                            var image = new BitmapImage();
-                                            image.SetSource(stream);
-                                            Image = image;
-                                        });
+        public async Task RestoreImageAsync() {
+            if (string.IsNullOrWhiteSpace(ImageName)) {
+                return;
+            }
+            var stream = await LocalStorage.GetImageStreamAsync(ImageName);
+            var image = new BitmapImage();
+            image.SetSource(stream);
+            Image = image;
         }
 
         public bool HasImage {
-            get { return _hasImage; }
-            set {
-                if (_hasImage == value) {
-                    return;
-                }
-                RaisePropertyChanging(() => HasImage);
-                _hasImage = value;
-                RaisePropertyChanged(() => HasImage);
-            }
+            get { return _image != null; }
         }
 
         public string Fullname {
@@ -111,34 +98,24 @@ namespace Crystalbyte.Asphalt.Contexts {
                     return;
                 }
                 RaisePropertyChanging(() => Image);
+                RaisePropertyChanging(() => HasImage);
                 _image = value;
                 RaisePropertyChanged(() => Image);
-                HasImage = _image != null;
+                RaisePropertyChanged(() => HasImage);
             }
         }
 
         [Column, DataMember]
-        public string ImagePath {
-            get { return _imagePath; }
+        public string ImageName {
+            get { return _imageName; }
             set {
-                if (_imagePath == value) {
+                if (_imageName == value) {
                     return;
                 }
 
-                if (!string.IsNullOrWhiteSpace(_imagePath)) {
-                    DeleteCurrentImageAsync();
-                }
-
-                RaisePropertyChanging(() => ImagePath);
-                _imagePath = value;
-                RaisePropertyChanged(() => ImagePath);
-
-                if (string.IsNullOrWhiteSpace(value)) {
-                    Image = null;
-                }
-                else {
-                    RestoreImageFromPath();
-                }
+                RaisePropertyChanging(() => ImageName);
+                _imageName = value;
+                RaisePropertyChanged(() => ImageName);
             }
         }
 
@@ -183,22 +160,8 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [Column, DataMember]
-        public string IsDefault {
-            get { return _isDefault; }
-            set {
-                if (_isDefault == value) {
-                    return;
-                }
-                RaisePropertyChanging(() => IsDefault);
-                _isDefault = value;
-                RaisePropertyChanged(() => IsDefault);
-            }
-        }
-
-        public void CommitChanges() {
-            Channels.Database.Enqueue(() =>
-                                      LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+        public async void CommitChanges() {
+            await Channels.Database.Enqueue(() => LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
         }
 
         public void InvalidateSelection() {
@@ -207,8 +170,7 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         public bool IsSelected {
             get {
-                return AppContext.Drivers
-                           .Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this;
+                return AppContext.Drivers.Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this;
             }
         }
 

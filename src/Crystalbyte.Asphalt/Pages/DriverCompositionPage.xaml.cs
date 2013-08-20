@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -11,6 +12,7 @@ using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
+using System.Windows.Media.Imaging;
 
 #endregion
 
@@ -19,7 +21,6 @@ namespace Crystalbyte.Asphalt.Pages {
         private const string DriverStateKey = "driver";
         private bool _isNewPageInstance;
         private readonly PhotoChooserTask _photoChooser;
-        private string _chosenPhotoName;
 
         public DriverCompositionPage() {
             InitializeComponent();
@@ -29,7 +30,7 @@ namespace Crystalbyte.Asphalt.Pages {
                 return;
             }
 
-            _photoChooser = new PhotoChooserTask {ShowCamera = true, PixelHeight = 200, PixelWidth = 200};
+            _photoChooser = new PhotoChooserTask { ShowCamera = true, PixelHeight = 200, PixelWidth = 200 };
             _photoChooser.Completed += OnPhotoChooserTaskCompleted;
 
             _isNewPageInstance = true;
@@ -65,7 +66,7 @@ namespace Crystalbyte.Asphalt.Pages {
         ///   Gets or sets the current datacontext as a vehicle.
         /// </summary>
         public Driver Driver {
-            get { return (Driver) DataContext; }
+            get { return (Driver)DataContext; }
             set { DataContext = value; }
         }
 
@@ -75,9 +76,13 @@ namespace Crystalbyte.Asphalt.Pages {
             if (e.NavigationMode == NavigationMode.New) {
                 State[DriverStateKey] = Driver;
             }
+
+            if (e.NavigationMode == NavigationMode.Back) {
+                DriverSelectionSource.Selection = null;
+            }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e) {
+        protected async override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
             if (e.NavigationMode == NavigationMode.New) {
@@ -85,17 +90,13 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             if (_isNewPageInstance && Driver == null) {
-                var driver = (Driver) State[DriverStateKey];
+                var driver = (Driver)State[DriverStateKey];
                 DriverSelectionSource.Selection = driver;
                 Driver = driver;
             }
 
-            if (_chosenPhotoName != null) {
-                Driver.ImagePath = _chosenPhotoName;
-            }
-
-            if (Driver.Image == null && Driver.ImagePath != null) {
-                Driver.RestoreImageFromPath();
+            if (Driver.Image == null && Driver.ImageName != null) {
+                await Driver.RestoreImageAsync();
             }
 
             this.UpdateApplicationBar();
@@ -123,7 +124,7 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             SmartDispatcher.InvokeAsync(() =>
-                                        HandleChosenPhoto(e.OriginalFileName, e.ChosenPhoto));
+                HandleChosenPhoto(e.OriginalFileName, e.ChosenPhoto));
         }
 
         private async void HandleChosenPhoto(string name, Stream data) {
@@ -131,17 +132,35 @@ namespace Crystalbyte.Asphalt.Pages {
                 return;
             }
 
-            _chosenPhotoName = Guid.NewGuid().ToString();
-            await LocalStorage.SaveImageAsync(_chosenPhotoName, data);
+            // Delete obsolete image.
+            if (!string.IsNullOrWhiteSpace(Driver.ImageName)) {
+                await LocalStorage.DeleteImageAsync(Driver.ImageName);
+                Driver.Image = null;
+            }
+
+            var image = new BitmapImage();
+            image.SetSource(data);
+            Driver.Image = image;
+
+            // rewind stream
+            data.Position = 0;
+
+            Driver.ImageName = Guid.NewGuid().ToString();
+            await LocalStorage.SaveImageAsync(Driver.ImageName, data);
+        }
+
+        private void OnTextBoxGotFocus(object sender, RoutedEventArgs e) {
+            var textbox = (TextBox)sender;
+            textbox.Select(0, textbox.Text.Length);
         }
 
         private void OnForenameChanged(object sender, TextChangedEventArgs e) {
-            var textbox = (TextBox) sender;
+            var textbox = (TextBox)sender;
             Driver.Forename = textbox.Text;
         }
 
         private void OnSurnameChanged(object sender, TextChangedEventArgs e) {
-            var textbox = (TextBox) sender;
+            var textbox = (TextBox)sender;
             Driver.Surname = textbox.Text;
         }
     }

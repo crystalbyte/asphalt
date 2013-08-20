@@ -6,7 +6,7 @@
     <Language code="de" />
   </Languages>
   <App xmlns="" ProductID="{699e938e-b0da-43c9-a5dd-8f55a3d722eb}" Title="Asphalt" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Asphalt author" Description="Sample description" Publisher="Asphalt" PublisherID="{9c991d62-6df3-40b1-b911-9ea30cba06c4}">
-    <IconPath IsRelative="true" IsResource="false">Assets/ApplicationIcon.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_MEDIALIB_PHOTO" />
@@ -25,9 +25,9 @@
     <Tokens>
       <PrimaryToken TokenID="AsphaltToken" TaskName="_default">
         <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">Assets/Tiles/FlipCycleTileSmall.png</SmallImageURI>
+          <SmallImageURI IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Assets/Tiles/FlipCycleTileMedium.png</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</BackgroundImageURI>
           <Title>Asphalt</Title>
           <BackContent>
           </BackContent>

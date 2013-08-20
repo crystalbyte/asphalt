@@ -15,7 +15,7 @@ using Microsoft.Phone.Shell;
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof (IAppBarMenuCommand))]
+    [Export(typeof(IAppBarMenuCommand))]
     public sealed class DeleteVehicleCommand : IAppBarMenuCommand {
         [Import]
         public AppContext AppContext { get; set; }
@@ -99,23 +99,30 @@ namespace Crystalbyte.Asphalt.Commands {
 
             var vehicle = VehicleSelectionSource.Selection;
 
+            if (!string.IsNullOrWhiteSpace(vehicle.ImageName)) {
+                await LocalStorage.DeleteImageAsync(vehicle.ImageName);
+            }
+
             await Channels.Database.Enqueue(() => {
-                                                LocalStorage.DataContext.Vehicles.DeleteOnSubmit(vehicle);
-                                                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-                                            });
+                LocalStorage.DataContext.Vehicles.DeleteOnSubmit(vehicle);
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            });
 
             OnDeletionCompleted(EventArgs.Empty);
 
             Debug.WriteLine("Selected vehicle has been successfully deleted.");
 
-            var page = Navigator.GetCurrentPage<VehicleCompositionPage>();
-            if (page == null)
+            // Command was invoked from the LandingPage.
+            var page = Navigator.GetCurrentPage<LandingPage>();
+            if (page != null) {
+                page.UpdateApplicationBar();
                 return;
+            }
 
+            // Command was invoked from the VehicleCompositionPage.
             if (Navigator.Frame.CanGoBack) {
                 Navigator.Frame.GoBack();
-            }
-            else {
+            } else {
                 Navigator.Navigate<LandingPage>();
             }
         }

@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Commands;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
@@ -29,6 +28,7 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             AppContext = App.Context;
+            AppContext.DataUpdated += (sender, e) => this.UpdateApplicationBar();
             AppContext.SelectionEnabledChanged += AppContextOnSelectionEnabledChanged;
         }
 
@@ -77,10 +77,6 @@ namespace Crystalbyte.Asphalt.Pages {
 
         public DriverSelectionSource DriverSelectionSource {
             get { return App.Composition.GetExport<DriverSelectionSource>(); }
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e) {
-            this.UpdateApplicationBar();
         }
 
         private void OnDeleteTourMenuItemClicked(object sender, RoutedEventArgs e) {
@@ -156,12 +152,22 @@ namespace Crystalbyte.Asphalt.Pages {
             }
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e) {
+             base.OnNavigatedTo(e);
+            this.UpdateApplicationBar();
+        }
+
         public void OnPanoramaSelectionChanged(object sender, SelectionChangedEventArgs e) {
             var panorama = (Panorama) sender;
 
             var first = e.AddedItems.Cast<PanoramaItem>().FirstOrDefault();
             if (first != null) {
                 PanoramaIndex = panorama.Items.IndexOf(first);
+            }
+
+            // Vehicles
+            if (PanoramaIndex == 2) {
+                AppContext.Vehicles.ForEach(x => x.UpdateChartsAsync());
             }
 
             this.UpdateApplicationBar();

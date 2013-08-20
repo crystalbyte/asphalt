@@ -16,7 +16,7 @@ using Microsoft.Phone.Shell;
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof (IAppBarMenuCommand))]
+    [Export(typeof(IAppBarMenuCommand))]
     public sealed class DeleteTourCommand : IAppBarMenuCommand {
         [Import]
         public AppContext AppContext { get; set; }
@@ -108,22 +108,23 @@ namespace Crystalbyte.Asphalt.Commands {
             var tours = TourSelectionSource.Selections;
 
             await Channels.Database.Enqueue(() => {
-                                                LocalStorage.DataContext.Tours.DeleteAllOnSubmit(tours);
-                                                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-                                            });
+                LocalStorage.DataContext.Tours.DeleteAllOnSubmit(tours);
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            });
 
             OnDeletionCompleted(EventArgs.Empty);
 
             Debug.WriteLine("Selected tours have been successfully deleted.");
 
-            var page = Navigator.GetCurrentPage<TourDetailsPage>();
-            if (page == null)
+            var page = Navigator.GetCurrentPage<LandingPage>();
+            if (page != null) {
+                page.UpdateApplicationBar();
                 return;
+            }
 
             if (Navigator.Frame.CanGoBack) {
                 Navigator.Frame.GoBack();
-            }
-            else {
+            } else {
                 Navigator.Navigate<LandingPage>();
             }
         }

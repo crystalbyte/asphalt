@@ -9,8 +9,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Crystalbyte.Asphalt.Commands;
 using Crystalbyte.Asphalt.Data;
+using Crystalbyte.Asphalt.Resources;
 
 #endregion
 
@@ -20,21 +22,19 @@ namespace Crystalbyte.Asphalt.Contexts {
         private IExportStrategy _selectedStrategy;
         private IExportSerializer _selectedSerializer;
         private ExportState _exportState;
-        private Exception _exception;
         private double _progress;
 
         public ExportContext() {
-            StartExportCommand = new RelayCommand
-                                     {
-                                         CanExecuteCallback = OnStartExportCommandCanExecute,
-                                         ExecuteCallback = OnStartExportCommandExecute
-                                     };
+            StartExportCommand = new RelayCommand {
+                CanExecuteCallback = OnStartExportCommandCanExecute,
+                ExecuteCallback = OnStartExportCommandExecute
+            };
 
             TourExports = new ObservableCollection<Tour>();
             TourExports.CollectionChanged += (sender, e) => {
-                                                 RaisePropertyChanged(() => TourExports);
-                                                 StartExportCommand.OnCanExecuteChanged(EventArgs.Empty);
-                                             };
+                RaisePropertyChanged(() => TourExports);
+                StartExportCommand.OnCanExecuteChanged(EventArgs.Empty);
+            };
 
             ExportStateChanged += (sender, e) => StartExportCommand.OnCanExecuteChanged(EventArgs.Empty);
         }
@@ -70,12 +70,12 @@ namespace Crystalbyte.Asphalt.Contexts {
             var exports = new Dictionary<string, string>();
 
             foreach (var property in properties) {
-                var attributes = property.GetCustomAttributes(typeof (DataExportAttribute), true);
+                var attributes = property.GetCustomAttributes(typeof(DataExportAttribute), true);
                 if (attributes.Length == 0) {
                     continue;
                 }
 
-                var attribute = (DataExportAttribute) attributes.First();
+                var attribute = (DataExportAttribute)attributes.First();
                 var key = property.Name;
                 var value = string.Format(attribute.Format, property.GetValue(data));
                 exports.Add(key, value);
@@ -139,24 +139,9 @@ namespace Crystalbyte.Asphalt.Contexts {
                 ExportState = ExportState.Completed;
             }
             catch (Exception ex) {
-                Exception = ex;
-            }
-        }
-
-        public Exception Exception {
-            get { return _exception; }
-            set {
-                if (_exception == value) {
-                    return;
-                }
-
-                RaisePropertyChanging(() => Exception);
-                _exception = value;
-                RaisePropertyChanged(() => Exception);
-
-                if (value != null) {
-                    ExportState = ExportState.CompletedWithErrors;
-                }
+                var caption = AppResources.ErrorExportingDataCaption;
+                MessageBox.Show(ex.Message, caption, MessageBoxButton.OK);
+                ExportState = ExportState.Idle;
             }
         }
 

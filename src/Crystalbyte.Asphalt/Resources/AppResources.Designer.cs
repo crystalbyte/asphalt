@@ -142,6 +142,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Business.
+        /// </summary>
+        public static string Business {
+            get {
+                return ResourceManager.GetString("Business", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to cancel.
         /// </summary>
         public static string CancelButtonText {
@@ -165,6 +174,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string CommitSettingsButtonText {
             get {
                 return ResourceManager.GetString("CommitSettingsButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commute.
+        /// </summary>
+        public static string Commute {
+            get {
+                return ResourceManager.GetString("Commute", resourceCulture);
             }
         }
         
@@ -286,7 +304,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do not change these values unless you know exactly what you&apos;re doing. Incorrect settings may decrease accuracy or impair functionality..
+        ///   Looks up a localized string similar to Do not change the values below unless you know exactly what you&apos;re doing. Incorrect settings may decrease accuracy or impair functionality..
         /// </summary>
         public static string DoNotChangeText {
             get {
@@ -340,38 +358,11 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to delete image.
+        ///   Looks up a localized string similar to Unable to export data.
         /// </summary>
-        public static string ErrorDeletingImageCaption {
+        public static string ErrorExportingDataCaption {
             get {
-                return ResourceManager.GetString("ErrorDeletingImageCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to load image.
-        /// </summary>
-        public static string ErrorLoadingImageCaption {
-            get {
-                return ResourceManager.GetString("ErrorLoadingImageCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to save file.
-        /// </summary>
-        public static string ErrorSavingFileCaption {
-            get {
-                return ResourceManager.GetString("ErrorSavingFileCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to save image.
-        /// </summary>
-        public static string ErrorStoringImageCaption {
-            get {
-                return ResourceManager.GetString("ErrorStoringImageCaption", resourceCulture);
+                return ResourceManager.GetString("ErrorExportingDataCaption", resourceCulture);
             }
         }
         
@@ -448,15 +439,6 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload failed.
-        /// </summary>
-        public static string ExportStateCompletedWithErrorsText {
-            get {
-                return ResourceManager.GetString("ExportStateCompletedWithErrorsText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Uploading ....
         /// </summary>
         public static string ExportStateUploadingText {
@@ -516,15 +498,6 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string InsufficientDataMessage {
             get {
                 return ResourceManager.GetString("InsufficientDataMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Kilometres.
-        /// </summary>
-        public static string KilometreLabel {
-            get {
-                return ResourceManager.GetString("KilometreLabel", resourceCulture);
             }
         }
         
@@ -633,6 +606,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string OriginLabel {
             get {
                 return ResourceManager.GetString("OriginLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private.
+        /// </summary>
+        public static string Private {
+            get {
+                return ResourceManager.GetString("Private", resourceCulture);
             }
         }
         

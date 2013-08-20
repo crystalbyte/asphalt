@@ -17,6 +17,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         private bool _isSelectionEnabled;
         private bool _isMovementDetectionEnabled;
         private SetupState _setupState;
+        private bool _suppressEvents;
 
         [Import]
         public Channels Channels { get; set; }
@@ -62,15 +63,21 @@ namespace Crystalbyte.Asphalt.Contexts {
             Tours.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedTours);
 
             Vehicles = new ObservableCollection<Vehicle>();
-            Vehicles.CollectionChanged += (sender, e) => Debug.WriteLine("vchanged");
             Drivers = new ObservableCollection<Driver>();
-            Drivers.CollectionChanged += (sender, e) => Debug.WriteLine("dchanged");
         }
 
         public event EventHandler SetupStateChanged;
 
         public void OnSetupStateChanged(EventArgs e) {
             var handler = SetupStateChanged;
+            if (handler != null)
+                handler(this, e);
+        }
+
+        public event EventHandler DataUpdated;
+
+        public void OnDataUpdated(EventArgs e) {
+            var handler = DataUpdated;
             if (handler != null)
                 handler(this, e);
         }
@@ -230,13 +237,16 @@ namespace Crystalbyte.Asphalt.Contexts {
         ///   Creates and .
         /// </summary>
         public async void LoadData() {
+            _suppressEvents = true;
             await LoadToursAsync();
             await LoadVehiclesAsync();
             await LoadDriversAsync();
+            _suppressEvents = false;
 
             RefreshSelections();
             CheckSetupState();
             IsDataLoaded = true;
+            OnDataUpdated(EventArgs.Empty);
         }
 
         private async Task LoadDriversAsync() {
@@ -247,6 +257,10 @@ namespace Crystalbyte.Asphalt.Contexts {
                           .ToArray());
 
             Drivers.AddRange(drivers);
+            Drivers.ForEach(x => x.RestoreImageAsync());
+            if (!_suppressEvents) {
+                OnDataUpdated(EventArgs.Empty);
+            }
         }
 
         public async Task LoadToursAsync() {
@@ -258,6 +272,9 @@ namespace Crystalbyte.Asphalt.Contexts {
                           .ToArray());
 
             Tours.AddRange(tours);
+            if (!_suppressEvents) {
+                OnDataUpdated(EventArgs.Empty);
+            }
         }
 
         public async Task LoadVehiclesAsync() {
@@ -268,6 +285,10 @@ namespace Crystalbyte.Asphalt.Contexts {
                           .ToArray());
 
             Vehicles.AddRange(vehicles);
+            Vehicles.ForEach(x => x.RestoreImageAsync());
+            if (!_suppressEvents) {
+                OnDataUpdated(EventArgs.Empty);
+            }
         }
     }
 }

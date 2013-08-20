@@ -79,13 +79,13 @@
 
 
         <local:LocalizedStrings x:Key="LocalizedStrings" />
+        <converters:TourTypeLocalizer x:Key="TourTypeLocalizer" />
+        <converters:TourTypeToColorConverter x:Key="TourTypeToColorConverter" />
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:DistanceFormatter x:Key="DistanceFormatter" />
         <converters:SpeedFormatter x:Key="SpeedFormatter" />
         <converters:AngleFormatter x:Key="AngleFormatter" />
         <converters:NullTextConverter x:Key="NullTextConverter" />
-        <converters:MileageTextConverter x:Key="MileageTextConverter" />
-        <converters:TourTypeToColorConverter x:Key="TourTypeToColorConverter" />
         <converters:MathRoundDoubleConverter x:Key="MathRoundDoubleConverter" />
         <converters:MileageUnitConverter x:Key="MileageUnitConverter" />
         <converters:ExportStateToTextConverter x:Key="ExportStateToTextConverter" />
@@ -94,7 +94,6 @@
         <converters:BooleanToTextStyleConverter x:Key="BooleanToTextStyleConverter"
                                                 StyleForFalse="{StaticResource PhoneTextAccentStyle}"
                                                 StyleForTrue="{StaticResource PhoneTextSmallStyle}" />
-
 
     </Application.Resources>
 

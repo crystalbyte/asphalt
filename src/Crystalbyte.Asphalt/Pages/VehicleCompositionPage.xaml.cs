@@ -4,8 +4,11 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
@@ -19,7 +22,6 @@ namespace Crystalbyte.Asphalt.Pages {
         private const string VehicleStateKey = "vehicle";
         private bool _isNewPageInstance;
         private readonly PhotoChooserTask _photoChooser;
-        private string _chosenPhotoName;
 
         public VehicleCompositionPage() {
             InitializeComponent();
@@ -29,7 +31,7 @@ namespace Crystalbyte.Asphalt.Pages {
                 return;
             }
 
-            _photoChooser = new PhotoChooserTask {ShowCamera = true, PixelHeight = 200, PixelWidth = 200};
+            _photoChooser = new PhotoChooserTask { ShowCamera = true, PixelHeight = 200, PixelWidth = 200 };
             _photoChooser.Completed += OnPhotoChooserTaskCompleted;
 
             _isNewPageInstance = true;
@@ -70,7 +72,7 @@ namespace Crystalbyte.Asphalt.Pages {
         ///   Gets or sets the current datacontext as a vehicle.
         /// </summary>
         public Vehicle Vehicle {
-            get { return (Vehicle) DataContext; }
+            get { return (Vehicle)DataContext; }
             set { DataContext = value; }
         }
 
@@ -80,9 +82,13 @@ namespace Crystalbyte.Asphalt.Pages {
             if (e.NavigationMode == NavigationMode.New) {
                 State[VehicleStateKey] = Vehicle;
             }
+
+            if (e.NavigationMode == NavigationMode.Back) {
+                VehicleSelectionSource.Selection = null;
+            }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e) {
+        protected async override void OnNavigatedTo(NavigationEventArgs e) {
             base.OnNavigatedTo(e);
 
             if (e.NavigationMode == NavigationMode.New) {
@@ -90,18 +96,13 @@ namespace Crystalbyte.Asphalt.Pages {
             }
 
             if (_isNewPageInstance && Vehicle == null) {
-                var vehicle = (Vehicle) State[VehicleStateKey];
+                var vehicle = (Vehicle)State[VehicleStateKey];
                 VehicleSelectionSource.Selection = Vehicle;
                 Vehicle = vehicle;
             }
 
-            if (_chosenPhotoName != null) {
-                Vehicle.ImagePath = _chosenPhotoName;
-                _chosenPhotoName = null;
-            }
-
-            if (Vehicle.Image == null && Vehicle.ImagePath != null) {
-                Vehicle.RestoreImageFromPath();
+            if (Vehicle.Image == null && Vehicle.ImageName != null) {
+                await Vehicle.RestoreImageAsync();
             }
 
             this.UpdateApplicationBar();
@@ -128,8 +129,7 @@ namespace Crystalbyte.Asphalt.Pages {
                 return;
             }
 
-            SmartDispatcher.InvokeAsync(() =>
-                                        HandleChosenPhoto(e.OriginalFileName, e.ChosenPhoto));
+            SmartDispatcher.InvokeAsync(() => HandleChosenPhoto(e.OriginalFileName, e.ChosenPhoto));
         }
 
         private async void HandleChosenPhoto(string name, Stream data) {
@@ -137,18 +137,37 @@ namespace Crystalbyte.Asphalt.Pages {
                 return;
             }
 
-            _chosenPhotoName = Guid.NewGuid().ToString();
-            await LocalStorage.SaveImageAsync(_chosenPhotoName, data);
+            // Delete obsolete image.
+            if (!string.IsNullOrWhiteSpace(Vehicle.ImageName)) {
+                await LocalStorage.DeleteImageAsync(Vehicle.ImageName);
+                Vehicle.Image = null;
+            }
+
+
+            var image = new BitmapImage();
+            image.SetSource(data);
+            Vehicle.Image = image;
+
+            // rewind stream
+            data.Position = 0;
+
+            Vehicle.ImageName = Guid.NewGuid().ToString();
+            await LocalStorage.SaveImageAsync(Vehicle.ImageName, data);
         }
 
         private void OnNotesTextChanged(object sender, TextChangedEventArgs e) {
-            var textbox = (TextBox) sender;
+            var textbox = (TextBox)sender;
             Vehicle.Notes = textbox.Text;
         }
 
         private void OnLicencePlateTextChanged(object sender, TextChangedEventArgs e) {
-            var textbox = (TextBox) sender;
+            var textbox = (TextBox)sender;
             Vehicle.LicencePlate = textbox.Text;
+        }
+
+        private void OnTextBoxGotFocus(object sender, RoutedEventArgs e) {
+            var textbox = (TextBox)sender;
+            textbox.Select(0, textbox.Text.Length);
         }
     }
 }

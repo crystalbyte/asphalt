@@ -9,6 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
+using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 #endregion
 
@@ -19,9 +21,8 @@ namespace Crystalbyte.Asphalt.Contexts {
         private double _mileage;
         private string _licencePlate;
         private string _notes;
-        private string _imagePath;
+        private string _imageName;
         private ImageSource _image;
-        private bool _hasImage;
         private DateTime _selectionTime;
 
         public Vehicle() {
@@ -43,35 +44,30 @@ namespace Crystalbyte.Asphalt.Contexts {
             get { return App.Composition.GetExport<AppContext>(); }
         }
 
+        public ObservableCollection<VehicleUsage> UsageStatistics { get; private set; }
+
         [OnDeserialized]
         public void OnDeserialized(StreamingContext e) {
             Construct();
         }
 
-        private async void DeleteCurrentImageAsync() {
-            await LocalStorage.DeleteImageAsync(ImagePath);
-        }
-
-        public async void RestoreImageFromPath() {
-            var stream = await LocalStorage.GetImageStreamAsync(ImagePath);
-            if (stream == null || stream.Length == 0) {
+        public async Task RestoreImageAsync() {
+            if (string.IsNullOrWhiteSpace(ImageName)) {
                 return;
             }
-
-            SmartDispatcher.InvokeAsync(() => {
-                                            var image = new BitmapImage();
-                                            image.SetSource(stream);
-                                            Image = image;
-                                        });
+            var stream = await LocalStorage.GetImageStreamAsync(ImageName);
+            var image = new BitmapImage();
+            image.SetSource(stream);
+            Image = image;
         }
 
         public void CommitChanges() {
-            Channels.Database.Enqueue(() =>
-                                      LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+            Channels.Database.Enqueue(() => LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
         }
 
         private void Construct() {
             InitializeValidation();
+            UsageStatistics = new ObservableCollection<VehicleUsage>();
             AddValidationFor(() => LicencePlate)
                 .When(x => string.IsNullOrWhiteSpace(x.LicencePlate))
                 .Show(AppResources.LicencePlateNotNullOrEmpty);
@@ -82,15 +78,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public bool HasImage {
-            get { return _hasImage; }
-            set {
-                if (_hasImage == value) {
-                    return;
-                }
-                RaisePropertyChanging(() => HasImage);
-                _hasImage = value;
-                RaisePropertyChanged(() => HasImage);
-            }
+            get { return _image != null; }
         }
 
         public ImageSource Image {
@@ -99,10 +87,12 @@ namespace Crystalbyte.Asphalt.Contexts {
                 if (_image == value) {
                     return;
                 }
+
                 RaisePropertyChanging(() => Image);
+                RaisePropertyChanging(() => HasImage);
                 _image = value;
                 RaisePropertyChanged(() => Image);
-                HasImage = _image != null;
+                RaisePropertyChanged(() => HasImage);
             }
         }
 
@@ -122,27 +112,16 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         [Column(UpdateCheck = UpdateCheck.Never), DataMember]
-        public string ImagePath {
-            get { return _imagePath; }
+        public string ImageName {
+            get { return _imageName; }
             set {
-                if (_imagePath == value) {
+                if (_imageName == value) {
                     return;
                 }
 
-                if (!string.IsNullOrWhiteSpace(_imagePath)) {
-                    DeleteCurrentImageAsync();
-                }
-
-                RaisePropertyChanging(() => ImagePath);
-                _imagePath = value;
-                RaisePropertyChanged(() => ImagePath);
-
-                if (string.IsNullOrWhiteSpace(value)) {
-                    Image = null;
-                }
-                else {
-                    RestoreImageFromPath();
-                }
+                RaisePropertyChanging(() => ImageName);
+                _imageName = value;
+                RaisePropertyChanged(() => ImageName);
             }
         }
 
@@ -206,10 +185,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public bool IsSelected {
-            get {
-                return AppContext.Vehicles
-                           .Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this;
-            }
+            get { return AppContext.Vehicles.Aggregate((c, n) => c.SelectionTime > n.SelectionTime ? c : n) == this; }
         }
 
         public bool IsNew {
@@ -218,6 +194,19 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         public string PageHeaderText {
             get { return Id == 0 ? AppResources.AddVehiclePageTitle : LicencePlate; }
+        }
+
+        public async Task UpdateChartsAsync() {
+            UsageStatistics.Clear();
+            var statistics = await Channels.Database.Enqueue(() => LocalStorage.DataContext.Tours.Where(
+                x => x.VehicleId == Id).GroupBy(x => x.Type).
+                                                               Select(x => new VehicleUsage {
+                                                                   Type = x.Key,
+                                                                   Value = x.Count()
+                                                               }).ToArray());
+
+            UsageStatistics.AddRange(statistics);
+
         }
     }
 }

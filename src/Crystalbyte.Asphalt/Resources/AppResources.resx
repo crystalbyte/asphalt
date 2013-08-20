@@ -355,15 +355,6 @@
     <value>Keep track of all your routes.
 Start recordings manually or let Asphalt handle it for you.</value>
   </data>
-  <data name="ErrorDeletingImageCaption" xml:space="preserve">
-    <value>Unable to delete image</value>
-  </data>
-  <data name="ErrorLoadingImageCaption" xml:space="preserve">
-    <value>Unable to load image</value>
-  </data>
-  <data name="ErrorStoringImageCaption" xml:space="preserve">
-    <value>Unable to save image</value>
-  </data>
   <data name="CommitSettingsButtonText" xml:space="preserve">
     <value>commit</value>
   </data>
@@ -371,7 +362,7 @@ Start recordings manually or let Asphalt handle it for you.</value>
     <value>Danger zone</value>
   </data>
   <data name="DoNotChangeText" xml:space="preserve">
-    <value>Do not change these values unless you know exactly what you're doing. Incorrect settings may decrease accuracy or impair functionality.</value>
+    <value>Do not change the values below unless you know exactly what you're doing. Incorrect settings may decrease accuracy or impair functionality.</value>
   </data>
   <data name="EditSettingsButtonText" xml:space="preserve">
     <value>edit</value>
@@ -394,9 +385,6 @@ Start recordings manually or let Asphalt handle it for you.</value>
   <data name="SpeedThresholdLabel" xml:space="preserve">
     <value>Speed exceedance threshold</value>
   </data>
-  <data name="KilometreLabel" xml:space="preserve">
-    <value>Kilometres</value>
-  </data>
   <data name="MileageOnStartLabel" xml:space="preserve">
     <value>Mileage before</value>
   </data>
@@ -409,9 +397,6 @@ Start recordings manually or let Asphalt handle it for you.</value>
   <data name="ExportFormatLabel" xml:space="preserve">
     <value>File format</value>
   </data>
-  <data name="ErrorSavingFileCaption" xml:space="preserve">
-    <value>Unable to save file</value>
-  </data>
   <data name="ErrorUpdatingDatabase" xml:space="preserve">
     <value>Unable to update database</value>
   </data>
@@ -420,9 +405,6 @@ Start recordings manually or let Asphalt handle it for you.</value>
   </data>
   <data name="ExportStateCompletedText" xml:space="preserve">
     <value>Upload successfully completed</value>
-  </data>
-  <data name="ExportStateCompletedWithErrorsText" xml:space="preserve">
-    <value>Upload failed</value>
   </data>
   <data name="ExportStateUploadingText" xml:space="preserve">
     <value>Uploading ...</value>
@@ -441,5 +423,17 @@ Start recordings manually or let Asphalt handle it for you.</value>
   </data>
   <data name="TourExportsFormatString" xml:space="preserve">
     <value>There are {0} tours selected for export.</value>
+  </data>
+  <data name="Business" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="Commute" xml:space="preserve">
+    <value>Commute</value>
+  </data>
+  <data name="ErrorExportingDataCaption" xml:space="preserve">
+    <value>Unable to export data</value>
+  </data>
+  <data name="Private" xml:space="preserve">
+    <value>Private</value>
   </data>
 </root>

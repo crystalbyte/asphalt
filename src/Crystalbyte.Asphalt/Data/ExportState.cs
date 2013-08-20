@@ -3,7 +3,6 @@
         Idle = 0,
         Collecting,
         Uploading,
-        Completed,
-        CompletedWithErrors
+        Completed
     }
 }

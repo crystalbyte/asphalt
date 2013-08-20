@@ -15,7 +15,7 @@ using Microsoft.Phone.Shell;
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof (IAppBarMenuCommand))]
+    [Export(typeof(IAppBarMenuCommand))]
     public sealed class DeleteDriverCommand : IAppBarMenuCommand {
         [Import]
         public AppContext AppContext { get; set; }
@@ -90,6 +90,7 @@ namespace Crystalbyte.Asphalt.Commands {
             var caption = AppResources.DeleteDriverConfirmCaption;
             var message = AppResources.DeleteDriverConfirmMessage;
             var result = MessageBox.Show(message, caption, MessageBoxButton.OKCancel);
+
             if (result.HasFlag(MessageBoxResult.Cancel)) {
                 Debug.WriteLine("Deletion aborted by user.");
                 return;
@@ -99,23 +100,30 @@ namespace Crystalbyte.Asphalt.Commands {
 
             var driver = DriverSelectionSource.Selection;
 
+            if (!string.IsNullOrWhiteSpace(driver.ImageName)) {
+                await LocalStorage.DeleteImageAsync(driver.ImageName);    
+            }
+
             await Channels.Database.Enqueue(() => {
-                                                LocalStorage.DataContext.Drivers.DeleteOnSubmit(driver);
-                                                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-                                            });
+                LocalStorage.DataContext.Drivers.DeleteOnSubmit(driver);
+                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
+            });
 
             OnDeletionCompleted(EventArgs.Empty);
 
             Debug.WriteLine("Selected driver has been successfully deleted.");
 
-            var page = Navigator.GetCurrentPage<DriverCompositionPage>();
-            if (page == null)
+            // Command was invoked from the LandingPage.
+            var page = Navigator.GetCurrentPage<LandingPage>();
+            if (page != null) {
+                page.UpdateApplicationBar();
                 return;
+            }
 
+            // Command was invoked from the DriverCompositionPage.
             if (Navigator.Frame.CanGoBack) {
                 Navigator.Frame.GoBack();
-            }
-            else {
+            } else {
                 Navigator.Navigate<LandingPage>();
             }
         }

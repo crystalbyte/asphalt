@@ -17,8 +17,7 @@ using Windows.Storage;
 namespace Crystalbyte.Asphalt.Data {
     [Export, Shared]
     public sealed class LocalStorage {
-        public const string ImagePath = "Images";
-        public const string SharedTransfers = "/shared/transfers";
+        public const string ImagePath = "images";
 
         [Import]
         public Channels Channels { get; set; }
@@ -26,21 +25,15 @@ namespace Crystalbyte.Asphalt.Data {
         public AsphaltDataContext DataContext { get; private set; }
 
         public async Task DeleteImageAsync(string name) {
-            try {
-                var local = ApplicationData.Current.LocalFolder;
-                var imageFolder = await local.GetFolderAsync(ImagePath);
+            var local = ApplicationData.Current.LocalFolder;
+            var imageFolder = await local.GetFolderAsync(ImagePath);
 
-                var store = IsolatedStorageFile.GetUserStoreForApplication();
-                if (!store.FileExists(Path.Combine(local.Path, ImagePath, name))) {
-                    return;
-                }
-                var file = await imageFolder.GetFileAsync(name);
-                await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
+            var store = IsolatedStorageFile.GetUserStoreForApplication();
+            if (!store.FileExists(Path.Combine(local.Path, ImagePath, name))) {
+                return;
             }
-            catch (Exception ex) {
-                var caption = AppResources.ErrorDeletingImageCaption;
-                MessageBox.Show(ex.ToString(), caption, MessageBoxButton.OK);
-            }
+            var file = await imageFolder.GetFileAsync(name);
+            await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
         }
 
         public async Task DeleteExportAsync(string name) {
@@ -60,58 +53,31 @@ namespace Crystalbyte.Asphalt.Data {
             var bytes = Encoding.UTF8.GetBytes(text);
             using (var sw = await file.OpenStreamForWriteAsync()) {
                 await sw.WriteAsync(bytes, 0, bytes.Length);
-
-                // Manually dispose stream, due to possible framework issue.
-                // http://social.msdn.microsoft.com/Forums/windowsapps/en-US/de83d7b1-2ef2-4e45-8e0c-a7334ecf1ee8/unauthorizedaccessexception-when-usig-storagefoldercreatefileasync-in-windows-8
-                sw.Dispose();
+                await sw.FlushAsync();
             }
         }
 
         public async Task SaveImageAsync(string name, Stream stream) {
-            try {
-                var local = ApplicationData.Current.LocalFolder;
-                var imageFolder = await local.GetFolderAsync(ImagePath);
+            var local = ApplicationData.Current.LocalFolder;
+            var imageFolder = await local.GetFolderAsync(ImagePath);
 
-                var file = await imageFolder.CreateFileAsync(name,
-                                                             CreationCollisionOption.FailIfExists);
+            var file = await imageFolder.CreateFileAsync(name,
+                                                         CreationCollisionOption.FailIfExists);
 
-                using (var sr = new BinaryReader(stream)) {
-                    var bytes = sr.ReadBytes(Convert.ToInt32(stream.Length));
-                    using (var sw = await file.OpenStreamForWriteAsync()) {
-                        await sw.WriteAsync(bytes, 0, bytes.Length);
-
-                        // Manually dispose stream, due to possible framework issue.
-                        // http://social.msdn.microsoft.com/Forums/windowsapps/en-US/de83d7b1-2ef2-4e45-8e0c-a7334ecf1ee8/unauthorizedaccessexception-when-usig-storagefoldercreatefileasync-in-windows-8
-                        sw.Dispose();
-                    }
+            using (var sr = new BinaryReader(stream)) {
+                var bytes = sr.ReadBytes(Convert.ToInt32(stream.Length));
+                using (var sw = await file.OpenStreamForWriteAsync()) {
+                    await sw.WriteAsync(bytes, 0, bytes.Length);
+                    await sw.FlushAsync();
                 }
-
-                stream.Dispose();
-            }
-            catch (Exception ex) {
-                var caption = AppResources.ErrorStoringImageCaption;
-                MessageBox.Show(ex.ToString(), caption, MessageBoxButton.OK);
             }
         }
 
         public async Task<Stream> GetImageStreamAsync(string name) {
-            try {
-                var local = ApplicationData.Current.LocalFolder;
-                var imageFolder = await local.GetFolderAsync(ImagePath);
-
-                var store = IsolatedStorageFile.GetUserStoreForApplication();
-                if (!store.FileExists(Path.Combine(local.Path, ImagePath, name))) {
-                    return null;
-                }
-
-                var stream = await imageFolder.OpenStreamForReadAsync(name);
-                return stream;
-            }
-            catch (Exception ex) {
-                var caption = AppResources.ErrorLoadingImageCaption;
-                MessageBox.Show(ex.ToString(), caption, MessageBoxButton.OK);
-                return null;
-            }
+            var local = ApplicationData.Current.LocalFolder;
+            var imageFolder = await local.GetFolderAsync(ImagePath);
+            var stream = await imageFolder.OpenStreamForReadAsync(name);
+            return stream;
         }
 
         [OnImportsSatisfied]
@@ -120,7 +86,7 @@ namespace Crystalbyte.Asphalt.Data {
         }
 
         private async Task InitializeStorage() {
-            var connectionString = (string) Application.Current.Resources["DefaultConnectionString"];
+            var connectionString = (string)Application.Current.Resources["DefaultConnectionString"];
             await IntializeDatabaseAsync(connectionString);
 
             var local = ApplicationData.Current.LocalFolder;
@@ -129,13 +95,13 @@ namespace Crystalbyte.Asphalt.Data {
 
         private Task IntializeDatabaseAsync(string connectionString) {
             return Channels.Database.Enqueue(() => {
-                                                 Debug.WriteLine("ThreadId: {0}", Thread.CurrentThread.ManagedThreadId);
+                Debug.WriteLine("ThreadId: {0}", Thread.CurrentThread.ManagedThreadId);
 
-                                                 DataContext = new AsphaltDataContext(connectionString);
-                                                 if (!DataContext.DatabaseExists()) {
-                                                     DataContext.CreateDatabase();
-                                                 }
-                                             });
+                DataContext = new AsphaltDataContext(connectionString);
+                if (!DataContext.DatabaseExists()) {
+                    DataContext.CreateDatabase();
+                }
+            });
         }
     }
 }
