@@ -80,6 +80,8 @@
 
         <local:LocalizedStrings x:Key="LocalizedStrings" />
         <converters:TourTypeLocalizer x:Key="TourTypeLocalizer" />
+        <converters:SetupStateToVisibilityConverter x:Key="SetupStateToVisibilityConverter" />
+        <converters:DurationFormatter x:Key="DurationFormatter" />
         <converters:TourTypeToColorConverter x:Key="TourTypeToColorConverter" />
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:DistanceFormatter x:Key="DistanceFormatter" />

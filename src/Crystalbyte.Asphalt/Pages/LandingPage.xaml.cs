@@ -30,6 +30,12 @@ namespace Crystalbyte.Asphalt.Pages {
             AppContext = App.Context;
             AppContext.DataUpdated += (sender, e) => this.UpdateApplicationBar();
             AppContext.SelectionEnabledChanged += AppContextOnSelectionEnabledChanged;
+
+            LocationTracker.TourStored += OnLocationTrackerTourStored;
+        }
+
+        private void OnLocationTrackerTourStored(object sender, EventArgs e) {
+            PanoramaIndex = 1;
         }
 
         private void AppContextOnSelectionEnabledChanged(object sender, EventArgs eventArgs) {
@@ -39,6 +45,10 @@ namespace Crystalbyte.Asphalt.Pages {
         public AppContext AppContext {
             get { return DataContext as AppContext; }
             set { DataContext = value; }
+        }
+
+        public LocationTracker LocationTracker {
+            get { return App.Composition.GetExport<LocationTracker>(); }
         }
 
         public int PanoramaIndex { get; set; }
@@ -163,11 +173,6 @@ namespace Crystalbyte.Asphalt.Pages {
             var first = e.AddedItems.Cast<PanoramaItem>().FirstOrDefault();
             if (first != null) {
                 PanoramaIndex = panorama.Items.IndexOf(first);
-            }
-
-            // Vehicles
-            if (PanoramaIndex == 2) {
-                AppContext.Vehicles.ForEach(x => x.UpdateChartsAsync());
             }
 
             this.UpdateApplicationBar();

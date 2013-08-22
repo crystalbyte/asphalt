@@ -17,11 +17,12 @@ using Windows.Devices.Geolocation;
 namespace Crystalbyte.Asphalt.Contexts {
     [Export, Shared]
     public sealed class LocationTracker : NotificationObject {
-        private double _currentLatitude;
-        private double _currentLongitude;
         private double _currentSpeed;
         private bool _isTracking;
         private int _speedExceedances;
+        private double _traveledDistance;
+        private TimeSpan _routeDistance;
+        private DateTime _startTime;
 
         private static readonly AngleFormatter AngleFormatter = new AngleFormatter();
 
@@ -75,6 +76,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         public Geoposition LastPosition { get; private set; }
         public Geoposition CurrentPosition { get; private set; }
         public Geoposition AnchorPosition { get; private set; }
+
         public bool IsLaunchedManually { get; private set; }
 
         public event EventHandler TourStored;
@@ -139,19 +141,19 @@ namespace Crystalbyte.Asphalt.Contexts {
                 return;
             }
 
-            var speedInMs = CalculateSpeed();
-            var sane = PerformSanityCheck(speedInMs);
+            var speed = CalculateSpeed();
+            var sane = PerformSanityCheck(speed);
             if (!sane) {
                 LastPosition = position;
                 return;
             }
 
             if (!App.IsRunningInBackground) {
-                CurrentSpeed = Speed.GetKmFromMs(speedInMs);
+                CurrentSpeed = Speed.GetKmFromMs(speed);
             }
 
             if (IsTracking) {
-                UpdateCurrentTour();
+                UpdateCurrentTour(speed);
 
                 // Manual launches can only be stopped manually
                 if (!IsLaunchedManually) {
@@ -189,6 +191,8 @@ namespace Crystalbyte.Asphalt.Contexts {
                 Debug.WriteLine("Initializing geolocator ...");
                 App.InitializeGeolocator();
             }
+
+            _startTime = DateTime.Now;
 
             var vehicle = AppContext.Vehicles.First(x => x.IsSelected);
             Debug.Assert(vehicle != null);
@@ -267,6 +271,8 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private void ResetState() {
+            RouteDistance = 0;
+            CurrentSpeed = 0;
             LastPosition = null;
             CurrentPosition = null;
         }
@@ -304,7 +310,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             return current.Subtract(anchor).TotalMinutes > AppSettings.RecordingTimeout;
         }
 
-        private void UpdateCurrentTour() {
+        private void UpdateCurrentTour(double speed) {
             CurrentTour.Positions.Add(new Position {
                 TimeStamp = CurrentPosition.Coordinate.Timestamp.Date,
                 Latitude = CurrentPosition.Coordinate.Latitude,
@@ -320,8 +326,9 @@ namespace Crystalbyte.Asphalt.Contexts {
                     return;
                 }
 
-                CurrentLatitude = CurrentPosition.Coordinate.Latitude;
-                CurrentLongitude = CurrentPosition.Coordinate.Longitude;
+                CurrentSpeed = speed;
+                RouteDuration = (DateTime.Now - _startTime);
+                RouteDistance += Haversine.Delta(CurrentPosition.Coordinate, LastPosition.Coordinate);
             });
         }
 
@@ -355,18 +362,6 @@ namespace Crystalbyte.Asphalt.Contexts {
             return speed;
         }
 
-        public double CurrentLatitude {
-            get { return _currentLatitude; }
-            set {
-                if (Math.Abs(_currentLatitude - value) < double.Epsilon) {
-                    return;
-                }
-                RaisePropertyChanging(() => CurrentLatitude);
-                _currentLatitude = value;
-                RaisePropertyChanged(() => CurrentLatitude);
-            }
-        }
-
         public double CurrentSpeed {
             get { return _currentSpeed; }
             set {
@@ -379,15 +374,29 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        public double CurrentLongitude {
-            get { return _currentLongitude; }
+        public double RouteDistance {
+            get { return _traveledDistance; }
             set {
-                if (Math.Abs(_currentLongitude - value) < double.Epsilon) {
+                if (Math.Abs(_traveledDistance - value) < double.Epsilon) {
                     return;
                 }
-                RaisePropertyChanging(() => CurrentLongitude);
-                _currentLongitude = value;
-                RaisePropertyChanged(() => CurrentLongitude);
+
+                RaisePropertyChanging(() => RouteDistance);
+                _traveledDistance = value;
+                RaisePropertyChanged(() => RouteDistance);
+            }
+        }
+
+        public TimeSpan RouteDuration {
+            get { return _routeDistance; }
+            set {
+                if (_routeDistance == value) {
+                    return;
+                }
+
+                RaisePropertyChanging(() => RouteDuration);
+                _routeDistance = value;
+                RaisePropertyChanged(() => RouteDuration);
             }
         }
 

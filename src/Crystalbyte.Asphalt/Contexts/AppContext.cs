@@ -3,7 +3,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Composition;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Crystalbyte.Asphalt.Commands;
@@ -257,7 +256,9 @@ namespace Crystalbyte.Asphalt.Contexts {
                           .ToArray());
 
             Drivers.AddRange(drivers);
-            Drivers.ForEach(x => x.RestoreImageAsync());
+            foreach (var driver in drivers) {
+                await driver.RestoreImageAsync();
+            }
             if (!_suppressEvents) {
                 OnDataUpdated(EventArgs.Empty);
             }
@@ -285,7 +286,9 @@ namespace Crystalbyte.Asphalt.Contexts {
                           .ToArray());
 
             Vehicles.AddRange(vehicles);
-            Vehicles.ForEach(x => x.RestoreImageAsync());
+            foreach (var vehicle in vehicles) {
+                await vehicle.RestoreImageAsync();
+            }
             if (!_suppressEvents) {
                 OnDataUpdated(EventArgs.Empty);
             }

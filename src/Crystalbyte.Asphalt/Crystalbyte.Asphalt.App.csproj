@@ -124,10 +124,11 @@
     <Compile Include="Contexts\Position.cs" />
     <Compile Include="Contexts\LocationTracker.cs" />
     <Compile Include="Contexts\Vehicle.cs" />
-    <Compile Include="Contexts\VehicleUsage.cs" />
     <Compile Include="Converters\AngleFormatter.cs" />
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
     <Compile Include="Converters\BooleanToTextStyleConverter.cs" />
+    <Compile Include="Converters\SetupStateToVisibilityConverter.cs" />
+    <Compile Include="Converters\DurationFormatter.cs" />
     <Compile Include="Converters\ExportStateToTextConverter.cs" />
     <Compile Include="Converters\ExportStateToVisibilityConverter.cs" />
     <Compile Include="Converters\MathRoundDoubleConverter.cs" />
@@ -242,6 +243,9 @@
     <None Include="Crystalbyte.Asphalt.App_2013_08_19_00_48_07.sap" />
     <None Include="Crystalbyte.Asphalt.App_2013_08_19_00_49_58.sap" />
     <None Include="Crystalbyte.Asphalt.App_2013_08_19_00_51_50.sap" />
+    <None Include="Crystalbyte.Asphalt.App_2013_08_23_00_08_28.sap" />
+    <None Include="Crystalbyte.Asphalt.App_2013_08_23_00_14_21.sap" />
+    <None Include="Crystalbyte.Asphalt.App_2013_08_23_00_16_15.sap" />
     <None Include="Fonts\LiveSymbol.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />

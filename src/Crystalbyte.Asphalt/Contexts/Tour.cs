@@ -141,8 +141,14 @@ namespace Crystalbyte.Asphalt.Contexts {
                 return;
             }
             var address = locations[0].Information.Address;
-            Destination = string.Format("{0} {1}, {2} {3}", address.Street, address.HouseNumber, address.PostalCode,
-                                        address.State);
+            var street = address.Street;
+            var number = address.HouseNumber;
+            if (string.IsNullOrWhiteSpace(street) && string.IsNullOrWhiteSpace(number)) {
+                street = string.Empty;
+                number = "?";
+            }
+            Destination = string.Format("{0} {1}, {2} {3}", street, number, address.PostalCode,
+                                        address.State).Trim();
         }
 
         private void SetOrigin(IList<MapLocation> locations) {
@@ -151,8 +157,14 @@ namespace Crystalbyte.Asphalt.Contexts {
                 return;
             }
             var address = locations[0].Information.Address;
-            Origin = string.Format("{0} {1}, {2} {3}", address.Street, address.HouseNumber, address.PostalCode,
-                                   address.State);
+            var street = address.Street;
+            var number = address.HouseNumber;
+            if (string.IsNullOrWhiteSpace(street) && string.IsNullOrWhiteSpace(number)) {
+                street = string.Empty;
+                number = "?";
+            }
+            Origin = string.Format("{0} {1}, {2} {3}", street, number, address.PostalCode,
+                                   address.State).Trim();
         }
 
         [OnDeserialized]

@@ -27,11 +27,11 @@ namespace Crystalbyte.Asphalt.Converters {
             }
             var p = parameter as string;
             if (!string.IsNullOrWhiteSpace(p) && p == "ms") {
-                return Format((double) value*3.6);
+                return Format((double) value*3.6, parameter as string);
             }
 
 
-            return Format((double) value);
+            return Format((double)value, parameter as string);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -40,15 +40,35 @@ namespace Crystalbyte.Asphalt.Converters {
 
         #endregion
 
-        private string Format(double value) {
+        private string Format(double value, string parameter = "") {
+            var result = string.Empty;
             switch (AppSettings.UnitOfLength) {
                 case UnitOfLength.Kilometer:
-                    return FormatKilometerPerHour(value);
+                    result = FormatKilometerPerHour(value);
+                    break;
                 case UnitOfLength.Mile:
-                    return FormatMilePerHour(value);
-                default:
-                    throw new ArgumentOutOfRangeException();
+                    result = FormatMilePerHour(value);
+                    break;
             }
+
+              // Return full string
+            if (string.IsNullOrWhiteSpace(parameter)) {
+                return result;
+            }
+
+            // Return value only
+            if (parameter == "value") {
+                result = result.Split(' ')[0];
+                return result;
+            }
+
+            // Return unit only
+            if (parameter == "unit") {
+                result = result.Split(' ')[1];
+                return result;
+            }
+
+            return result;
         }
 
         private static string FormatMilePerHour(double value) {

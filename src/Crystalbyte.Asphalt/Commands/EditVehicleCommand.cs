@@ -12,13 +12,12 @@ using Microsoft.Phone.Shell;
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof (IAppBarButtonCommand))]
+    [Export(typeof(IAppBarButtonCommand))]
     public sealed class EditVehicleCommand : IAppBarButtonCommand {
         public EditVehicleCommand() {
-            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Edit.png", UriKind.Relative))
-                         {
-                             Text = AppResources.EditVehicleButtonText
-                         };
+            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Edit.png", UriKind.Relative)) {
+                Text = AppResources.EditVehicleButtonText
+            };
             Button.Click += (sender, e) => Execute(null);
         }
 

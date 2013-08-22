@@ -138,8 +138,7 @@
                                    TextWrapping="Wrap" />
                         <TextBlock HorizontalAlignment="Right"
                                    Style="{StaticResource PhoneTextNormalStyle}"
-                                   Text="{Binding SpeedExceedances,
-                                                  StringFormat='{}{0}'}"
+                                   Text="{Binding SpeedExceedances}"
                                    TextWrapping="Wrap" />
                     </Grid>
 

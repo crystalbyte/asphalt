@@ -117,6 +117,11 @@ namespace Crystalbyte.Asphalt {
         }
 
         private static void OnGeolocatorPositionChanged(Geolocator sender, PositionChangedEventArgs args) {
+
+            if (Context.SetupState == SetupState.NotCompleted) {
+                return;
+            }
+
             if (args.Position.Coordinate.Accuracy < AppSettings.RequiredAccuracy) {
                 SmartDispatcher.InvokeAsync(() => Context.LocationTracker.Update(args.Position));
                 return;

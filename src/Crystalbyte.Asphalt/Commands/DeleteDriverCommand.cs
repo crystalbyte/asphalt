@@ -60,8 +60,11 @@ namespace Crystalbyte.Asphalt.Commands {
         public bool IsApplicable {
             get {
                 // Don't display delete button if there is nothing to delete.
-                if (AppContext.IsDataLoaded && AppContext.Tours.Count == 0) {
-                    return false;
+                var landingPage = Navigator.GetCurrentPage<LandingPage>();
+                if (landingPage != null) {
+                    if (AppContext.IsDataLoaded && AppContext.Tours.Count == 0) {
+                        return false;
+                    }    
                 }
 
                 // Display always on details page.

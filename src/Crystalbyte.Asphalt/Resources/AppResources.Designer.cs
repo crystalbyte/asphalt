@@ -331,6 +331,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duration.
+        /// </summary>
+        public static string DurationLabel {
+            get {
+                return ResourceManager.GetString("DurationLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to edit.
         /// </summary>
         public static string EditSettingsButtonText {
@@ -619,6 +628,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In order to get started, you need to add at least one driver and a vehicle..
+        /// </summary>
+        public static string QuickInfo {
+            get {
+                return ResourceManager.GetString("QuickInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reason.
         /// </summary>
         public static string ReasonLabel {
@@ -876,6 +894,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string StopTimeLabel {
             get {
                 return ResourceManager.GetString("StopTimeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

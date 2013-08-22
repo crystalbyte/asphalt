@@ -10,7 +10,6 @@ using System.Windows.Media.Imaging;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 
 #endregion
 
@@ -44,8 +43,6 @@ namespace Crystalbyte.Asphalt.Contexts {
             get { return App.Composition.GetExport<AppContext>(); }
         }
 
-        public ObservableCollection<VehicleUsage> UsageStatistics { get; private set; }
-
         [OnDeserialized]
         public void OnDeserialized(StreamingContext e) {
             Construct();
@@ -67,7 +64,6 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         private void Construct() {
             InitializeValidation();
-            UsageStatistics = new ObservableCollection<VehicleUsage>();
             AddValidationFor(() => LicencePlate)
                 .When(x => string.IsNullOrWhiteSpace(x.LicencePlate))
                 .Show(AppResources.LicencePlateNotNullOrEmpty);
@@ -194,19 +190,6 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         public string PageHeaderText {
             get { return Id == 0 ? AppResources.AddVehiclePageTitle : LicencePlate; }
-        }
-
-        public async Task UpdateChartsAsync() {
-            UsageStatistics.Clear();
-            var statistics = await Channels.Database.Enqueue(() => LocalStorage.DataContext.Tours.Where(
-                x => x.VehicleId == Id).GroupBy(x => x.Type).
-                                                               Select(x => new VehicleUsage {
-                                                                   Type = x.Key,
-                                                                   Value = x.Count()
-                                                               }).ToArray());
-
-            UsageStatistics.AddRange(statistics);
-
         }
     }
 }

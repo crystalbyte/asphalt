@@ -1,27 +1,26 @@
 ﻿#region Using directives
 
+using Crystalbyte.Asphalt.Contexts;
+using Crystalbyte.Asphalt.Data;
+using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using Crystalbyte.Asphalt.Contexts;
-using Crystalbyte.Asphalt.Data;
-using Microsoft.Phone.Shell;
-using Microsoft.Phone.Tasks;
 
 #endregion
 
 namespace Crystalbyte.Asphalt.Pages {
     public partial class VehicleCompositionPage {
         private const string VehicleStateKey = "vehicle";
-        private bool _isNewPageInstance;
         private readonly PhotoChooserTask _photoChooser;
+        private bool _isNewPageInstance;
 
         public VehicleCompositionPage() {
             InitializeComponent();
@@ -69,7 +68,7 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         /// <summary>
-        ///   Gets or sets the current datacontext as a vehicle.
+        ///   Gets or sets the current Vehicle.
         /// </summary>
         public Vehicle Vehicle {
             get { return (Vehicle)DataContext; }

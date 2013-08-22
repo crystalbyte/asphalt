@@ -436,4 +436,13 @@ Start recordings manually or let Asphalt handle it for you.</value>
   <data name="Private" xml:space="preserve">
     <value>Private</value>
   </data>
+  <data name="DurationLabel" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="QuickInfo" xml:space="preserve">
+    <value>In order to get started, you need to add at least one driver and a vehicle.</value>
+  </data>
 </root>
