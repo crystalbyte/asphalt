@@ -98,7 +98,8 @@
                                          LostFocus="OnReasonInputFormLostFocus"
                                          Text="{Binding Reason,
                                                         Mode=TwoWay}"
-                                         WatermarkText="Reason not specified ..."
+                                         WatermarkText="{Binding LocalizedResources.ReasonNotSpecifiedWatermark,
+                                                                 Source={StaticResource LocalizedStrings}}"
                                          ui:DockPanel.Dock="Top" />
 
                     <!--  Reason  -->

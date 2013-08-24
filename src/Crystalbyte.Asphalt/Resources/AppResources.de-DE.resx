@@ -122,7 +122,7 @@
     <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
   </data>
   <data name="ResourceLanguage" xml:space="preserve">
-    <value>en-US</value>
+    <value>de-DE</value>
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
@@ -138,302 +138,302 @@
     <value>The expression is not a member access expression</value>
   </data>
   <data name="LicencePlateNotNullOrEmpty" xml:space="preserve">
-    <value>The license plate must not be empty</value>
+    <value>Das Kennzeichen darf nicht leer sein.</value>
   </data>
   <data name="ApplicationTitleCapital" xml:space="preserve">
     <value>ASPHALT</value>
   </data>
   <data name="DeleteMenuHeader" xml:space="preserve">
-    <value>Delete</value>
+    <value>entfernen</value>
   </data>
   <data name="SettingsPageTitle" xml:space="preserve">
-    <value>settings</value>
+    <value>Einstellungen</value>
   </data>
   <data name="UnitOfLengthSettingsText" xml:space="preserve">
-    <value>Unit of length</value>
+    <value>Längeneinheit</value>
   </data>
   <data name="SettingsMenuItemText" xml:space="preserve">
-    <value>Settings</value>
+    <value>Einstellungen</value>
     <comment>LandingPage.xaml</comment>
   </data>
   <data name="ToursPanoramaPageHeaderText" xml:space="preserve">
-    <value>tours</value>
+    <value>Fahrten</value>
   </data>
   <data name="TrackingPanoramaItemTitle" xml:space="preserve">
-    <value>recording</value>
+    <value>Aufzeichnung</value>
     <comment>LandingPage.xaml</comment>
   </data>
   <data name="MileageLabel" xml:space="preserve">
-    <value>Mileage</value>
+    <value>Kilometerstand</value>
   </data>
   <data name="DestinationLabel" xml:space="preserve">
-    <value>Destination</value>
+    <value>Ziel</value>
     <comment>TourDetailsPage.xaml</comment>
   </data>
   <data name="OriginLabel" xml:space="preserve">
-    <value>Origin</value>
+    <value>Ausgangspunkt</value>
   </data>
   <data name="ReasonLabel" xml:space="preserve">
-    <value>Reason</value>
+    <value>Grund der Fahrt</value>
   </data>
   <data name="StartTimeLabel" xml:space="preserve">
-    <value>Begin</value>
+    <value>Abfahrt</value>
   </data>
   <data name="StopTimeLabel" xml:space="preserve">
-    <value>End</value>
+    <value>Ankunft</value>
   </data>
   <data name="UnitOfLengthDescriptionText" xml:space="preserve">
-    <value>Sets the preferred unit of length for export and visual output.</value>
+    <value>Wählen Sie die bevorzugte Längeneinheit aus.</value>
   </data>
   <data name="RouteDescription" xml:space="preserve">
-    <value>The displayed route is only an approximation and may differ from the actual route taken.</value>
+    <value>Die dargestellte Route ist lediglich eine Approximation und kann vom tatsächlichen Weg abweichen.</value>
   </data>
   <data name="TourTypeLabel" xml:space="preserve">
-    <value>Type</value>
+    <value>Typ</value>
   </data>
   <data name="LoadingText" xml:space="preserve">
-    <value>Loading ...</value>
+    <value>Wird geladen ...</value>
   </data>
   <data name="InsufficientDataCaption" xml:space="preserve">
-    <value>Insufficient data</value>
+    <value>Aufzeichnung unzureichend</value>
   </data>
   <data name="InsufficientDataMessage" xml:space="preserve">
-    <value>The current recording yielded insufficient results and will be discarded.</value>
+    <value>Die aktuelle Aufzeichnung hat nicht genügend Informationen erbracht und wird verworfen.</value>
   </data>
   <data name="DistanceLabel" xml:space="preserve">
-    <value>Distance</value>
+    <value>Distanz</value>
   </data>
   <data name="EstimatingRoute" xml:space="preserve">
-    <value>Querying route ...</value>
+    <value>Route wird berechnet ...</value>
   </data>
   <data name="ReasonNotSpecified" xml:space="preserve">
-    <value>Reason not specified</value>
+    <value>Kein Grund hinterlegt</value>
     <comment>NullTextConverter param</comment>
   </data>
   <data name="RecordRouteConfirmCaption" xml:space="preserve">
-    <value>Start recording?</value>
+    <value>Aufzeichnung starten?</value>
   </data>
   <data name="RecordRouteConfirmMessage" xml:space="preserve">
-    <value>Your phone's geolocator will record your route until you manually press the Stop button.</value>
+    <value>Eine manuelle Aufnahme wird gestartet. Durch das Betätigen der Schaltfläche Stop kann die Aufzeichnung beendet werden.</value>
   </data>
   <data name="TerminateRouteConfirmCaption" xml:space="preserve">
-    <value>Terminate recording?</value>
+    <value>Aufzeichnung beenden?</value>
   </data>
   <data name="TerminateRouteConfirmMessage" xml:space="preserve">
-    <value>A terminated recording cannot be resumed.</value>
+    <value>Eine beendete Aufzeichnung kann nicht fortgesetzt werden.</value>
   </data>
   <data name="DeleteRouteConfirmCaption" xml:space="preserve">
-    <value>Delete tour?</value>
+    <value>Aufzeichnung entfernen?</value>
   </data>
   <data name="DeleteRouteConfirmMessage" xml:space="preserve">
-    <value>This action cannot be undone.</value>
+    <value>Diese Aktion kann nicht rückgängig gemacht werden.</value>
   </data>
   <data name="ExportButtonText" xml:space="preserve">
-    <value>export</value>
+    <value>Exportieren</value>
   </data>
   <data name="MovementDetectionDescription" xml:space="preserve">
-    <value>The app will automatically start and stop recordings for new tours.</value>
+    <value>Veranlasst Asphalt Fahrten automatisch anhand des Ortes und der Geschwindigkeit aufzuzeichnen.</value>
   </data>
   <data name="MovementDetectionLabel" xml:space="preserve">
-    <value>Automated tour recording</value>
+    <value>Automatische Fahrtenaufzeichnung</value>
   </data>
   <data name="SpeedLabel" xml:space="preserve">
-    <value>Speed</value>
+    <value>Geschwin.</value>
   </data>
   <data name="DeleteButtonText" xml:space="preserve">
-    <value>delete</value>
+    <value>Entfernen</value>
   </data>
   <data name="SelectionButtonText" xml:space="preserve">
-    <value>select</value>
+    <value>Auswählen</value>
   </data>
   <data name="AddVehicleButtonText" xml:space="preserve">
-    <value>add</value>
+    <value>Neu</value>
   </data>
   <data name="AddVehiclePageTitle" xml:space="preserve">
-    <value>add vehicle</value>
+    <value>Neues Fahrz.</value>
   </data>
   <data name="AddVehiclePhotoText" xml:space="preserve">
-    <value>add photo</value>
+    <value>Bild wählen</value>
   </data>
   <data name="InitialMileageNotNullOrEmpty" xml:space="preserve">
-    <value>Mileage must not be empty.</value>
+    <value>Der Kilometerstand darf nicht leer sein.</value>
   </data>
   <data name="VehiclesPanoramaPageHeaderText" xml:space="preserve">
-    <value>vehicles</value>
+    <value>Fahrzeuge</value>
   </data>
   <data name="VehicleLabel" xml:space="preserve">
-    <value>Vehicle</value>
+    <value>Fahrzeug</value>
   </data>
   <data name="ExportPageTitle" xml:space="preserve">
-    <value>export</value>
+    <value>Export</value>
   </data>
   <data name="DriversPanoramaPageHeaderText" xml:space="preserve">
-    <value>drivers</value>
+    <value>Fahrer</value>
   </data>
   <data name="EditVehicleButtonText" xml:space="preserve">
-    <value>edit</value>
+    <value>Bearbeiten</value>
   </data>
   <data name="AddDriverPageTitle" xml:space="preserve">
-    <value>add driver</value>
+    <value>Neuer Fahrer</value>
   </data>
   <data name="ForenameLabel" xml:space="preserve">
-    <value>Forename</value>
+    <value>Vorname</value>
   </data>
   <data name="SurnameLabel" xml:space="preserve">
-    <value>Surname</value>
+    <value>Nachname</value>
   </data>
   <data name="AddDriverImageText" xml:space="preserve">
-    <value>add photo</value>
+    <value>Bild wählen</value>
   </data>
   <data name="ForenameNotNullOrEmpty" xml:space="preserve">
-    <value>The forename must not be empty.</value>
+    <value>Der Vorname darf nicht leer sein.</value>
   </data>
   <data name="SurnameNotNullOrEmpty" xml:space="preserve">
-    <value>The surname must not be empty.</value>
+    <value>Der Nachname darf nicht leer sein.</value>
   </data>
   <data name="CancelButtonText" xml:space="preserve">
-    <value>cancel</value>
+    <value>Abbrechen</value>
   </data>
   <data name="ConfirmButtonText" xml:space="preserve">
-    <value>confirm</value>
+    <value>Bestätigen</value>
   </data>
   <data name="DeleteDriverConfirmCaption" xml:space="preserve">
-    <value>Delete driver?</value>
+    <value>Fahrer entfernen?</value>
   </data>
   <data name="DeleteDriverConfirmMessage" xml:space="preserve">
-    <value>This action cannot be undone.</value>
+    <value>Diese Aktion kann nicht rückgängig gemacht werden.</value>
   </data>
   <data name="DeleteVehicleConfirmCaption" xml:space="preserve">
-    <value>Delete vehicle?</value>
+    <value>Fahrzeug entfernen?</value>
   </data>
   <data name="DeleteVehicleConfirmMessage" xml:space="preserve">
-    <value>This action cannot be undone.</value>
+    <value>Diese Aktion kann nicht rückgängig gemacht werden.</value>
   </data>
   <data name="AddDriverLandingButtonText" xml:space="preserve">
-    <value>add driver</value>
+    <value>Fahrer hinzufügen</value>
   </data>
   <data name="AddVehicleLandingButtonText" xml:space="preserve">
-    <value>add vehicle</value>
+    <value>Fahrzeug hinzufügen</value>
   </data>
   <data name="DriverLabel" xml:space="preserve">
-    <value>Driver</value>
+    <value>Fahrer</value>
   </data>
   <data name="RouteLabel" xml:space="preserve">
     <value>Route</value>
   </data>
   <data name="SaveVehicleButtonText" xml:space="preserve">
-    <value>save</value>
+    <value>Speichern</value>
   </data>
   <data name="StartButtonDescriptionText" xml:space="preserve">
-    <value>Start recording a new tour</value>
+    <value>Starten Sie eine neue Aufzeichnung</value>
   </data>
   <data name="StartButtonText" xml:space="preserve">
     <value>Start</value>
   </data>
   <data name="StopButtonDescriptionText" xml:space="preserve">
-    <value>Terminate current recording</value>
+    <value>Aktuelle Aufzeichnung beenden</value>
   </data>
   <data name="StopButtonText" xml:space="preserve">
     <value>Stop</value>
   </data>
   <data name="WelcomeText" xml:space="preserve">
-    <value>Keep track of all your routes.
-Start recordings manually or let Asphalt handle it for you.</value>
+    <value>Vergessen Sie keine Einträge mehr.
+Lassen Sie Asphalt Ihre Fahrten automatisch aufzeichnen.</value>
   </data>
   <data name="CommitSettingsButtonText" xml:space="preserve">
-    <value>commit</value>
+    <value>Bestätigen</value>
   </data>
   <data name="DangerZoneText" xml:space="preserve">
-    <value>Danger zone</value>
+    <value>Gefahrengebiet</value>
   </data>
   <data name="DoNotChangeText" xml:space="preserve">
-    <value>Do not change the values below unless you know exactly what you're doing. Incorrect settings may decrease accuracy or impair functionality.</value>
+    <value>Die folgenden Werte sollten nicht grundlos geändert werden. Falsche Einstellungen können die Präzision verringen oder sogar Funktionsunfähigkeit hervorrufen.</value>
   </data>
   <data name="EditSettingsButtonText" xml:space="preserve">
-    <value>edit</value>
+    <value>Bearbeiten</value>
   </data>
   <data name="RecordingTimeoutLabel" xml:space="preserve">
-    <value>Timeout</value>
+    <value>Zeitüberschreitung</value>
   </data>
   <data name="ReportIntervalLabel" xml:space="preserve">
-    <value>Geolocation report interval</value>
+    <value>Intervall für Positionsabfragen</value>
   </data>
   <data name="RequiredAccuracyLabel" xml:space="preserve">
-    <value>Required GPS accuracy</value>
+    <value>Erforderliche GPS-Präzision</value>
   </data>
   <data name="ResetSettingsMenuText" xml:space="preserve">
-    <value>restore factory settings</value>
+    <value>Zurücksetzen</value>
   </data>
   <data name="SpeedExceedancesLabel" xml:space="preserve">
-    <value>Speed samples required</value>
+    <value>Geschwindigkeitsproben</value>
   </data>
   <data name="SpeedThresholdLabel" xml:space="preserve">
-    <value>Speed exceedance threshold</value>
+    <value>Mindestgeschwindigkeit</value>
   </data>
   <data name="MileageOnStartLabel" xml:space="preserve">
-    <value>Mileage before</value>
+    <value>Kilometerstand davor</value>
   </data>
   <data name="MileageOnStopLabel" xml:space="preserve">
-    <value>Mileage after</value>
+    <value>Kilometerstand danach</value>
   </data>
   <data name="ExportDestinationLabel" xml:space="preserve">
-    <value>Export location</value>
+    <value>Exportmethode</value>
   </data>
   <data name="ExportFormatLabel" xml:space="preserve">
-    <value>File format</value>
+    <value>Dateiformat</value>
   </data>
   <data name="ErrorUpdatingDatabase" xml:space="preserve">
-    <value>Unable to update database</value>
+    <value>Datenbankzugriff fehlgeschlagen</value>
   </data>
   <data name="ExportStateCollectingText" xml:space="preserve">
-    <value>Collecting data ...</value>
+    <value>Daten werden gesammelt ...</value>
   </data>
   <data name="ExportStateCompletedText" xml:space="preserve">
-    <value>Upload successfully completed</value>
+    <value>Datenexport erfolgreich abgeschlossen.</value>
   </data>
   <data name="ExportStateUploadingText" xml:space="preserve">
-    <value>Uploading ...</value>
+    <value>Exportiere ...</value>
   </data>
   <data name="NoExportText" xml:space="preserve">
-    <value>There are no tours selected for export.</value>
+    <value>Es sind keine zu exportierenden Fahrten ausgewählt.</value>
   </data>
   <data name="SingleExportText" xml:space="preserve">
-    <value>There is 1 tour selected for export.</value>
+    <value>Es ist eine zu exportierende Fahrt ausgewählt.</value>
   </data>
   <data name="SkyDriveLoginText" xml:space="preserve">
-    <value>Please sign in using your SkyDrive credentials.</value>
+    <value>Bitte melden Sie sich mit Ihren SkyDrive Zugangsdaten an.</value>
   </data>
   <data name="StartExportButtonText" xml:space="preserve">
     <value>Export</value>
   </data>
   <data name="TourExportsFormatString" xml:space="preserve">
-    <value>There are {0} tours selected for export.</value>
+    <value>Es sind {0} zu exportierende Fahrten ausgewählt.</value>
   </data>
   <data name="Business" xml:space="preserve">
-    <value>Business</value>
+    <value>Geschäftlich</value>
   </data>
   <data name="Commute" xml:space="preserve">
-    <value>Commute</value>
+    <value>Arbeitsweg</value>
   </data>
   <data name="ErrorExportingDataCaption" xml:space="preserve">
-    <value>Unable to export data</value>
+    <value>Datenexport fehlgeschlagen</value>
   </data>
   <data name="Private" xml:space="preserve">
-    <value>Private</value>
+    <value>Privat</value>
   </data>
   <data name="DurationLabel" xml:space="preserve">
-    <value>Duration</value>
+    <value>Dauer</value>
   </data>
   <data name="QuickInfo" xml:space="preserve">
-    <value>In order to get started, you need to add at least one driver and a vehicle.</value>
+    <value>Zum Beginnen müssen Sie zunächst einen Fahrer und ein Fahrzeug hinzufügen.</value>
   </data>
   <data name="LicensePlateLabel" xml:space="preserve">
-    <value>License plate</value>
+    <value>Kennzeichen</value>
   </data>
   <data name="NotesLabel" xml:space="preserve">
-    <value>Notes</value>
+    <value>Notizen</value>
   </data>
   <data name="ReasonNotSpecifiedWatermark" xml:space="preserve">
-    <value>Reason not specified ...</value>
+    <value>Kein Grund hinterlegt ...</value>
   </data>
 </root>

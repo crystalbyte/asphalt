@@ -108,13 +108,13 @@
                                 </StackPanel>
                             </Button>
                         </StackPanel>
-                        <Grid Margin="48,32,0,0"
+                        <Grid Margin="58,45,0,0"
                               DataContext="{Binding LocationTracker}"
                               Visibility="{Binding IsTracking,
                                                    Converter={StaticResource BooleanToVisibilityConverter}}"
                               ui:DockPanel.Dock="Top">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="225" />
+                                <ColumnDefinition Width="235" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Border Grid.Column="0"
@@ -143,7 +143,7 @@
                             </Border>
                         </Grid>
                         <StackPanel Margin="12,36,0,0" Visibility="{Binding SetupState, Converter={StaticResource SetupStateToVisibilityConverter}}">
-                            <TextBlock Margin="0,0,0,12"
+                            <TextBlock Margin="0,0,0,13"
                                        Style="{StaticResource PhoneTextSmallStyle}"
                                        Text="{Binding LocalizedResources.QuickInfo,
                                                       Source={StaticResource LocalizedStrings}}"

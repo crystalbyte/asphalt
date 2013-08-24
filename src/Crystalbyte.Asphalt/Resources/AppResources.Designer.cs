@@ -160,15 +160,6 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter a new reason for the current tour..
-        /// </summary>
-        public static string ChangeReasonPopupText {
-            get {
-                return ResourceManager.GetString("ChangeReasonPopupText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to commit.
         /// </summary>
         public static string CommitSettingsButtonText {
@@ -250,7 +241,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A deleted tour cannot be recovered..
+        ///   Looks up a localized string similar to This action cannot be undone..
         /// </summary>
         public static string DeleteRouteConfirmMessage {
             get {
@@ -282,15 +273,6 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string DestinationLabel {
             get {
                 return ResourceManager.GetString("DestinationLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Disabled.
-        /// </summary>
-        public static string Disabled {
-            get {
-                return ResourceManager.GetString("Disabled", resourceCulture);
             }
         }
         
@@ -354,15 +336,6 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string EditVehicleButtonText {
             get {
                 return ResourceManager.GetString("EditVehicleButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enabled.
-        /// </summary>
-        public static string Enabled {
-            get {
-                return ResourceManager.GetString("Enabled", resourceCulture);
             }
         }
         
@@ -475,7 +448,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The forname must not be empty..
+        ///   Looks up a localized string similar to The forename must not be empty..
         /// </summary>
         public static string ForenameNotNullOrEmpty {
             get {
@@ -502,7 +475,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The current recording yielded insufficient data and will be discarded..
+        ///   Looks up a localized string similar to The current recording yielded insufficient results and will be discarded..
         /// </summary>
         public static string InsufficientDataMessage {
             get {
@@ -511,20 +484,20 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The label must not be empty.
-        /// </summary>
-        public static string LabelNotNullOrEmpty {
-            get {
-                return ResourceManager.GetString("LabelNotNullOrEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The licence plate must not be empty.
+        ///   Looks up a localized string similar to The license plate must not be empty.
         /// </summary>
         public static string LicencePlateNotNullOrEmpty {
             get {
                 return ResourceManager.GetString("LicencePlateNotNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License plate.
+        /// </summary>
+        public static string LicensePlateLabel {
+            get {
+                return ResourceManager.GetString("LicensePlateLabel", resourceCulture);
             }
         }
         
@@ -574,7 +547,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The app will automatically start and stop recordings for new routes..
+        ///   Looks up a localized string similar to The app will automatically start and stop recordings for new tours..
         /// </summary>
         public static string MovementDetectionDescription {
             get {
@@ -583,7 +556,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automated movement detection.
+        ///   Looks up a localized string similar to Automated tour recording.
         /// </summary>
         public static string MovementDetectionLabel {
             get {
@@ -601,11 +574,11 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to no photo.
+        ///   Looks up a localized string similar to Notes.
         /// </summary>
-        public static string NoVehiclePhotoText {
+        public static string NotesLabel {
             get {
-                return ResourceManager.GetString("NoVehiclePhotoText", resourceCulture);
+                return ResourceManager.GetString("NotesLabel", resourceCulture);
             }
         }
         
@@ -655,7 +628,16 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recording timeout.
+        ///   Looks up a localized string similar to Reason not specified ....
+        /// </summary>
+        public static string ReasonNotSpecifiedWatermark {
+            get {
+                return ResourceManager.GetString("ReasonNotSpecifiedWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout.
         /// </summary>
         public static string RecordingTimeoutLabel {
             get {
@@ -673,7 +655,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your phone&apos;s geolocator will record your route until you manually press the stop button..
+        ///   Looks up a localized string similar to Your phone&apos;s geolocator will record your route until you manually press the Stop button..
         /// </summary>
         public static string RecordRouteConfirmMessage {
             get {
@@ -700,7 +682,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimal required GPS accuracy.
+        ///   Looks up a localized string similar to Required GPS accuracy.
         /// </summary>
         public static string RequiredAccuracyLabel {
             get {
@@ -736,7 +718,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The displayed route is only an approximation and not used in calculating distances..
+        ///   Looks up a localized string similar to The displayed route is only an approximation and may differ from the actual route taken..
         /// </summary>
         public static string RouteDescription {
             get {
@@ -808,7 +790,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimal required speed samples.
+        ///   Looks up a localized string similar to Speed samples required.
         /// </summary>
         public static string SpeedExceedancesLabel {
             get {
@@ -898,15 +880,6 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Surname.
         /// </summary>
         public static string SurnameLabel {
@@ -925,7 +898,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Terminate route?.
+        ///   Looks up a localized string similar to Terminate recording?.
         /// </summary>
         public static string TerminateRouteConfirmCaption {
             get {
@@ -934,7 +907,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A terminated route cannot be resumed..
+        ///   Looks up a localized string similar to A terminated recording cannot be resumed..
         /// </summary>
         public static string TerminateRouteConfirmMessage {
             get {
@@ -970,7 +943,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to tracking.
+        ///   Looks up a localized string similar to recording.
         /// </summary>
         public static string TrackingPanoramaItemTitle {
             get {

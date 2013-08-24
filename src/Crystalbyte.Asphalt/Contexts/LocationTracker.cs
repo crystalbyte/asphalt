@@ -20,8 +20,8 @@ namespace Crystalbyte.Asphalt.Contexts {
         private double _currentSpeed;
         private bool _isTracking;
         private int _speedExceedances;
-        private double _traveledDistance;
-        private TimeSpan _routeDistance;
+        private TimeSpan _routeDuration;
+        private double _routeDistance;
         private DateTime _startTime;
 
         private static readonly AngleFormatter AngleFormatter = new AngleFormatter();
@@ -317,18 +317,17 @@ namespace Crystalbyte.Asphalt.Contexts {
                 Longitude = CurrentPosition.Coordinate.Longitude
             });
 
+            _currentSpeed = speed;
+            _routeDuration += (DateTime.Now - _startTime);
+            _routeDistance += Haversine.Delta(CurrentPosition.Coordinate, LastPosition.Coordinate);
+
             if (App.IsRunningInBackground)
                 return;
 
             SmartDispatcher.InvokeAsync(() => {
-                var current = CurrentPosition;
-                if (current == null) {
-                    return;
-                }
-
-                CurrentSpeed = speed;
-                RouteDuration = (DateTime.Now - _startTime);
-                RouteDistance += Haversine.Delta(CurrentPosition.Coordinate, LastPosition.Coordinate);
+                RaisePropertyChanged(() => CurrentSpeed);
+                RaisePropertyChanged(() => RouteDuration);
+                RaisePropertyChanged(() => RouteDistance);
             });
         }
 
@@ -375,27 +374,27 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public double RouteDistance {
-            get { return _traveledDistance; }
+            get { return _routeDistance; }
             set {
-                if (Math.Abs(_traveledDistance - value) < double.Epsilon) {
+                if (Math.Abs(_routeDistance - value) < double.Epsilon) {
                     return;
                 }
 
                 RaisePropertyChanging(() => RouteDistance);
-                _traveledDistance = value;
+                _routeDistance = value;
                 RaisePropertyChanged(() => RouteDistance);
             }
         }
 
         public TimeSpan RouteDuration {
-            get { return _routeDistance; }
+            get { return _routeDuration; }
             set {
-                if (_routeDistance == value) {
+                if (_routeDuration == value) {
                     return;
                 }
 
                 RaisePropertyChanging(() => RouteDuration);
-                _routeDistance = value;
+                _routeDuration = value;
                 RaisePropertyChanged(() => RouteDuration);
             }
         }
