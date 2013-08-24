@@ -188,7 +188,7 @@
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                               Text="{Binding ActiveVehicle.LicencePlate}"
+                               Text="{Binding ActiveVehicle.LicensePlate}"
                                ui:DockPanel.Dock="Top" />
 
                     <!--  Start  -->

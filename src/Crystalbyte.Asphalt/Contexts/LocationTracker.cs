@@ -142,15 +142,6 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
 
             var speed = CalculateSpeed();
-            var sane = PerformSanityCheck(speed);
-            if (!sane) {
-                LastPosition = position;
-                return;
-            }
-
-            if (!App.IsRunningInBackground) {
-                CurrentSpeed = Speed.GetKmFromMs(speed);
-            }
 
             if (IsTracking) {
                 UpdateCurrentTour(speed);
@@ -180,11 +171,8 @@ namespace Crystalbyte.Asphalt.Contexts {
             LastPosition = position;
         }
 
-        private static bool PerformSanityCheck(double speedInMs) {
-            return speedInMs < 70.0d && speedInMs >= 0.0d;
-        }
-
         private void StartTracking() {
+            ResetState(true);
             NotifyStartTracking();
 
             if (!App.IsGeolocatorAlive) {
@@ -270,18 +258,29 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        private void ResetState() {
-            RouteDistance = 0;
-            CurrentSpeed = 0;
-            LastPosition = null;
+        private void ResetState(bool keepLastPosition = false) {
+            _routeDuration = TimeSpan.Zero;
+            _routeDistance = 0;
+            _currentSpeed = 0;
+
             CurrentPosition = null;
+            if (!keepLastPosition) {
+                LastPosition = null;
+            }
         }
 
         private async void OnCivicAddressesResolved(object sender, EventArgs e) {
             var tour = (Tour)sender;
             tour.CivicAddressesResolved -= OnCivicAddressesResolved;
-            await Channels.Database.Enqueue(() =>
-                                            LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+            await Channels.Database.Enqueue(() => {
+                var context = LocalStorage.DataContext;
+                try {
+                    context.SubmitChanges(ConflictMode.ContinueOnConflict);
+                }
+                catch (ChangeConflictException) {
+                    context.ChangeConflicts.ResolveAll(RefreshMode.KeepCurrentValues);
+                }
+            });
         }
 
         private void NotifyStopTracking() {
@@ -318,7 +317,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             });
 
             _currentSpeed = speed;
-            _routeDuration += (DateTime.Now - _startTime);
+            _routeDuration = (DateTime.Now - _startTime);
             _routeDistance += Haversine.Delta(CurrentPosition.Coordinate, LastPosition.Coordinate);
 
             if (App.IsRunningInBackground)

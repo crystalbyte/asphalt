@@ -106,8 +106,7 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             var first = Positions.First();
             var startQuery =
-                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate
-                                                         {Latitude = first.Latitude, Longitude = first.Longitude});
+                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate { Latitude = first.Latitude, Longitude = first.Longitude });
             var start = await startQuery.ExecuteAsync();
 
             QueryPool.Drop(startQuery);
@@ -115,8 +114,7 @@ namespace Crystalbyte.Asphalt.Contexts {
 
             var last = Positions.Last();
             var stopQuery =
-                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate
-                                                         {Latitude = last.Latitude, Longitude = last.Longitude});
+                QueryPool.RequestReverseGeocodeQuery(new GeoCoordinate { Latitude = last.Latitude, Longitude = last.Longitude });
             var stop = await stopQuery.ExecuteAsync();
 
             QueryPool.Drop(stopQuery);
@@ -202,7 +200,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public IEnumerable<TourType> TourTypeSource {
-            get { return Enum.GetValues(typeof (TourType)).OfType<TourType>(); }
+            get { return Enum.GetValues(typeof(TourType)).OfType<TourType>(); }
         }
 
         public Vehicle ActiveVehicle {
@@ -335,7 +333,7 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         [DataExport]
         public string Vehicle {
-            get { return ActiveVehicle != null ? ActiveVehicle.LicencePlate : "Unknown vehicle"; }
+            get { return ActiveVehicle != null ? ActiveVehicle.LicensePlate : "Unknown vehicle"; }
         }
 
         [DataExport]
@@ -517,8 +515,16 @@ namespace Crystalbyte.Asphalt.Contexts {
             RaisePropertyChanged(() => Distance);
         }
 
-        private void CommitChanges() {
-            Channels.Database.Enqueue(() => LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+        private async void CommitChanges() {
+            await Channels.Database.Enqueue(() => {
+                var context = LocalStorage.DataContext;
+                try {
+                    context.SubmitChanges(ConflictMode.ContinueOnConflict);
+                }
+                catch (ChangeConflictException) {
+                    context.ChangeConflicts.ResolveAll(RefreshMode.KeepCurrentValues);
+                }
+            });
         }
     }
 }

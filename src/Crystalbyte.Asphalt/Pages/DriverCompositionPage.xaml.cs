@@ -149,6 +149,10 @@ namespace Crystalbyte.Asphalt.Pages {
             await LocalStorage.SaveImageAsync(Driver.ImageName, data);
         }
 
+        private void OnTextBoxLostFocus(object sender, RoutedEventArgs e) {
+            Driver.CommitChanges();
+        }
+
         private void OnTextBoxGotFocus(object sender, RoutedEventArgs e) {
             var textbox = (TextBox)sender;
             textbox.Select(0, textbox.Text.Length);

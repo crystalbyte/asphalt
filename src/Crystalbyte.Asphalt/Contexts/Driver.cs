@@ -129,6 +129,9 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Forename);
                 _forename = value;
                 RaisePropertyChanged(() => Forename);
+                if (!IsNew) {
+                    CommitChanges();
+                }
             }
         }
 
@@ -142,6 +145,9 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Surname);
                 _surname = value;
                 RaisePropertyChanged(() => Surname);
+                if (!IsNew) {
+                    CommitChanges();
+                }
             }
         }
 
@@ -156,12 +162,22 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => SelectionTime);
                 _selectionTime = value;
                 RaisePropertyChanged(() => SelectionTime);
-                CommitChanges();
+                if (!IsNew) {
+                    CommitChanges();
+                }
             }
         }
 
         public async void CommitChanges() {
-            await Channels.Database.Enqueue(() => LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+            await Channels.Database.Enqueue(() => {
+                var context = LocalStorage.DataContext;
+                try {
+                    context.SubmitChanges(ConflictMode.ContinueOnConflict);
+                }
+                catch (ChangeConflictException) {
+                    context.ChangeConflicts.ResolveAll(RefreshMode.KeepCurrentValues);
+                }
+            });
         }
 
         public void InvalidateSelection() {
@@ -176,6 +192,10 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         public string PageHeaderText {
             get { return Id == 0 ? AppResources.AddDriverPageTitle : Forename; }
+        }
+
+        public bool IsNew {
+            get { return Id == 0; }
         }
     }
 }

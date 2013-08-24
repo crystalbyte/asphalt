@@ -13,13 +13,12 @@ using Microsoft.Phone.Shell;
 
 namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
-    [Export(typeof (IAppBarButtonCommand))]
+    [Export(typeof(IAppBarButtonCommand))]
     public sealed class SaveVehicleCommand : IAppBarButtonCommand {
         public SaveVehicleCommand() {
-            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Save.png", UriKind.Relative))
-                         {
-                             Text = AppResources.SaveVehicleButtonText
-                         };
+            Button = new ApplicationBarIconButton(new Uri("/Assets/ApplicationBar/Save.png", UriKind.Relative)) {
+                Text = AppResources.SaveVehicleButtonText
+            };
             Button.Click += (sender, e) => Execute(null);
         }
 
@@ -54,21 +53,25 @@ namespace Crystalbyte.Asphalt.Commands {
 
         public async void Execute(object parameter) {
             var vehicle = VehicleSelectionSource.Selection;
-            var id = vehicle.Id;
 
             await Channels.Database.Enqueue(() => {
-                                                if (id == 0) {
-                                                    LocalStorage.DataContext.Vehicles.InsertOnSubmit(vehicle);
-                                                }
-                                                LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-                                            });
+                var context = LocalStorage.DataContext;
+                try {
+                    if (vehicle.IsNew) {
+                        context.Vehicles.InsertOnSubmit(vehicle);
+                    }
+                    context.SubmitChanges(ConflictMode.ContinueOnConflict);
+                }
+                catch (ChangeConflictException) {
+                    context.ChangeConflicts.ResolveAll(RefreshMode.KeepChanges);
+                }
+            });
 
             OnVehicleSaved(EventArgs.Empty);
 
             if (Navigator.Frame.CanGoBack) {
                 Navigator.Frame.GoBack();
-            }
-            else {
+            } else {
                 Navigator.Navigate<LandingPage>();
             }
         }
@@ -89,8 +92,9 @@ namespace Crystalbyte.Asphalt.Commands {
 
         public bool IsApplicable {
             get {
+                var vehicle = VehicleSelectionSource.Selection;
                 var page = Navigator.GetCurrentPage<VehicleCompositionPage>();
-                return page != null;
+                return page != null && vehicle.IsNew;
             }
         }
 

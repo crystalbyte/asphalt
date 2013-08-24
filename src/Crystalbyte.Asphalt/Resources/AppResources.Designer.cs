@@ -484,20 +484,20 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The license plate must not be empty.
-        /// </summary>
-        public static string LicencePlateNotNullOrEmpty {
-            get {
-                return ResourceManager.GetString("LicencePlateNotNullOrEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to License plate.
         /// </summary>
         public static string LicensePlateLabel {
             get {
                 return ResourceManager.GetString("LicensePlateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The license plate must not be empty.
+        /// </summary>
+        public static string LicensePlateNotNullOrEmpty {
+            get {
+                return ResourceManager.GetString("LicensePlateNotNullOrEmpty", resourceCulture);
             }
         }
         
@@ -547,7 +547,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The app will automatically start and stop recordings for new tours..
+        ///   Looks up a localized string similar to The app will automatically record your tours based on your travelling speed..
         /// </summary>
         public static string MovementDetectionDescription {
             get {
@@ -601,7 +601,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In order to get started, you need to add at least one driver and a vehicle..
+        ///   Looks up a localized string similar to In order to get started, you need to add a driver and a vehicle..
         /// </summary>
         public static string QuickInfo {
             get {
@@ -655,7 +655,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your phone&apos;s geolocator will record your route until you manually press the Stop button..
+        ///   Looks up a localized string similar to Your phone&apos;s geolocator will record your route until you manually press the stop button..
         /// </summary>
         public static string RecordRouteConfirmMessage {
             get {
@@ -952,7 +952,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the preferred unit of length for export and visual output..
+        ///   Looks up a localized string similar to Sets the preferred unit of length..
         /// </summary>
         public static string UnitOfLengthDescriptionText {
             get {
@@ -988,8 +988,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Keep track of all your routes.
-        ///Start recordings manually or let Asphalt handle it for you..
+        ///   Looks up a localized string similar to Start recordings manually or let Asphalt handle it for you..
         /// </summary>
         public static string WelcomeText {
             get {

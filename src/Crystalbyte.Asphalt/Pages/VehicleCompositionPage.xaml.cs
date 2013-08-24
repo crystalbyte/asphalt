@@ -154,6 +154,10 @@ namespace Crystalbyte.Asphalt.Pages {
             await LocalStorage.SaveImageAsync(Vehicle.ImageName, data);
         }
 
+        private void OnTextBoxLostFocus(object sender, RoutedEventArgs e) {
+            Vehicle.CommitChanges();
+        }
+
         private void OnNotesTextChanged(object sender, TextChangedEventArgs e) {
             var textbox = (TextBox)sender;
             Vehicle.Notes = textbox.Text;
@@ -161,7 +165,7 @@ namespace Crystalbyte.Asphalt.Pages {
 
         private void OnLicencePlateTextChanged(object sender, TextChangedEventArgs e) {
             var textbox = (TextBox)sender;
-            Vehicle.LicencePlate = textbox.Text;
+            Vehicle.LicensePlate = textbox.Text;
         }
 
         private void OnTextBoxGotFocus(object sender, RoutedEventArgs e) {

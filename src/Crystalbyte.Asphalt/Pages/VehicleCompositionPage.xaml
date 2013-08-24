@@ -92,8 +92,9 @@
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <TextBox GotFocus="OnTextBoxGotFocus"
+                             LostFocus="OnTextBoxLostFocus"
                              MaxLength="32"
-                             Text="{Binding LicencePlate,
+                             Text="{Binding LicensePlate,
                                             Mode=TwoWay,
                                             ValidatesOnNotifyDataErrors=True,
                                             NotifyOnValidationError=True}"
@@ -106,6 +107,7 @@
                     <TextBox x:Name="MileageTextBox"
                              GotFocus="OnTextBoxGotFocus"
                              InputScope="Number"
+                             LostFocus="OnTextBoxLostFocus"
                              MaxLength="10"
                              Text="{Binding Mileage,
                                             Converter={StaticResource MileageUnitConverter},
@@ -124,6 +126,7 @@
                              VerticalAlignment="Stretch"
                              AcceptsReturn="True"
                              GotFocus="OnTextBoxGotFocus"
+                             LostFocus="OnTextBoxLostFocus"
                              Text="{Binding Notes,
                                             Mode=TwoWay}"
                              TextChanged="OnNotesTextChanged"

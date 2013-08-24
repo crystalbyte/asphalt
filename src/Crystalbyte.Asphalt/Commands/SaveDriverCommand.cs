@@ -89,8 +89,9 @@ namespace Crystalbyte.Asphalt.Commands {
 
         public bool IsApplicable {
             get {
+                var driver = DriverSelectionSource.Selection;
                 var page = Navigator.GetCurrentPage<DriverCompositionPage>();
-                return page != null;
+                return page != null && driver.IsNew;
             }
         }
 

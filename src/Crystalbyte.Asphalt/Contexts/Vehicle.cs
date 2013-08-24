@@ -18,7 +18,7 @@ namespace Crystalbyte.Asphalt.Contexts {
     public sealed class Vehicle : BindingModelBase<Vehicle> {
         private int _id;
         private double _mileage;
-        private string _licencePlate;
+        private string _licensePlate;
         private string _notes;
         private string _imageName;
         private ImageSource _image;
@@ -58,15 +58,23 @@ namespace Crystalbyte.Asphalt.Contexts {
             Image = image;
         }
 
-        public void CommitChanges() {
-            Channels.Database.Enqueue(() => LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+        public async void CommitChanges() {
+            await Channels.Database.Enqueue(() => {
+                var context = LocalStorage.DataContext;
+                try {
+                    context.SubmitChanges(ConflictMode.ContinueOnConflict);
+                }
+                catch (ChangeConflictException) {
+                    context.ChangeConflicts.ResolveAll(RefreshMode.KeepCurrentValues);
+                }
+            });
         }
 
         private void Construct() {
             InitializeValidation();
-            AddValidationFor(() => LicencePlate)
-                .When(x => string.IsNullOrWhiteSpace(x.LicencePlate))
-                .Show(AppResources.LicencePlateNotNullOrEmpty);
+            AddValidationFor(() => LicensePlate)
+                .When(x => string.IsNullOrWhiteSpace(x.LicensePlate))
+                .Show(AppResources.LicensePlateNotNullOrEmpty);
 
             AddValidationFor(() => Mileage)
                 .When(x => x.Mileage < 0)
@@ -122,15 +130,18 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         [Column, DataMember]
-        public string LicencePlate {
-            get { return _licencePlate; }
+        public string LicensePlate {
+            get { return _licensePlate; }
             set {
-                if (_licencePlate == value) {
+                if (_licensePlate == value) {
                     return;
                 }
-                RaisePropertyChanging(() => LicencePlate);
-                _licencePlate = value;
-                RaisePropertyChanged(() => LicencePlate);
+                RaisePropertyChanging(() => LicensePlate);
+                _licensePlate = value;
+                RaisePropertyChanged(() => LicensePlate);
+                //if (!IsNew) {
+                //    CommitChanges();
+                //}
             }
         }
 
@@ -144,7 +155,9 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Mileage);
                 _mileage = value;
                 RaisePropertyChanged(() => Mileage);
-                CommitChanges();
+                //if (!IsNew) {
+                //    CommitChanges();
+                //}
             }
         }
 
@@ -158,6 +171,9 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => Notes);
                 _notes = value;
                 RaisePropertyChanged(() => Notes);
+                //if (!IsNew) {
+                //    CommitChanges();
+                //}
             }
         }
 
@@ -172,7 +188,9 @@ namespace Crystalbyte.Asphalt.Contexts {
                 RaisePropertyChanging(() => SelectionTime);
                 _selectionTime = value;
                 RaisePropertyChanged(() => SelectionTime);
-                CommitChanges();
+                //if (!IsNew) {
+                //    CommitChanges();    
+                //}
             }
         }
 
@@ -189,7 +207,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public string PageHeaderText {
-            get { return Id == 0 ? AppResources.AddVehiclePageTitle : LicencePlate; }
+            get { return Id == 0 ? AppResources.AddVehiclePageTitle : LicensePlate; }
         }
     }
 }

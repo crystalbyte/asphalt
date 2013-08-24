@@ -64,7 +64,7 @@
                 <!--  Panorama item one  -->
                 <phone:PanoramaItem Header="{Binding LocalizedResources.TrackingPanoramaItemTitle, Source={StaticResource LocalizedStrings}}">
                     <!--  Single line list with text wrapping  -->
-                    <ui:DockPanel LastChildFill="False">
+                    <ui:DockPanel LastChildFill="True">
                         <TextBlock FontSize="{StaticResource PhoneFontSizeMediumLarge}"
                                    Style="{StaticResource PhoneTextSmallStyle}"
                                    Text="{Binding LocalizedResources.WelcomeText,
@@ -108,58 +108,62 @@
                                 </StackPanel>
                             </Button>
                         </StackPanel>
-                        <Grid Margin="58,45,0,0"
-                              DataContext="{Binding LocationTracker}"
-                              Visibility="{Binding IsTracking,
-                                                   Converter={StaticResource BooleanToVisibilityConverter}}"
-                              ui:DockPanel.Dock="Top">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="235" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Border Grid.Column="0"
-                                    BorderBrush="{StaticResource PhoneAccentBrush}"
-                                    BorderThickness="4,0,0,0">
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="{Binding LocalizedResources.DistanceLabel, Source={StaticResource LocalizedStrings}}" />
-                                    <TextBlock FontFamily="{StaticResource PhoneFontFamilyLight}" Style="{StaticResource PhoneTextExtraLargeStyle}"><Run FontSize="{StaticResource PhoneFontSizeExtraExtraLarge}" Text="{Binding RouteDistance, Converter={StaticResource DistanceFormatter}, ConverterParameter=value}" /><Run FontSize="{StaticResource PhoneFontSizeNormal}" Text="{Binding RouteDistance, Converter={StaticResource DistanceFormatter}, ConverterParameter=unit}" />
-                                    </TextBlock>
-                                </StackPanel>
-                            </Border>
-                            <Border Grid.Column="1"
-                                    BorderBrush="{StaticResource PhoneAccentBrush}"
-                                    BorderThickness="4,0,0,0">
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="{Binding LocalizedResources.SpeedLabel, Source={StaticResource LocalizedStrings}}" />
-                                    <TextBlock FontFamily="{StaticResource PhoneFontFamilyLight}" Style="{StaticResource PhoneTextLargeStyle}">
-                                        <Run Text="{Binding CurrentSpeed, Converter={StaticResource SpeedFormatter}, ConverterParameter=value}" /><Run FontSize="16" Text="{Binding CurrentSpeed, Converter={StaticResource SpeedFormatter}, ConverterParameter=unit}" />
-                                    </TextBlock>
+                        <Grid Margin="0,-26,0,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center">
+                            <Grid DataContext="{Binding LocationTracker}" Visibility="{Binding IsTracking, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="235" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0"
+                                        BorderBrush="{StaticResource PhoneAccentBrush}"
+                                        BorderThickness="4,0,0,0">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="{Binding LocalizedResources.DistanceLabel, Source={StaticResource LocalizedStrings}}" />
+                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilyLight}" Style="{StaticResource PhoneTextExtraLargeStyle}"><Run FontSize="{StaticResource PhoneFontSizeExtraExtraLarge}" Text="{Binding RouteDistance, Converter={StaticResource DistanceFormatter}, ConverterParameter=value}" /><Run FontSize="{StaticResource PhoneFontSizeNormal}" Text="{Binding RouteDistance, Converter={StaticResource DistanceFormatter}, ConverterParameter=unit}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="1"
+                                        BorderBrush="{StaticResource PhoneAccentBrush}"
+                                        BorderThickness="4,0,0,0">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="{Binding LocalizedResources.SpeedLabel, Source={StaticResource LocalizedStrings}}" />
+                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilyLight}" Style="{StaticResource PhoneTextLargeStyle}">
+                                            <Run Text="{Binding CurrentSpeed, Converter={StaticResource SpeedFormatter}, ConverterParameter=value}" /><Run FontSize="16" Text="{Binding CurrentSpeed, Converter={StaticResource SpeedFormatter}, ConverterParameter=unit}" />
+                                        </TextBlock>
 
-                                    <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="{Binding LocalizedResources.DurationLabel, Source={StaticResource LocalizedStrings}}" />
-                                    <TextBlock FontFamily="{StaticResource PhoneFontFamilyLight}" Style="{StaticResource PhoneTextLargeStyle}">
-                                        <Run Text="{Binding RouteDuration, Converter={StaticResource DurationFormatter}, ConverterParameter=value}" /><Run FontSize="16" Text="{Binding RouteDuration, Converter={StaticResource DurationFormatter}, ConverterParameter=unit}" />
-                                    </TextBlock>
-                                </StackPanel>
-                            </Border>
+                                        <TextBlock Style="{StaticResource PhoneTextSmallStyle}" Text="{Binding LocalizedResources.DurationLabel, Source={StaticResource LocalizedStrings}}" />
+                                        <TextBlock FontFamily="{StaticResource PhoneFontFamilyLight}" Style="{StaticResource PhoneTextLargeStyle}">
+                                            <Run Text="{Binding RouteDuration, Converter={StaticResource DurationFormatter}, ConverterParameter=value}" /><Run FontSize="16" Text="{Binding RouteDuration, Converter={StaticResource DurationFormatter}, ConverterParameter=unit}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                            <StackPanel Margin="12,0,0,0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Visibility="{Binding SetupState,
+                                                             Converter={StaticResource SetupStateToVisibilityConverter}}">
+                                <TextBlock Margin="0,0,0,30"
+                                           Style="{StaticResource PhoneTextSmallStyle}"
+                                           Text="{Binding LocalizedResources.QuickInfo,
+                                                          Source={StaticResource LocalizedStrings}}"
+                                           TextWrapping="Wrap" />
+                                <Button Margin="0,0,0,18"
+                                        Command="{Binding AddVehicleCommand}"
+                                        Content="{Binding LocalizedResources.AddVehicleLandingButtonText,
+                                                          Source={StaticResource LocalizedStrings}}"
+                                        FontSize="{StaticResource PhoneFontSizeLarge}"
+                                        Style="{StaticResource TextButtonStyle}" />
+                                <Button Command="{Binding AddDriverCommand}"
+                                        Content="{Binding LocalizedResources.AddDriverLandingButtonText,
+                                                          Source={StaticResource LocalizedStrings}}"
+                                        FontSize="{StaticResource PhoneFontSizeLarge}"
+                                        Style="{StaticResource TextButtonStyle}" />
+                            </StackPanel>
                         </Grid>
-                        <StackPanel Margin="12,36,0,0" Visibility="{Binding SetupState, Converter={StaticResource SetupStateToVisibilityConverter}}">
-                            <TextBlock Margin="0,0,0,13"
-                                       Style="{StaticResource PhoneTextSmallStyle}"
-                                       Text="{Binding LocalizedResources.QuickInfo,
-                                                      Source={StaticResource LocalizedStrings}}"
-                                       TextWrapping="Wrap" />
-                            <Button Margin="0,0,0,12"
-                                    Command="{Binding AddVehicleCommand}"
-                                    Content="{Binding LocalizedResources.AddVehicleLandingButtonText,
-                                                      Source={StaticResource LocalizedStrings}}"
-                                    FontSize="{StaticResource PhoneFontSizeLarge}"
-                                    Style="{StaticResource TextButtonStyle}" />
-                            <Button Command="{Binding AddDriverCommand}"
-                                    Content="{Binding LocalizedResources.AddDriverLandingButtonText,
-                                                      Source={StaticResource LocalizedStrings}}"
-                                    FontSize="{StaticResource PhoneFontSizeLarge}"
-                                    Style="{StaticResource TextButtonStyle}" />
-                        </StackPanel>
                     </ui:DockPanel>
                 </phone:PanoramaItem>
                 <phone:PanoramaItem Header="{Binding LocalizedResources.ToursPanoramaPageHeaderText, Source={StaticResource LocalizedStrings}}">
@@ -301,7 +305,7 @@
                                             <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
                                                        FontSize="{StaticResource PhoneFontSizeExtraLarge}"
                                                        Style="{StaticResource PhoneTextNormalStyle}"
-                                                       Text="{Binding LicencePlate}" />
+                                                       Text="{Binding LicensePlate}" />
                                             <TextBlock FontFamily="{StaticResource PhoneFontFamilySemiLight}"
                                                        FontSize="{StaticResource PhoneFontSizeSmall}"
                                                        Style="{StaticResource PhoneTextSmallStyle}"
@@ -373,7 +377,6 @@
                                                                 </Polyline.RenderTransform>
                                                             </Polyline>
                                                         </Border>
-
                                                     </Grid>
                                                 </Border>
                                             </Grid>

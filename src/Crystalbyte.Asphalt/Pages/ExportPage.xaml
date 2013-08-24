@@ -84,7 +84,7 @@
                            Style="{StaticResource PhoneTextSmallStyle}"
                            Text="{Binding LocalizedResources.VehicleLabel,
                                           Source={StaticResource LocalizedStrings}}" />
-                <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding ActiveVehicle.LicencePlate}" />
+                <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding ActiveVehicle.LicensePlate}" />
 
                 <TextBlock Margin="12,24,0,0"
                            Style="{StaticResource PhoneTextAccentStyle}"

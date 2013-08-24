@@ -137,7 +137,7 @@
   <data name="ExpressionNoMember" xml:space="preserve">
     <value>The expression is not a member access expression</value>
   </data>
-  <data name="LicencePlateNotNullOrEmpty" xml:space="preserve">
+  <data name="LicensePlateNotNullOrEmpty" xml:space="preserve">
     <value>The license plate must not be empty</value>
   </data>
   <data name="ApplicationTitleCapital" xml:space="preserve">
@@ -183,7 +183,7 @@
     <value>End</value>
   </data>
   <data name="UnitOfLengthDescriptionText" xml:space="preserve">
-    <value>Sets the preferred unit of length for export and visual output.</value>
+    <value>Sets the preferred unit of length.</value>
   </data>
   <data name="RouteDescription" xml:space="preserve">
     <value>The displayed route is only an approximation and may differ from the actual route taken.</value>
@@ -214,7 +214,7 @@
     <value>Start recording?</value>
   </data>
   <data name="RecordRouteConfirmMessage" xml:space="preserve">
-    <value>Your phone's geolocator will record your route until you manually press the Stop button.</value>
+    <value>Your phone's geolocator will record your route until you manually press the stop button.</value>
   </data>
   <data name="TerminateRouteConfirmCaption" xml:space="preserve">
     <value>Terminate recording?</value>
@@ -232,7 +232,7 @@
     <value>export</value>
   </data>
   <data name="MovementDetectionDescription" xml:space="preserve">
-    <value>The app will automatically start and stop recordings for new tours.</value>
+    <value>The app will automatically record your tours based on your travelling speed.</value>
   </data>
   <data name="MovementDetectionLabel" xml:space="preserve">
     <value>Automated tour recording</value>
@@ -336,10 +336,6 @@
   <data name="StopButtonText" xml:space="preserve">
     <value>Stop</value>
   </data>
-  <data name="WelcomeText" xml:space="preserve">
-    <value>Keep track of all your routes.
-Start recordings manually or let Asphalt handle it for you.</value>
-  </data>
   <data name="CommitSettingsButtonText" xml:space="preserve">
     <value>commit</value>
   </data>
@@ -425,7 +421,7 @@ Start recordings manually or let Asphalt handle it for you.</value>
     <value>Duration</value>
   </data>
   <data name="QuickInfo" xml:space="preserve">
-    <value>In order to get started, you need to add at least one driver and a vehicle.</value>
+    <value>In order to get started, you need to add a driver and a vehicle.</value>
   </data>
   <data name="LicensePlateLabel" xml:space="preserve">
     <value>License plate</value>
@@ -435,5 +431,8 @@ Start recordings manually or let Asphalt handle it for you.</value>
   </data>
   <data name="ReasonNotSpecifiedWatermark" xml:space="preserve">
     <value>Reason not specified ...</value>
+  </data>
+  <data name="WelcomeText" xml:space="preserve">
+    <value>Start recordings manually or let Asphalt handle it for you.</value>
   </data>
 </root>

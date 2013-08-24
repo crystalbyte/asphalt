@@ -96,6 +96,7 @@
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <TextBox GotFocus="OnTextBoxGotFocus"
+                             LostFocus="OnTextBoxLostFocus"
                              MaxLength="32"
                              Text="{Binding Forename,
                                             Mode=TwoWay,
@@ -110,7 +111,8 @@
                                               Source={StaticResource LocalizedStrings}}"
                                ui:DockPanel.Dock="Top" />
                     <TextBox GotFocus="OnTextBoxGotFocus"
-                             MaxLength="8"
+                             LostFocus="OnTextBoxLostFocus"
+                             MaxLength="64"
                              Text="{Binding Surname,
                                             Mode=TwoWay,
                                             ValidatesOnNotifyDataErrors=True,
