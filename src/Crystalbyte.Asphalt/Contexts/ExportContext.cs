@@ -21,7 +21,7 @@ using System.Globalization;
 namespace Crystalbyte.Asphalt.Contexts {
     [Export, Shared]
     public sealed class ExportContext : NotificationObject, IProgressAware {
-        private static TourTypeLocalizer _tourTypeLocalizer = new TourTypeLocalizer();
+        private static readonly TourTypeLocalizer TourTypeLocalizer = new TourTypeLocalizer();
         private IExportStrategy _selectedStrategy;
         private IExportSerializer _selectedSerializer;
         private ExportState _exportState;
@@ -79,8 +79,8 @@ namespace Crystalbyte.Asphalt.Contexts {
                 if (value is double) {
                     value = Math.Round((double)value, 1);
                 }
-                if (key.ToLower() == "reason" && value is string) {
-                    value = _tourTypeLocalizer.Convert(value, typeof(string), null, CultureInfo.CurrentCulture);
+                if (key.ToLower() == "type" && value is TourType) {
+                    value = TourTypeLocalizer.Convert(value, typeof(string), null, CultureInfo.CurrentCulture);
                 }
                 var output = string.Format(attribute.Format, value);
                 exports.Add(key, output);
@@ -139,7 +139,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 var extension = serializer.FileExtension;
 
                 await SelectedStrategy.ExportAsync(data, extension, this);
-                await MarkAllToursAsExported(new List<Tour>(exports));
+                await MarkAllToursAsExported(exports);
 
                 ExportState = ExportState.Completed;
             }
@@ -151,16 +151,18 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         private async Task MarkAllToursAsExported(IEnumerable<Tour> exports) {
-            exports.ForEach(x => x.IsExported = true);
-            await Channels.Database.Enqueue(() => {
-                var context = LocalStorage.DataContext;
-                try {
-                    context.SubmitChanges(ConflictMode.ContinueOnConflict);
-                }
-                catch (ChangeConflictException) {
-                    context.ChangeConflicts.ResolveAll(RefreshMode.KeepChanges);
-                }
-            });
+            foreach (var export in exports) {
+                export.IsExported = true;
+                await Channels.Database.Enqueue(() => {
+                    var context = LocalStorage.DataContext;
+                    try {
+                        context.SubmitChanges(ConflictMode.ContinueOnConflict);
+                    }
+                    catch (ChangeConflictException) {
+                        context.ChangeConflicts.ResolveAll(RefreshMode.KeepChanges);
+                    }
+                });
+            }
         }
 
         private async Task<IEnumerable<Tour>> CollectToursForExportAsync() {
@@ -169,16 +171,16 @@ namespace Crystalbyte.Asphalt.Contexts {
             exports.AddRange(selections);
 
             if (exports.Count == 0) {
-                var pendingExports = await
-                                     Channels.Database.Enqueue(() => LocalStorage.DataContext.Tours
-                                                                         .Where(
-                                                                             x =>
-                                                                             x.IsExported == false &&
-                                                                             x.VehicleId == ActiveVehicle.Id &&
-                                                                             x.DriverId == ActiveDriver.Id)
-                                                                         .Select(x => x).OrderByDescending(
-                                                                             x => x.StartTime));
-                exports.AddRange(pendingExports);
+                var pending = await Channels.Database.Enqueue(
+                    () => LocalStorage.DataContext.Tours
+                        .Where(x =>
+                            x.IsExported == false &&
+                            x.VehicleId == ActiveVehicle.Id &&
+                            x.DriverId == ActiveDriver.Id)
+                        .ToList()
+                        .Select(x => x)
+                        .OrderByDescending(x => x.StartTime));
+                exports.AddRange(pending);
             }
 
             return exports;

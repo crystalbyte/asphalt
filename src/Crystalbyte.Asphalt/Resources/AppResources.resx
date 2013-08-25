@@ -207,7 +207,7 @@
     <value>Querying route ...</value>
   </data>
   <data name="ReasonNotSpecified" xml:space="preserve">
-    <value>Contact and Reason not specified</value>
+    <value>Reason not specified</value>
     <comment>NullTextConverter param</comment>
   </data>
   <data name="RecordRouteConfirmCaption" xml:space="preserve">
@@ -430,9 +430,15 @@
     <value>Notes</value>
   </data>
   <data name="ReasonNotSpecifiedWatermark" xml:space="preserve">
-    <value>Contact and Reason not specified</value>
+    <value>Reason not specified</value>
   </data>
   <data name="WelcomeText" xml:space="preserve">
     <value>Start recordings manually or let Asphalt handle it for you.</value>
+  </data>
+  <data name="CommuteReasonText" xml:space="preserve">
+    <value>Commute</value>
+  </data>
+  <data name="PrivateReasonText" xml:space="preserve">
+    <value>Private tour</value>
   </data>
 </root>

@@ -1,0 +1,6 @@
+<MarketplaceDetails>
+  <SmallAppTile>WindowsStoreTile300x300.png</SmallAppTile>
+  <ScreenShots>wvga_asphalt_1.png;wvga_asphalt_2.png;wvga_asphalt_3.png;wvga_asphalt_4.png;wvga_asphalt_5.png;wvga_asphalt_6.png;wvga_asphalt_7.png;;</ScreenShots>
+  <ScreenShotsWXGA>wxga_asphalt_1.png;wxga_asphalt_2.png;wxga_asphalt_3.png;wxga_asphalt_4.png;wxga_asphalt_5.png;wxga_asphalt_6.png;wxga_asphalt_7.png;;</ScreenShotsWXGA>
+  <ScreenShots720P>720p_asphalt_1.png;720p_asphalt_2.png;720p_asphalt_3.png;720p_asphalt_4.png;720p_asphalt_5.png;720p_asphalt_6.png;720p_asphalt_7.png;;</ScreenShots720P>
+</MarketplaceDetails>

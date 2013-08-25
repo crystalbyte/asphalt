@@ -160,6 +160,16 @@
     <Compile Include="Contexts\Tour.cs" />
     <Compile Include="Contexts\TourGroup.cs" />
     <Compile Include="QueryExtensions.cs" />
+    <Compile Include="Resources\AppResources.de-DE.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.de-DE.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\AppResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ReverseGeocodeQueryPool.cs" />
     <Compile Include="SelectionSource.cs" />
     <Compile Include="SetupState.cs" />
@@ -185,11 +195,6 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\AppResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Contexts\AppContext.cs" />
     <Compile Include="SerializableDictionary.cs" />
     <Compile Include="TourType.cs" />
@@ -247,6 +252,8 @@
     <None Include="Crystalbyte.Asphalt.App_2013_08_23_00_16_15.sap" />
     <None Include="Crystalbyte.Asphalt.App_2013_08_25_15_08_07.sap" />
     <None Include="Crystalbyte.Asphalt.App_2013_08_25_15_10_54.sap" />
+    <None Include="Crystalbyte.Asphalt.App_2013_08_25_22_49_39.sap" />
+    <None Include="Crystalbyte.Asphalt.App_2013_08_25_22_50_33.sap" />
     <None Include="Fonts\LiveSymbol.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
@@ -284,7 +291,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\AppResources.de-DE.resx" />
+    <EmbeddedResource Include="Resources\AppResources.de-DE.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.de-DE.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\AppResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>

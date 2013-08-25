@@ -2,9 +2,10 @@
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
   <Languages xmlns="">
+    <Language code="de-DE" />
+    <Language code="en-US" />
     <Language code="en" />
     <Language code="de" />
-    <Language code="de-DE" />
   </Languages>
   <App xmlns="" ProductID="{699e938e-b0da-43c9-a5dd-8f55a3d722eb}" Title="Asphalt" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Alexander Wieser" Description="Asphalt is a simple state of the art logbook.&#xD;&#xA;It runs silently in the background logging all your tours in a car using your phone's GPS sensor." Publisher="Crystalbyte" PublisherID="{9c991d62-6df3-40b1-b911-9ea30cba06c4}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>

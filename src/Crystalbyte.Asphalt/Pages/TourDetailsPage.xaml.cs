@@ -15,6 +15,7 @@ using Crystalbyte.Asphalt.Contexts;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
+using Crystalbyte.Asphalt.Resources;
 
 #endregion
 
@@ -181,6 +182,18 @@ namespace Crystalbyte.Asphalt.Pages {
         private void OnTourTypeSelectionChanged(object sender, SelectionChangedEventArgs e) {
             var picker = (ListPicker) sender;
             Tour.Type = (TourType) picker.SelectedItem;
+            switch (Tour.Type) {
+                case TourType.Business:
+                    break;
+                case TourType.Commute:
+                    Tour.Reason = AppResources.CommuteReasonText;
+                    break;
+                case TourType.Private:
+                    Tour.Reason = AppResources.PrivateReasonText;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void OnReasonInputFormGotFocus(object sender, RoutedEventArgs e) {

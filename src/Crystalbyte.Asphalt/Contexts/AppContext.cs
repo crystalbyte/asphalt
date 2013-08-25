@@ -237,9 +237,9 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// </summary>
         public async void LoadData() {
             _suppressEvents = true;
-            await LoadToursAsync();
             await LoadVehiclesAsync();
             await LoadDriversAsync();
+            await LoadToursAsync();
             _suppressEvents = false;
 
             RefreshSelections();

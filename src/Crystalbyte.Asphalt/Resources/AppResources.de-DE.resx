@@ -174,7 +174,7 @@
     <value>Ausgangspunkt</value>
   </data>
   <data name="ReasonLabel" xml:space="preserve">
-    <value>Ansprechpartner und Zweck der Fahrt</value>
+    <value>Ansprechpartner / Zweck der Fahrt</value>
   </data>
   <data name="StartTimeLabel" xml:space="preserve">
     <value>Abfahrt</value>
@@ -207,7 +207,7 @@
     <value>Route wird berechnet ...</value>
   </data>
   <data name="ReasonNotSpecified" xml:space="preserve">
-    <value>Kein Ansprechpartner und Zweck hinterlegt</value>
+    <value>Zweck nicht hinterlegt</value>
     <comment>NullTextConverter param</comment>
   </data>
   <data name="RecordRouteConfirmCaption" xml:space="preserve">
@@ -343,7 +343,7 @@
     <value>Bestätigen</value>
   </data>
   <data name="DangerZoneText" xml:space="preserve">
-    <value>Gefahrengebiet</value>
+    <value>Achtung</value>
   </data>
   <data name="DoNotChangeText" xml:space="preserve">
     <value>Die folgenden Werte sollten nicht grundlos geändert werden. Falsche Einstellungen können die Präzision verringen oder sogar Funktionsunfähigkeit hervorrufen.</value>
@@ -433,6 +433,12 @@
     <value>Notizen</value>
   </data>
   <data name="ReasonNotSpecifiedWatermark" xml:space="preserve">
-    <value>Kein Ansprechpartner und Zweck hinterlegt</value>
+    <value>Zweck nicht hinterlegt ...</value>
+  </data>
+  <data name="CommuteReasonText" xml:space="preserve">
+    <value>Arbeitsweg</value>
+  </data>
+  <data name="PrivateReasonText" xml:space="preserve">
+    <value>Private Fahrt</value>
   </data>
 </root>

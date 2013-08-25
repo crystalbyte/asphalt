@@ -178,6 +178,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Commute.
+        /// </summary>
+        public static string CommuteReasonText {
+            get {
+                return ResourceManager.GetString("CommuteReasonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to confirm.
         /// </summary>
         public static string ConfirmButtonText {
@@ -601,6 +610,15 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Private tour.
+        /// </summary>
+        public static string PrivateReasonText {
+            get {
+                return ResourceManager.GetString("PrivateReasonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In order to get started, you need to add a driver and a vehicle..
         /// </summary>
         public static string QuickInfo {
@@ -619,7 +637,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contact and Reason not specified.
+        ///   Looks up a localized string similar to Reason not specified.
         /// </summary>
         public static string ReasonNotSpecified {
             get {
@@ -628,7 +646,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contact and Reason not specified.
+        ///   Looks up a localized string similar to Reason not specified.
         /// </summary>
         public static string ReasonNotSpecifiedWatermark {
             get {

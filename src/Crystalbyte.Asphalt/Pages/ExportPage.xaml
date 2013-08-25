@@ -87,6 +87,7 @@
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding ActiveVehicle.LicensePlate}" />
 
                 <TextBlock Margin="12,24,0,0"
+                           TextWrapping="Wrap"
                            Style="{StaticResource PhoneTextAccentStyle}"
                            Text="{Binding TourExports,
                                           Converter={StaticResource TourExportsFormatter}}" />

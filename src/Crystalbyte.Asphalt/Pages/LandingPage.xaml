@@ -221,15 +221,24 @@
                                                 <ProgressBar IsIndeterminate="True" Visibility="{Binding IsQuerying, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                             </Border>
                                         </StackPanel>
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="0,9,0,0"
-                                                   HorizontalAlignment="Right"
-                                                   VerticalAlignment="Top"
-                                                   FontSize="{StaticResource PhoneFontSizeSmall}"
-                                                   Style="{StaticResource PhoneTextNormalStyle}"
-                                                   Text="{Binding Distance,
-                                                                  Converter={StaticResource DistanceFormatter}}"
-                                                   TextWrapping="Wrap" />
+                                        <StackPanel Grid.Column="1"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Top">
+                                            <TextBlock Margin="0,9,0,0"
+                                                       HorizontalAlignment="Right"
+                                                       FontSize="{StaticResource PhoneFontSizeSmall}"
+                                                       Style="{StaticResource PhoneTextNormalStyle}"
+                                                       Text="{Binding Distance,
+                                                                      Converter={StaticResource DistanceFormatter}}"
+                                                       TextWrapping="Wrap" />
+
+                                            <TextBlock Margin="0"
+                                                       HorizontalAlignment="Right"
+                                                       Style="{StaticResource PhoneTextSmallStyle}"
+                                                       Text="{Binding ActiveVehicle.LicensePlate}"
+                                                       TextTrimming="WordEllipsis" />
+                                        </StackPanel>
+
                                         <Rectangle HorizontalAlignment="Stretch"
                                                    VerticalAlignment="Stretch"
                                                    Fill="Transparent"
