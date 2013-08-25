@@ -81,8 +81,8 @@ namespace Crystalbyte.Asphalt.Data {
         }
 
         [OnImportsSatisfied]
-        public async void OnImportsSatisfied() {
-            await InitializeStorage();
+        public void OnImportsSatisfied() {
+            InitializeStorage();
         }
 
         private async Task InitializeStorage() {

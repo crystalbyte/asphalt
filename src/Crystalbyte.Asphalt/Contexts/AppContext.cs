@@ -143,12 +143,12 @@ namespace Crystalbyte.Asphalt.Contexts {
             CheckSetupState();
         }
 
-        private async void OnTourStored(object sender, EventArgs e) {
-            await LoadToursAsync();
+        private void OnTourStored(object sender, EventArgs e) {
+            LoadToursAsync();
         }
 
-        private async void OnTourDeletionCompleted(object sender, EventArgs e) {
-            await LoadToursAsync();
+        private void OnTourDeletionCompleted(object sender, EventArgs e) {
+            LoadToursAsync();
         }
 
         public void NotifyIsMovementDetectionEnabledChanged() {

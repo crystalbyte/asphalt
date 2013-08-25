@@ -58,8 +58,8 @@ namespace Crystalbyte.Asphalt.Contexts {
             Image = image;
         }
 
-        public async void CommitChanges() {
-            await Channels.Database.Enqueue(() => {
+        public void CommitChanges() {
+            Channels.Database.Enqueue(() => {
                 var context = LocalStorage.DataContext;
                 try {
                     context.SubmitChanges(ConflictMode.ContinueOnConflict);
