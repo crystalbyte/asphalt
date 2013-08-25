@@ -6,7 +6,7 @@
     <Language code="de" />
     <Language code="de-DE" />
   </Languages>
-  <App xmlns="" ProductID="{699e938e-b0da-43c9-a5dd-8f55a3d722eb}" Title="Asphalt" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Alexander Wieser" Description="Sample description" Publisher="Crystalbyte" PublisherID="{9c991d62-6df3-40b1-b911-9ea30cba06c4}">
+  <App xmlns="" ProductID="{699e938e-b0da-43c9-a5dd-8f55a3d722eb}" Title="Asphalt" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Alexander Wieser" Description="Asphalt is a simple state of the art logbook.&#xD;&#xA;It runs silently in the background logging all your tours in a car using your phone's GPS sensor." Publisher="Crystalbyte" PublisherID="{9c991d62-6df3-40b1-b911-9ea30cba06c4}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -25,17 +25,25 @@
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="AsphaltToken" TaskName="_default">
-        <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</SmallImageURI>
+        <TemplateIconic>
+          <SmallImageURI IsRelative="true" IsResource="false">Assets\Tiles\IconicTileSmall.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</BackgroundImageURI>
+          <IconImageURI IsRelative="true" IsResource="false">Assets\Tiles\IconicTileMediumLarge.png</IconImageURI>
           <Title>Asphalt</Title>
-          <BackContent></BackContent>
-          <BackBackgroundImageURI></BackBackgroundImageURI>
-          <BackTitle></BackTitle>
-          <DeviceLockImageURI></DeviceLockImageURI>
-          <HasLarge></HasLarge>
-        </TemplateFlip>
+          <Message>
+          </Message>
+          <BackgroundColor>
+          </BackgroundColor>
+          <HasLarge>False</HasLarge>
+          <LargeContent1>
+          </LargeContent1>
+          <LargeContent2>
+          </LargeContent2>
+          <LargeContent3>
+          </LargeContent3>
+          <DeviceLockImageURI IsRelative="true" IsResource="false">
+          </DeviceLockImageURI>
+        </TemplateIconic>
       </PrimaryToken>
     </Tokens>
     <ScreenResolutions>

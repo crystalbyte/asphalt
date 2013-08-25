@@ -245,6 +245,8 @@
     <None Include="Crystalbyte.Asphalt.App_2013_08_23_00_08_28.sap" />
     <None Include="Crystalbyte.Asphalt.App_2013_08_23_00_14_21.sap" />
     <None Include="Crystalbyte.Asphalt.App_2013_08_23_00_16_15.sap" />
+    <None Include="Crystalbyte.Asphalt.App_2013_08_25_15_08_07.sap" />
+    <None Include="Crystalbyte.Asphalt.App_2013_08_25_15_10_54.sap" />
     <None Include="Fonts\LiveSymbol.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
@@ -262,9 +264,7 @@
     <Content Include="Assets\ApplicationBar\Stop.png" />
     <Content Include="Assets\ApplicationBar\Transport.Play.png" />
     <Content Include="Assets\ApplicationBar\Upload.png" />
-    <Content Include="Assets\ApplicationIcon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets\ApplicationIcon.png" />
     <Content Include="Assets\Driver.jpg" />
     <Content Include="Assets\Vehicle.jpg" />
     <Content Include="Assets\VerticalBackground.jpg" />
@@ -273,19 +273,9 @@
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationBar\Add.png" />
     <Content Include="Assets\ApplicationBar\Cancel.png" />
     <Content Include="Assets\ApplicationBar\Check.png" />
-    <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Tiles\FlipCycleTileMedium.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Tiles\FlipCycleTileSmall.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets\Tiles\IconicTileMediumLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

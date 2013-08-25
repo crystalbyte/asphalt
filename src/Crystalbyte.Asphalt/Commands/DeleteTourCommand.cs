@@ -18,6 +18,7 @@ namespace Crystalbyte.Asphalt.Commands {
     [Export, Shared]
     [Export(typeof(IAppBarMenuCommand))]
     public sealed class DeleteTourCommand : IAppBarMenuCommand {
+
         [Import]
         public AppContext AppContext { get; set; }
 

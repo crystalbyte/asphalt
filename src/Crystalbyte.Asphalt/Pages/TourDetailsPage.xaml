@@ -110,7 +110,7 @@
                                ui:DockPanel.Dock="Top" />
 
                     <!--  Route  -->
-                    <Border Height="300"
+                    <Border Height="270"
                             Margin="12,4,12,6"
                             BorderBrush="White"
                             BorderThickness="3"
@@ -118,7 +118,8 @@
                         <Grid>
                             <maps:Map x:Name="TourMap"
                                       HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch" />
+                                      VerticalAlignment="Stretch"
+                                      IsHitTestVisible="false" />
                             <Border Background="{StaticResource PhoneBackgroundBrush}"
                                     Opacity=".7"
                                     Visibility="{Binding IsQuerying,

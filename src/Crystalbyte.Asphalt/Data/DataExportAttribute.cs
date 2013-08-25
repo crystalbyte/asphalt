@@ -14,5 +14,6 @@ namespace Crystalbyte.Asphalt.Data {
         }
 
         public string Format { get; set; }
+        public int Position { get; set; }
     }
 }

@@ -296,7 +296,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [DataExport]
+        [DataExport(Position = 8)]
         [DataMember, Column(CanBeNull = false)]
         public DateTime StartTime {
             get { return _startTime; }
@@ -311,7 +311,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [DataExport]
+        [DataExport(Position = 10)]
         [DataMember, Column(CanBeNull = true)]
         public DateTime? StopTime {
             get { return _stopTime; }
@@ -326,17 +326,17 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [DataExport]
+        [DataExport(Position = 1)]
         public string Driver {
             get { return ActiveDriver != null ? ActiveDriver.Fullname : "Unknown driver"; }
         }
 
-        [DataExport]
+        [DataExport(Position = 2)]
         public string Vehicle {
             get { return ActiveVehicle != null ? ActiveVehicle.LicensePlate : "Unknown vehicle"; }
         }
 
-        [DataExport]
+        [DataExport(Position = 5)]
         public double FinalMileage {
             get { return InitialMileage + Distance; }
         }
@@ -355,7 +355,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [DataExport]
+        [DataExport(Position = 7)]
         [DataMember, Column(CanBeNull = true)]
         public string Origin {
             get { return _origin; }
@@ -398,7 +398,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [DataExport]
+        [DataExport(Position = 11)]
         [DataMember, Column(CanBeNull = true)]
         public string Reason {
             get { return _reason; }
@@ -414,7 +414,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [DataExport]
+        [DataExport(Position = 9)]
         [DataMember, Column(CanBeNull = true)]
         public string Destination {
             get { return _destination; }
@@ -434,7 +434,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// <summary>
         ///   Gets or sets the accumulated distance of all recorded waypoints.
         /// </summary>
-        [DataExport]
+        [DataExport(Position = 6)]
         [DataMember, Column(CanBeNull = false)]
         public double Distance {
             get { return _distance; }
@@ -453,7 +453,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         /// <summary>
         ///   Gets or sets the inital mileage of the car on tour start.
         /// </summary>
-        [DataExport]
+        [DataExport(Position = 4)]
         [DataMember, Column(CanBeNull = false)]
         public double InitialMileage {
             get { return _initialMileage; }
@@ -468,7 +468,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [DataExport]
+        [DataExport(Position = 3)]
         [DataMember, Column(DbType = "TINYINT NOT NULL")]
         public TourType Type {
             get { return _type; }

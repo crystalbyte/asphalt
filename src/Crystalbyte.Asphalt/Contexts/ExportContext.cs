@@ -13,12 +13,15 @@ using System.Windows;
 using Crystalbyte.Asphalt.Commands;
 using Crystalbyte.Asphalt.Data;
 using Crystalbyte.Asphalt.Resources;
+using Crystalbyte.Asphalt.Converters;
+using System.Globalization;
 
 #endregion
 
 namespace Crystalbyte.Asphalt.Contexts {
     [Export, Shared]
     public sealed class ExportContext : NotificationObject, IProgressAware {
+        private static TourTypeLocalizer _tourTypeLocalizer = new TourTypeLocalizer();
         private IExportStrategy _selectedStrategy;
         private IExportSerializer _selectedSerializer;
         private ExportState _exportState;
@@ -68,17 +71,19 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
 
             var exports = new Dictionary<string, string>();
-
-            foreach (var property in properties) {
-                var attributes = property.GetCustomAttributes(typeof(DataExportAttribute), true);
-                if (attributes.Length == 0) {
-                    continue;
-                }
-
-                var attribute = (DataExportAttribute)attributes.First();
+            var exportProperties = properties.Where(x => x.GetCustomAttribute(typeof(DataExportAttribute), true) != null);
+            foreach (var property in exportProperties.OrderBy(x => ((DataExportAttribute)x.GetCustomAttribute(typeof(DataExportAttribute), true)).Position)) {
+                var attribute = (DataExportAttribute)property.GetCustomAttribute(typeof(DataExportAttribute), true);
                 var key = property.Name;
-                var value = string.Format(attribute.Format, property.GetValue(data));
-                exports.Add(key, value);
+                var value = property.GetValue(data);
+                if (value is double) {
+                    value = Math.Round((double)value, 1);
+                }
+                if (key.ToLower() == "reason" && value is string) {
+                    value = _tourTypeLocalizer.Convert(value, typeof(string), null, CultureInfo.CurrentCulture);
+                }
+                var output = string.Format(attribute.Format, value);
+                exports.Add(key, output);
             }
 
             return exports;
@@ -134,7 +139,7 @@ namespace Crystalbyte.Asphalt.Contexts {
                 var extension = serializer.FileExtension;
 
                 await SelectedStrategy.ExportAsync(data, extension, this);
-                await MarkAllToursAsExported(exports);
+                await MarkAllToursAsExported(new List<Tour>(exports));
 
                 ExportState = ExportState.Completed;
             }
@@ -147,8 +152,15 @@ namespace Crystalbyte.Asphalt.Contexts {
 
         private async Task MarkAllToursAsExported(IEnumerable<Tour> exports) {
             exports.ForEach(x => x.IsExported = true);
-            await
-                Channels.Database.Enqueue(() => LocalStorage.DataContext.SubmitChanges(ConflictMode.FailOnFirstConflict));
+            await Channels.Database.Enqueue(() => {
+                var context = LocalStorage.DataContext;
+                try {
+                    context.SubmitChanges(ConflictMode.ContinueOnConflict);
+                }
+                catch (ChangeConflictException) {
+                    context.ChangeConflicts.ResolveAll(RefreshMode.KeepChanges);
+                }
+            });
         }
 
         private async Task<IEnumerable<Tour>> CollectToursForExportAsync() {

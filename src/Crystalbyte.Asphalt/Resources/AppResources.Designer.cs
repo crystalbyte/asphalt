@@ -610,7 +610,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reason.
+        ///   Looks up a localized string similar to Contact / Reason.
         /// </summary>
         public static string ReasonLabel {
             get {
@@ -619,7 +619,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reason not specified.
+        ///   Looks up a localized string similar to Contact and Reason not specified.
         /// </summary>
         public static string ReasonNotSpecified {
             get {
@@ -628,7 +628,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reason not specified ....
+        ///   Looks up a localized string similar to Contact and Reason not specified.
         /// </summary>
         public static string ReasonNotSpecifiedWatermark {
             get {
@@ -718,7 +718,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The displayed route is only an approximation and may differ from the actual route taken..
+        ///   Looks up a localized string similar to The displayed route is only an approximation and may differ from the actual route taken. The travelled distance is not based on the displayed route..
         /// </summary>
         public static string RouteDescription {
             get {

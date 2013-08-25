@@ -174,7 +174,7 @@
     <value>Ausgangspunkt</value>
   </data>
   <data name="ReasonLabel" xml:space="preserve">
-    <value>Grund der Fahrt</value>
+    <value>Ansprechpartner und Zweck der Fahrt</value>
   </data>
   <data name="StartTimeLabel" xml:space="preserve">
     <value>Abfahrt</value>
@@ -186,7 +186,7 @@
     <value>Wählen Sie die bevorzugte Längeneinheit aus.</value>
   </data>
   <data name="RouteDescription" xml:space="preserve">
-    <value>Die dargestellte Route ist lediglich eine Approximation und kann vom tatsächlichen Weg abweichen.</value>
+    <value>Die dargestellte Route ist lediglich eine Approximation und kann vom tatsächlichen Weg abweichen. Die Distanz wird nicht anhand der dargestellten Route berechnet.</value>
   </data>
   <data name="TourTypeLabel" xml:space="preserve">
     <value>Typ</value>
@@ -207,7 +207,7 @@
     <value>Route wird berechnet ...</value>
   </data>
   <data name="ReasonNotSpecified" xml:space="preserve">
-    <value>Kein Grund hinterlegt</value>
+    <value>Kein Ansprechpartner und Zweck hinterlegt</value>
     <comment>NullTextConverter param</comment>
   </data>
   <data name="RecordRouteConfirmCaption" xml:space="preserve">
@@ -337,8 +337,7 @@
     <value>Stop</value>
   </data>
   <data name="WelcomeText" xml:space="preserve">
-    <value>Vergessen Sie keine Einträge mehr.
-Lassen Sie Asphalt Ihre Fahrten automatisch aufzeichnen.</value>
+    <value>Nehmen Sie Ihre Fahrten manuell auf oder überlassen Sie es vollständig Asphalt.</value>
   </data>
   <data name="CommitSettingsButtonText" xml:space="preserve">
     <value>Bestätigen</value>
@@ -434,6 +433,6 @@ Lassen Sie Asphalt Ihre Fahrten automatisch aufzeichnen.</value>
     <value>Notizen</value>
   </data>
   <data name="ReasonNotSpecifiedWatermark" xml:space="preserve">
-    <value>Kein Grund hinterlegt ...</value>
+    <value>Kein Ansprechpartner und Zweck hinterlegt</value>
   </data>
 </root>

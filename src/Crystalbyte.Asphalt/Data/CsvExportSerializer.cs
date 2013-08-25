@@ -9,6 +9,7 @@ using Crystalbyte.Asphalt.Contexts;
 #endregion
 
 namespace Crystalbyte.Asphalt.Data {
+
     [Shared]
     [Export(typeof (IExportSerializer))]
     public sealed class CsvExportSerializer : IExportSerializer {
@@ -46,7 +47,7 @@ namespace Crystalbyte.Asphalt.Data {
 
             foreach (var value in exports.Select(export => MakeValueCsvFriendly(export.Value))) {
                 builder.Append(value);
-                builder.Append(",");
+                builder.Append(";");
             }
 
             builder.Remove(builder.Length - 1, 1);
