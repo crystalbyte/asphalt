@@ -50,7 +50,7 @@ namespace Crystalbyte.Asphalt.Data {
             var transfers = await shared.GetFolderAsync("transfers");
             var file = await transfers.CreateFileAsync(name);
 
-            var bytes = Encoding.UTF8.GetBytes(text);
+            var bytes = Encoding.GetEncoding("ISO-8859-1").GetBytes(text);
             using (var sw = await file.OpenStreamForWriteAsync()) {
                 await sw.WriteAsync(bytes, 0, bytes.Length);
                 await sw.FlushAsync();
@@ -81,11 +81,11 @@ namespace Crystalbyte.Asphalt.Data {
         }
 
         [OnImportsSatisfied]
-        public async void OnImportsSatisfied() {
-            await InitializeStorage();
+        public void OnImportsSatisfied() {
+            InitializeStorage();
         }
 
-        private async Task InitializeStorage() {
+        private async void InitializeStorage() {
             var connectionString = (string)Application.Current.Resources["DefaultConnectionString"];
             await IntializeDatabaseAsync(connectionString);
 

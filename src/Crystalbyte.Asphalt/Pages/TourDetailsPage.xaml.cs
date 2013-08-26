@@ -183,16 +183,11 @@ namespace Crystalbyte.Asphalt.Pages {
             var picker = (ListPicker) sender;
             Tour.Type = (TourType) picker.SelectedItem;
             switch (Tour.Type) {
-                case TourType.Business:
-                    break;
                 case TourType.Commute:
-                    Tour.Reason = AppResources.CommuteReasonText;
-                    break;
                 case TourType.Private:
-                    Tour.Reason = AppResources.PrivateReasonText;
+                    // Invoke to buy some time
+                    Dispatcher.BeginInvoke(() => Tour.Reason = string.Empty);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 

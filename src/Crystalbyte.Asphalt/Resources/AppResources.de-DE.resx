@@ -186,7 +186,7 @@
     <value>Wählen Sie die bevorzugte Längeneinheit aus.</value>
   </data>
   <data name="RouteDescription" xml:space="preserve">
-    <value>Die dargestellte Route ist lediglich eine Approximation und kann vom tatsächlichen Weg abweichen. Die Distanz wird nicht anhand der dargestellten Route berechnet.</value>
+    <value>Die dargestellte Route ist lediglich eine Approximation und wird nicht für Berechnungen verwendet.</value>
   </data>
   <data name="TourTypeLabel" xml:space="preserve">
     <value>Typ</value>
@@ -440,5 +440,8 @@
   </data>
   <data name="PrivateReasonText" xml:space="preserve">
     <value>Private Fahrt</value>
+  </data>
+  <data name="TrialExportLimitationText" xml:space="preserve">
+    <value>Die Demoversion erlaubt es lediglich Fahrten einzelnd zu exportieren.</value>
   </data>
 </root>

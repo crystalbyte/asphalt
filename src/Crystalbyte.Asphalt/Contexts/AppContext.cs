@@ -5,8 +5,10 @@ using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using Crystalbyte.Asphalt.Commands;
 using Crystalbyte.Asphalt.Data;
+using Windows.ApplicationModel.Store;
 
 #endregion
 
@@ -86,6 +88,10 @@ namespace Crystalbyte.Asphalt.Contexts {
                               && Drivers.Any(x => x.IsSelected);
 
             SetupState = isCompleted ? SetupState.Completed : SetupState.NotCompleted;
+        }
+
+        public LicenseInformation License {
+            get { return CurrentApp.LicenseInformation; }
         }
 
         public SetupState SetupState {

@@ -736,7 +736,7 @@ namespace Crystalbyte.Asphalt.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The displayed route is only an approximation and may differ from the actual route taken. The travelled distance is not based on the displayed route..
+        ///   Looks up a localized string similar to The displayed route is only an approximation and not used on calculations..
         /// </summary>
         public static string RouteDescription {
             get {
@@ -966,6 +966,15 @@ namespace Crystalbyte.Asphalt.Resources {
         public static string TrackingPanoramaItemTitle {
             get {
                 return ResourceManager.GetString("TrackingPanoramaItemTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trial mode enables you to export only a single item at a time..
+        /// </summary>
+        public static string TrialExportLimitationText {
+            get {
+                return ResourceManager.GetString("TrialExportLimitationText", resourceCulture);
             }
         }
         

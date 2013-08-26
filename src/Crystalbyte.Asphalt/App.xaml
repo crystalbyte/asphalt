@@ -79,6 +79,7 @@
 
 
         <local:LocalizedStrings x:Key="LocalizedStrings" />
+        <converters:TourTypeToBooleanConverter x:Key="TourTypeToBooleanConverter" />
         <converters:TourTypeLocalizer x:Key="TourTypeLocalizer" />
         <converters:SetupStateToVisibilityConverter x:Key="SetupStateToVisibilityConverter" />
         <converters:DurationFormatter x:Key="DurationFormatter" />

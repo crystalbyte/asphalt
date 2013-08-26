@@ -13,6 +13,7 @@ namespace Crystalbyte.Asphalt.Data {
     [Shared]
     [Export(typeof (IExportSerializer))]
     public sealed class CsvExportSerializer : IExportSerializer {
+
         [Import]
         public ExportContext ExportContext { get; set; }
 
@@ -38,7 +39,7 @@ namespace Crystalbyte.Asphalt.Data {
             if (!_headerWritten) {
                 foreach (var key in exports.Keys) {
                     builder.Append(key);
-                    builder.Append(",");
+                    builder.Append(";");
                 }
 
                 builder.AppendLine();

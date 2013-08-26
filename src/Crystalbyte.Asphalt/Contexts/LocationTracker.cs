@@ -269,10 +269,10 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        private async void OnCivicAddressesResolved(object sender, EventArgs e) {
+        private void OnCivicAddressesResolved(object sender, EventArgs e) {
             var tour = (Tour)sender;
             tour.CivicAddressesResolved -= OnCivicAddressesResolved;
-            await Channels.Database.Enqueue(() => {
+            Channels.Database.Enqueue(() => {
                 var context = LocalStorage.DataContext;
                 try {
                     context.SubmitChanges(ConflictMode.ContinueOnConflict);

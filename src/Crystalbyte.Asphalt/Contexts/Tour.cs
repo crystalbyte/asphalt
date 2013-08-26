@@ -13,6 +13,7 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Crystalbyte.Asphalt.Data;
 using Microsoft.Phone.Maps.Services;
+using Microsoft.Phone.Marketplace;
 
 #endregion
 
@@ -200,7 +201,9 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         public IEnumerable<TourType> TourTypeSource {
-            get { return Enum.GetValues(typeof(TourType)).OfType<TourType>(); }
+            get {
+                return Enum.GetValues(typeof(TourType)).Cast<TourType>();
+            }
         }
 
         public Vehicle ActiveVehicle {
@@ -297,7 +300,7 @@ namespace Crystalbyte.Asphalt.Contexts {
         }
 
         [DataExport(Position = 8)]
-        [DataMember, Column(CanBeNull = false)]
+        [DataMember, Column(CanBeNull = true)]
         public DateTime StartTime {
             get { return _startTime; }
             set {

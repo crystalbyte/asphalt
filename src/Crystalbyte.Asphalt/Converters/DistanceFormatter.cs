@@ -49,7 +49,7 @@ namespace Crystalbyte.Asphalt.Converters {
 
         private static string FormatMile(double value) {
             var miles = value*MileRatio;
-            return value < 1
+            return miles < 1
                        ? string.Format("{0} yd", Math.Round(miles*1760, 1))
                        : string.Format("{0} mi", Math.Round(miles, 1));
         }

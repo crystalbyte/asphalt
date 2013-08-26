@@ -87,11 +87,17 @@
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding ActiveVehicle.LicensePlate}" />
 
                 <TextBlock Margin="12,24,0,0"
-                           TextWrapping="Wrap"
                            Style="{StaticResource PhoneTextAccentStyle}"
                            Text="{Binding TourExports,
-                                          Converter={StaticResource TourExportsFormatter}}" />
+                                          Converter={StaticResource TourExportsFormatter}}"
+                           TextWrapping="Wrap" />
                 <Button Command="{Binding StartExportCommand}" Content="{Binding LocalizedResources.StartExportButtonText, Source={StaticResource LocalizedStrings}}" />
+                <TextBlock Style="{StaticResource PhoneTextAccentStyle}"
+                           Text="{Binding LocalizedResources.TrialExportLimitationText,
+                                          Source={StaticResource LocalizedStrings}}"
+                           TextWrapping="Wrap"
+                           Visibility="{Binding IsTrial,
+                                                Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
 
         </Grid>

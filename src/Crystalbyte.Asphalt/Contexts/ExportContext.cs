@@ -64,6 +64,10 @@ namespace Crystalbyte.Asphalt.Contexts {
         [ImportMany]
         public IEnumerable<IExportStrategy> ExportStrategies { get; set; }
 
+        public bool IsTrial {
+            get { return AppContext.License.IsTrial; }
+        }
+
         public static IDictionary<string, string> CollectDataExports(object data) {
             var properties = data.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
             if (properties.Length == 0) {
@@ -181,6 +185,10 @@ namespace Crystalbyte.Asphalt.Contexts {
                         .Select(x => x)
                         .OrderByDescending(x => x.StartTime));
                 exports.AddRange(pending);
+            }
+
+            if (AppContext.License.IsTrial) {
+                return exports.Take(1).ToArray();
             }
 
             return exports;

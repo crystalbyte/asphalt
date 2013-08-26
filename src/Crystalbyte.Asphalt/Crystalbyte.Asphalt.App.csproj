@@ -137,6 +137,7 @@
     <Compile Include="Converters\TourTypeLocalizer.cs" />
     <Compile Include="Converters\SpeedFormatter.cs" />
     <Compile Include="Converters\DistanceFormatter.cs" />
+    <Compile Include="Converters\TourTypeToBooleanConverter.cs" />
     <Compile Include="Converters\TourTypeToColorConverter.cs" />
     <Compile Include="Data\CsvExportSerializer.cs" />
     <Compile Include="Data\DataExportAttribute.cs" />
