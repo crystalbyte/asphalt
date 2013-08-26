@@ -119,7 +119,7 @@
                             <maps:Map x:Name="TourMap"
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Stretch"
-                                      IsHitTestVisible="false" />
+                                      Loaded="OnMapLoaded" />
                             <Border Background="{StaticResource PhoneBackgroundBrush}"
                                     Opacity=".7"
                                     Visibility="{Binding IsQuerying,

@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Maps;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Services;
 using Crystalbyte.Asphalt.Resources;
@@ -193,12 +194,15 @@ namespace Crystalbyte.Asphalt.Pages {
 
         private void OnReasonInputFormGotFocus(object sender, RoutedEventArgs e) {
             IsEditing = true;
-            ApplicationBar.IsVisible = false;
         }
 
         private void OnReasonInputFormLostFocus(object sender, RoutedEventArgs e) {
             IsEditing = false;
-            ApplicationBar.IsVisible = true;
+        }
+
+        private void OnMapLoaded(object sender, RoutedEventArgs e) {
+            MapsSettings.ApplicationContext.ApplicationId = "15c4e851-889c-45b5-9dd1-1fe56404753f";
+            MapsSettings.ApplicationContext.AuthenticationToken = "yEsfCE8O1Rb2PRkTZKEW6A";
         }
     }
 }
