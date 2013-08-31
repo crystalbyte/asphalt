@@ -16,6 +16,9 @@ namespace Crystalbyte.Asphalt {
         }
 
         public bool IsCurrentPageOfType<T>() {
+            if (((Frame)Application.Current.RootVisual).Content == null) {
+                return false;
+            }
             return ((Frame) Application.Current.RootVisual).Content.GetType() == typeof (T);
         }
 

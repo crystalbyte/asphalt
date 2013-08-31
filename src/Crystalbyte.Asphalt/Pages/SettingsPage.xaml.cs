@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
+using Crystalbyte.Asphalt.UI;
 
 #endregion
 
@@ -21,6 +22,11 @@ namespace Crystalbyte.Asphalt.Pages {
 
             AppSettings = App.Composition.GetExport<AppSettings>();
             AppSettings.IsEditingChanged += (sender, e) => this.UpdateApplicationBar();
+            BackgroundImageSource.ImageSource = ThemedResourceProvider.SatellitePageBackgroundSource;
+        }
+
+        public ThemedResourceProvider ThemedResourceProvider {
+            get { return App.Composition.GetExport<ThemedResourceProvider>(); }
         }
 
         public AppSettings AppSettings {

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Crystalbyte.Asphalt.Commands;
 using Crystalbyte.Asphalt.Data;
+using Crystalbyte.Asphalt.UI;
 using Windows.ApplicationModel.Store;
 
 #endregion
@@ -59,6 +60,26 @@ namespace Crystalbyte.Asphalt.Contexts {
         [Import]
         public AddDriverCommand AddDriverCommand { get; set; }
 
+        [Import]
+        public ThemedResourceProvider ThemedResourceProvider { get; set; }
+
+        [OnImportsSatisfied]
+        public void OnImportsSatisfied() {
+            LocationTracker.TourStored += OnTourStored;
+            DeleteTourCommand.DeletionCompleted += OnTourDeletionCompleted;
+            DeleteVehicleCommand.DeletionCompleted += OnVehicleDeletionCompleted;
+            DeleteDriverCommand.DeletionCompleted += OnDriversDeletionCompleted;
+            SaveVehicleCommand.VehicleSaved += OnVehicleSaved;
+            SaveDriverCommand.DriverSaved += OnDriverSaved;
+
+            // Attach monitoring event handler
+            AppSettings.SettingsChanged += (sender, e) =>
+                                           NotifyIsMovementDetectionEnabledChanged();
+
+            // Trigger initial update
+            NotifyIsMovementDetectionEnabledChanged();
+        }
+
         public AppContext() {
             Tours = new ObservableCollection<Tour>();
             Tours.CollectionChanged += (sender, e) => RaisePropertyChanged(() => GroupedTours);
@@ -108,22 +129,7 @@ namespace Crystalbyte.Asphalt.Contexts {
             }
         }
 
-        [OnImportsSatisfied]
-        public void OnImportsSatisfied() {
-            LocationTracker.TourStored += OnTourStored;
-            DeleteTourCommand.DeletionCompleted += OnTourDeletionCompleted;
-            DeleteVehicleCommand.DeletionCompleted += OnVehicleDeletionCompleted;
-            DeleteDriverCommand.DeletionCompleted += OnDriversDeletionCompleted;
-            SaveVehicleCommand.VehicleSaved += OnVehicleSaved;
-            SaveDriverCommand.DriverSaved += OnDriverSaved;
-
-            // Attach monitoring event handler
-            AppSettings.SettingsChanged += (sender, e) =>
-                                           NotifyIsMovementDetectionEnabledChanged();
-
-            // Trigger initial update
-            NotifyIsMovementDetectionEnabledChanged();
-        }
+     
 
         private async void OnDriverSaved(object sender, EventArgs e) {
             await LoadDriversAsync();

@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
+using Crystalbyte.Asphalt.UI;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Maps;
 using Microsoft.Phone.Maps.Controls;
@@ -36,7 +37,13 @@ namespace Crystalbyte.Asphalt.Pages {
                 return;
             }
 
+            BackgroundImageSource.ImageSource = ThemedResourceProvider.SatellitePageBackgroundSource;
+
             _isNewPageInstance = true;
+        }
+
+        public ThemedResourceProvider ThemedResourceProvider {
+            get { return App.Composition.GetExport<ThemedResourceProvider>(); }
         }
 
         protected override void OnKeyUp(KeyEventArgs e) {

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
+using Crystalbyte.Asphalt.UI;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using System.Windows.Media.Imaging;
@@ -33,11 +34,17 @@ namespace Crystalbyte.Asphalt.Pages {
             _photoChooser = new PhotoChooserTask { ShowCamera = true, PixelHeight = 200, PixelWidth = 200 };
             _photoChooser.Completed += OnPhotoChooserTaskCompleted;
 
+            BackgroundImageSource.ImageSource = ThemedResourceProvider.SatellitePageBackgroundSource;
+
             _isNewPageInstance = true;
         }
 
         public DriverSelectionSource DriverSelectionSource {
             get { return App.Composition.GetExport<DriverSelectionSource>(); }
+        }
+
+        public ThemedResourceProvider ThemedResourceProvider {
+            get { return App.Composition.GetExport<ThemedResourceProvider>(); }
         }
 
         protected override void OnKeyUp(KeyEventArgs e) {

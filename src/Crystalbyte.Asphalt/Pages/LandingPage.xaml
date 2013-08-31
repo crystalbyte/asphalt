@@ -58,7 +58,7 @@
                             SelectionChanged="OnPanoramaSelectionChanged">
 
                 <phone:Panorama.Background>
-                    <ImageBrush ImageSource="/Crystalbyte.Asphalt.App;component/Assets/Background.jpg" />
+                    <ImageBrush x:Name="BackgroundImageSource" />
                 </phone:Panorama.Background>
 
                 <!--  Panorama item one  -->

@@ -201,6 +201,7 @@
     <Compile Include="TourType.cs" />
     <Compile Include="UI\Dock.cs" />
     <Compile Include="UI\DockPanel.cs" />
+    <Compile Include="UI\ThemedResourceProvider.cs" />
     <Compile Include="UI\WatermarkTextBox.cs" />
     <Compile Include="UnitOfLength.cs" />
     <Compile Include="ValidationException.cs" />
@@ -263,7 +264,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Background.jpg" />
+    <Content Include="Assets\BackgroundDark.jpg" />
     <Content Include="Assets\ApplicationBar\Back.png" />
     <Content Include="Assets\ApplicationBar\Delete.png" />
     <Content Include="Assets\ApplicationBar\Edit.png" />
@@ -273,9 +274,11 @@
     <Content Include="Assets\ApplicationBar\Transport.Play.png" />
     <Content Include="Assets\ApplicationBar\Upload.png" />
     <Content Include="Assets\ApplicationIcon.png" />
+    <Content Include="Assets\BackgroundLight.jpg" />
     <Content Include="Assets\Driver.jpg" />
     <Content Include="Assets\Vehicle.jpg" />
-    <Content Include="Assets\VerticalBackground.jpg" />
+    <Content Include="Assets\VerticalBackgroundDark.jpg" />
+    <Content Include="Assets\VerticalBackgroundLight.jpg" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />

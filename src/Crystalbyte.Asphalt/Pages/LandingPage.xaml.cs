@@ -12,6 +12,8 @@ using Crystalbyte.Asphalt.Contexts;
 using Crystalbyte.Asphalt.Data;
 using Microsoft.Phone.Controls;
 using GestureEventArgs = System.Windows.Input.GestureEventArgs;
+using Crystalbyte.Asphalt.UI;
+using System.Composition;
 
 #endregion
 
@@ -32,6 +34,7 @@ namespace Crystalbyte.Asphalt.Pages {
             AppContext.SelectionEnabledChanged += AppContextOnSelectionEnabledChanged;
 
             LocationTracker.TourStored += OnLocationTrackerTourStored;
+            BackgroundImageSource.ImageSource = ThemedResourceProvider.LandingPageBackgroundSource;
         }
 
         private void OnLocationTrackerTourStored(object sender, EventArgs e) {
@@ -89,8 +92,12 @@ namespace Crystalbyte.Asphalt.Pages {
             get { return App.Composition.GetExport<DriverSelectionSource>(); }
         }
 
+        public ThemedResourceProvider ThemedResourceProvider {
+            get { return App.Composition.GetExport<ThemedResourceProvider>(); }
+        }
+
         private void OnDeleteTourMenuItemClicked(object sender, RoutedEventArgs e) {
-            TourSelectionSource.Selection = ((MenuItem) sender).DataContext as Tour;
+            TourSelectionSource.Selection = ((MenuItem)sender).DataContext as Tour;
             DeleteTourCommand.Execute(null);
         }
 
@@ -134,7 +141,7 @@ namespace Crystalbyte.Asphalt.Pages {
                 return false;
             }
 
-            tour = (T) parent.DataContext;
+            tour = (T)parent.DataContext;
             return true;
         }
 
@@ -144,7 +151,7 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void OnToursSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var selector = (LongListMultiSelector) sender;
+            var selector = (LongListMultiSelector)sender;
 
             var selections = TourSelectionSource.Selections;
             var prevCount = selections.Count;
@@ -168,7 +175,7 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         public void OnPanoramaSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var panorama = (Panorama) sender;
+            var panorama = (Panorama)sender;
 
             var first = e.AddedItems.Cast<PanoramaItem>().FirstOrDefault();
             if (first != null) {
@@ -193,7 +200,7 @@ namespace Crystalbyte.Asphalt.Pages {
 
             HandleVehicleTap(vehicle);
 
-            var selector = (LongListSelector) sender;
+            var selector = (LongListSelector)sender;
             selector.SelectedItem = null;
         }
 
@@ -205,7 +212,7 @@ namespace Crystalbyte.Asphalt.Pages {
 
             HandleDriverTap(driver);
 
-            var selector = (LongListSelector) sender;
+            var selector = (LongListSelector)sender;
             selector.SelectedItem = null;
         }
 
@@ -217,12 +224,12 @@ namespace Crystalbyte.Asphalt.Pages {
         }
 
         private void OnDeleteVehicleMenuItemClicked(object sender, RoutedEventArgs e) {
-            VehicleSelectionSource.Selection = ((MenuItem) sender).DataContext as Vehicle;
+            VehicleSelectionSource.Selection = ((MenuItem)sender).DataContext as Vehicle;
             DeleteVehicleCommand.Execute(null);
         }
 
         private void OnDeleteDriverMenuItemClicked(object sender, RoutedEventArgs e) {
-            DriverSelectionSource.Selection = ((MenuItem) sender).DataContext as Driver;
+            DriverSelectionSource.Selection = ((MenuItem)sender).DataContext as Driver;
             DeleteDriverCommand.Execute(null);
         }
     }
